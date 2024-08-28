@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet">
+    <style>
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #0e2a47; /* color fondo*/
+        }
+        .login-box {
+            max-width: 400px;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+        .logo {
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #0e2a47;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h1 class="title is-4 has-text-centered">¡Bienvenido!</h1>
+            <form action="/usuarios/login" method="POST">
+                <div class="field">
+                    <label class="label">Teléfono</label>
+                    <div class="control">
+                        <input class="input" type="tel" name="telefono" placeholder="(XXX) XXX-XXXX" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Contraseña</label>
+                    <div class="control">
+                        <input class="input" type="password" name="contrasena" placeholder="*******" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <button class="button is-success is-fullwidth" type="submit">Sign In</button>
+                </div>
+                <p class="has-text-centered">
+                    <a href="/usuarios/forgot-password">¿Olvidaste tu contraseña?</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

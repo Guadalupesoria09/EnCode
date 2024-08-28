@@ -4,6 +4,7 @@
   "description": "\"Proyecto EnCode\"",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/Guadalupesoria09/EnCode/issues"
   },
-  "homepage": "https://github.com/Guadalupesoria09/EnCode#readme"
+  "homepage": "https://github.com/Guadalupesoria09/EnCode#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0"
+  }
 }
