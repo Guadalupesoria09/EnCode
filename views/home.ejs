@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        .background-image {
+            background-image: url(https://i.imgur.com/kaDjk5b.png);
+            background-size: cover; /* Hace que la imagen cubra toda la pantalla */
+            background-position: center; /* Centra la imagen */
+            width: 100%;    
+            height: 100%;
+            position: absolute; /*Posiciona de manera "absoluta" la imagen*/
+        }
+
+    </style>
+</head>
+<body>
+<section class="hero is-fullheight">
+    <div class="background-image"></div>
+    <div class="hero-body">
+        <div class="container">
+            <div class="columns is-vcentered">
+                <div class="column is-half">
+                    <h1 class="title is-1 bold has-text-primary">
+                        ¡Bienvenido de nuevo <em>user</em>!
+                    </h1>
+                </div>
+                <div class="column is-half">
+                    <div class="buttons is-right">
+                        <button class="button is-primary is-large is-fullwidth">Estadísticas</button>
+                        <button class="button is-primary is-large is-fullwidth my-6">Promociones</button>
+                        <button class="button is-primary is-large is-fullwidth">Sucursales</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
