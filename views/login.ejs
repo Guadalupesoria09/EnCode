@@ -4,22 +4,33 @@
     <title>Inicio de Sesión</title>
     <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet">
     <style>
+        body, html{
+            height: 100%;
+            margin: 0;
+        }
         .background-image {
-            background-image: url(../public/Background-login.png);
+            background-image: url(https://i.imgur.com/kaDjk5b.png);
             background-size: cover; /* Hace que la imagen cubra toda la pantalla */
             background-position: center; /* Centra la imagen */
+            background-repeat: no-repeat; /* Evita que la imagen se repita */
             width: 100%;    
             height: 100%;
         }
+        .logo {
+            image-rendering: url(https://i.imgur.com/CVaUwNP.png);
+            position: absolute;
+            left: 15%;
+            top: 40%;
+            max-width: 350px;
+        }
         .login-box {
             position: absolute;
-            right: 25%; /* Mueve loginbox 25% a la derecha de la pantalla */
-            top: 50%; /* Mueve loginbox mitad de la pantalla verticalmente */
+            text-align: center; /*alinear texto al centro del cuadro*/
+            right: 25%;
+            top: 50%; 
             transform: translateY(-50%); /*Centrado del cuadro*/
-            max-width: 400px; 
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 3%;
+            border-radius: 10px;
             background-color: white;
         }
         h1 {
@@ -29,6 +40,7 @@
 </head>
 <body>
     <div class="background-image"></div>
+    <img src="https://i.imgur.com/CVaUwNP.png" alt="Logo" class="logo">
         <div class="login-box">
             <header>
                 <h1 class="title">¡Bienvenido!</h1>
