@@ -1,0 +1,15 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css";
+
+:root {
+    --bulma-primary-h: 214deg;
+    --bulma-primary-s: 88%;
+    --bulma-primary-l: 13%;
+    --bulma-link-h: 169deg;
+    --bulma-link-s: 86%;
+    --bulma-link-l: 45%;
+    --bulma-info-l: 100%;
+};
+
+body {
+    font-family: Josefin Sans;
+};
