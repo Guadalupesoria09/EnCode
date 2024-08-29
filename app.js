@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 const usuariosRoutes = require('./routes/usuarios.routes');
-app.use('/usuarios', usuariosRoutes);
+app.use('/', usuariosRoutes);
 
 // const adminRoutes=require('./routes/admin.routes');
 // app.use('/admin', adminRoutes);

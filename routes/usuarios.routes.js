@@ -12,7 +12,7 @@ router.post('/login', (req, res) => {
     // Aquí podrías agregar lógica para verificar credenciales
 
     // Redirige a /usuarios/home después del login exitoso
-    res.redirect('/usuarios/home'); 
+    res.redirect('/home'); 
 });
 
 // Ruta para mostrar la página home
