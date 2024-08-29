@@ -1,58 +1,59 @@
 <!DOCTYPE html>
-<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Inicio de Sesión</title>
     <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet">
     <style>
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #0e2a47; /* color fondo*/
+        .background-image {
+            background-image: url(../public/Background-login.png);
+            background-size: cover; /* Hace que la imagen cubra toda la pantalla */
+            background-position: center; /* Centra la imagen */
+            width: 100%;    
+            height: 100%;
         }
         .login-box {
-            max-width: 400px;
+            position: absolute;
+            right: 25%; /* Mueve loginbox 25% a la derecha de la pantalla */
+            top: 50%; /* Mueve loginbox mitad de la pantalla verticalmente */
+            transform: translateY(-50%); /*Centrado del cuadro*/
+            max-width: 400px; 
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             background-color: white;
         }
-        .logo {
+        h1 {
             margin-bottom: 1.5rem;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.5rem;
-            color: #0e2a47;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
+    <div class="background-image"></div>
         <div class="login-box">
-            <h1 class="title is-4 has-text-centered">¡Bienvenido!</h1>
-            <form action="/usuarios/login" method="POST">
-                <div class="field">
-                    <label class="label">Teléfono</label>
-                    <div class="control">
-                        <input class="input" type="tel" name="telefono" placeholder="(XXX) XXX-XXXX" required>
+            <header>
+                <h1 class="title">¡Bienvenido!</h1>
+            </header>
+            <main>
+                <form action="/usuarios/home" method="POST">
+                    <div class="field">
+                        <label class="label" for="Numero">Teléfono</label>
+                        <div class="control">
+                            <input id="Numero" name="numero" class="input" type="text" placeholder="442-XXX-XXXX" required>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <label class="label">Contraseña</label>
-                    <div class="control">
-                        <input class="input" type="password" name="contrasena" placeholder="*******" required>
+
+                    <div class="field">
+                        <label class="label" for="password">Contraseña</label>
+                        <div class="control">
+                            <input id="password" name="password" class="input" type="password" placeholder="Contraseña" required>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <button class="button is-success is-fullwidth" type="submit">Sign In</button>
-                </div>
-                <p class="has-text-centered">
-                    <a href="/usuarios/forgot-password">¿Olvidaste tu contraseña?</a>
-                </p>
-            </form>
+
+                    <div class="control">
+                        <input type="submit" class="button is-success   " value="Entrar" >
+                    </div>
+                </form>
+            </main>
         </div>
     </div>
 </body>
