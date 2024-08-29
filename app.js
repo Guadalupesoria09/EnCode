@@ -41,8 +41,8 @@ app.use('/usuarios', usuariosRoutes);
 
 
 app.use((request, response, next) => {
-    response.statusCode = (404);
+    response.statusCode = 404;
     response.render('404');
-});
+})
 
 app.listen(3000);
