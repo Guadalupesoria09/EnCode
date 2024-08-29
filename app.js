@@ -1,9 +1,16 @@
 const express = require('express');
 const app = express();
+
+
 const path = require('path');
+//app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/CSS', express.static(path.resolve(__dirname, "public/CSS")));
+app.use('/logoDuper', express.static(path.resolve(__dirname, "public/logoDuper")));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.set('views', 'views');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
@@ -34,7 +41,8 @@ app.use('/usuarios', usuariosRoutes);
 
 
 app.use((request, response, next) => {
-    response.statusCode = (404).render('404');
-})
+    response.statusCode = (404);
+    response.render('404');
+});
 
 app.listen(3000);
