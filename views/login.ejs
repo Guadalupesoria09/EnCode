@@ -12,16 +12,15 @@
             background-image: url(https://i.imgur.com/kaDjk5b.png);
             background-size: cover; /* Hace que la imagen cubra toda la pantalla */
             background-position: center; /* Centra la imagen */
-            background-repeat: no-repeat; /* Evita que la imagen se repita */
             width: 100%;    
             height: 100%;
         }
         .logo {
-            image-rendering: url(https://i.imgur.com/CVaUwNP.png);
+            image-rendering: url(https://i.imgur.com/rvKkAAp.png);
             position: absolute;
             left: 15%;
-            top: 40%;
-            max-width: 350px;
+            top: 30%;
+            max-width: 400px;
         }
         .login-box {
             position: absolute;
@@ -46,23 +45,23 @@
                 <h1 class="title">¡Bienvenido!</h1>
             </header>
             <main>
-                <form action="/usuarios/home" method="POST">
+                <form action="/usuarios/login" method="POST"> 
                     <div class="field">
                         <label class="label" for="Numero">Teléfono</label>
                         <div class="control">
-                            <input id="Numero" name="numero" class="input" type="text" placeholder="442-XXX-XXXX" required>
+                            <input id="Numero" name="telefono" class="input" type="text" placeholder="442-XXX-XXXX" required>
                         </div>
                     </div>
-
+                
                     <div class="field">
                         <label class="label" for="password">Contraseña</label>
                         <div class="control">
-                            <input id="password" name="password" class="input" type="password" placeholder="Contraseña" required>
+                            <input id="password" name="contrasena" class="input" type="password" placeholder="Contraseña" required>
                         </div>
                     </div>
-
+                
                     <div class="control">
-                        <input type="submit" class="button is-success   " value="Entrar" >
+                        <input type="submit" class="button is-success" value="Entrar">
                     </div>
                 </form>
             </main>
