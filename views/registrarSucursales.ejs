@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Sucursal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
+    <style>
+        .formulario {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 2px solid #041E3F; 
+            border-radius: 10px;
+        }
+       
+        .boton_formulario {
+            background-color: #63D2B2;
+	    color: white;
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+
+<section class="section">
+    <div class="container">
+        <h1 class="title has-text-centered">AGREGAR SUCURSALES</h1>
+        <div class="box formulario">
+            <div class="field">
+                <label class="label" for="Nombre">Nombre</label>
+                <div class="control">
+                    <input id="Nombre" name="nombre" class="input" type="text" placeholder="DUPER REWARDS" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label" for="Direccion">Dirección</label>
+                <div class="control">
+                    <input id="Dirección" name="direccion" class="input" type="text" placeholder="DUPER REWARDS" required> 
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-body">
+                    <div class="field">
+                        <label class="label" for="CP">CP</label>
+                        <div class="control">
+                            <input id="CP" name="cp" class="input" type="text" placeholder="27105" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="Ciudad">Ciudad</label>
+                        <div class="control">
+                            <input id="Ciudad" name="ciudad" class="input" type="text" placeholder="Querétaro" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for"Estado">Estado</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select> 
+				    <option>Aguascalientes</option>
+                                    <option>Baja California</option>
+                                    <option>Baja California Sur</option>
+                                    <option>Campeche</option>
+                                    <option>Chiapas</option>
+                                    <option>Chihuahua</option>
+                                    <option>Ciudad de México</option>
+                                    <option>Coahuila</option>
+                                    <option>Colima</option>
+                                    <option>Durango</option>
+                                    <option>Estado de México</option>
+                                    <option>Guanajuato</option>
+                                    <option>Guerrero</option>
+                                    <option>Hidalgo</option>
+                                    <option>Jalisco</option>
+                                    <option>Michoacán</option>
+                                    <option>Morelos</option>
+                                    <option>Nayarit</option>
+                                    <option>Nuevo León</option>
+                                    <option>Oaxaca</option>
+                                    <option>Puebla</option>
+                                    <option>Querétaro</option>
+                                    <option>Quintana Roo</option>
+                                    <option>San Luis Potosí</option>
+                                    <option>Sinaloa</option>
+                                    <option>Sonora</option>
+                                    <option>Tabasco</option>
+                                    <option>Tamaulipas</option>
+                                    <option>Tlaxcala</option>
+                                    <option>Veracruz</option>
+                                    <option>Yucatán</option>
+                                    <option>Zacatecas</option> 
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label" for="Numero">Número</label>
+                <div class="control">
+                    <input id="Numero" name="numero" class="input" type="text" placeholder="(xxx) xxx-xxxx" required>
+                </div>
+            </div>
+            
+            <div class="field">
+                <div class="control">
+                    <button class="button boton_formulario">AGREGAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
