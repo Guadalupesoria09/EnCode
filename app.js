@@ -29,6 +29,8 @@ app.use((request, response, next) => {
 });
 app.use(express.static(path.join(__dirname, 'public')));
 
+const duenoRoutes = require('./routes/dueno.routes');
+app.use('/dueno', duenoRoutes);
 
 const usuariosRoutes = require('./routes/usuarios.routes');
 app.use('/', usuariosRoutes);
