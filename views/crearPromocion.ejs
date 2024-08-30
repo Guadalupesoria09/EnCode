@@ -1,19 +1,65 @@
 <%- include('includes/head.ejs') %>
-<form class="box">
-    <div class="field">
-      <label class="label">Nombre</label>
-      <div class="control">
-        <input class="input" type="text" placeholder="DuperRewards" />
+<h1 class="title has-text-centered">PROMOCIONES</h1>
+<div class="columns">
+  <div class="column is-half">
+    <form class="box has-text-centered">
+      <div class="field has-text-left">
+        <label class="label">Nombre</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="DuperRewards" />
+        </div>
       </div>
-    </div>
   
-    <div class="field">
-      <label class="label">Fecha inicio</label>
-      <div class="control">
-        <input class="input" type="date" set-date-format="aaaa/mm/dd">
+      <div class="field has-text-left">
+        <label class="label">Fecha inicio</label>
+        <div class="control">
+          <input class="input" type="date" data-display-mode="default"/> 
+        </div>
       </div>
-    </div>
   
-    <button class="button is-link">Agregar</button>
-</form>
+      <div class="field has-text-left">
+        <label class="label">Fecha fin</label>
+        <div class="control">
+          <input class="input" type="date" datetime="YYYY/MM/DD"/>
+        </div>
+      </div>
+  
+      <div class="field has-text-left">
+        <label class="label">Recompensa</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="2x1" />
+        </div>
+      </div>
+    
+      <button class="button is-link">Agregar</button>
+    </form>
+  </div>
+  <div class="column">
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">Promocion XXXX</p>
+        <button class="card-header-icon" aria-label="more options">
+          <span class="icon">
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </span>
+        </button>
+      </header>
+      <div class="card-content">
+        <div class="content">
+          Vigencia: <time datetime="2016/1/1">1 Jan 2016</time>
+          <br>
+          Recompensa: ""
+          <br>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <a href="#" class="card-footer-item">Edit</a>
+        <a href="#" class="card-footer-item">Delete</a>
+      </footer>
+    </div>
+    <div class="has-text-centered">
+      <button class="button is-link">Recompensas</button>
+    </div>
+  </div>
+</div>
 <%- include('includes/foot.ejs') %>
