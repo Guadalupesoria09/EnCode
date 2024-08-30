@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas Rewards</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+    <style>
+        .chart-container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px; 
+            background-color: #f5f5f5; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        }
+        .title {
+            color: #3273dc; 
+        }
+        .subtitle {
+            color: #363636; 
+        }
+        .box {
+            border: 1px solid #dbdbdb; 
+            border-radius: 4px;
+        }
+        .box p {
+            color: #4a4a4a; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <%- include('includes/head.ejs') %>
+        <h1 class="title">Estadísticas Rewards</h1>
+
+        <nav class="level">
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Recompensas</p>
+                <p class="title">3,456</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Record</p>
+                <p class="title">123</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Clientes</p>
+                <p class="title">4560</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Promociones</p>
+                <p class="title">789</p>
+              </div>
+            </div>
+          </nav>
+
+        <div class="box">
+            <h2 class="subtitle">Top Clientes</h2>
+            <p>Total de recompensas otorgadas a los clientes más destacados: <%= totalRecompensas %></p>
+        </div>
+
+        <article class="media">
+            <figure class="media-left">
+              <p class="image is-64x64">
+                <img src="https://www.pngkit.com/png/full/115-1150342_user-avatar-icon-iconos-de-mujeres-a-color.png" />
+              </p>
+            </figure>
+            <div class="media-content">
+              <div class="content">
+                <p>
+                  <strong>Karla Sanchez</strong> <small>@karlasan</small> <small>31m</small>
+                  <br />
+                  "¡Una experiencia culinaria excelente! La comida es fresca y deliciosa, con una variedad de opciones para todos los gustos. 
+                  El ambiente es acogedor y el personal es amable y atento. Recomiendo especialmente los chilaquiles con pollo, ¡es una verdadera 
+                  joya! Definitivamente volveré para disfrutar de otra comida maravillosa."
+                </p>
+              </div>
+              <nav class="level is-mobile">
+                <div class="level-left">
+                  <a class="level-item">
+                    <span class="icon is-small"><i class="fas fa-reply"></i></span>
+                  </a>
+                  <a class="level-item">
+                    <span class="icon is-small"><i class="fas fa-retweet"></i></span>
+                  </a>
+                  <a class="level-item">
+                    <span class="icon is-small"><i class="fas fa-heart"></i></span>
+                  </a>
+                </div>
+              </nav>
+            </div>
+            <div class="media-right">
+              <button class="delete"></button>
+            </div>
+          </article>
+
+          <article class="media">
+            <figure class="media-left">
+              <p class="image is-64x64">
+                <img src="https://cdn-icons-png.flaticon.com/512/219/219983.png" />
+              </p>
+            </figure>
+            <div class="media-content">
+              <div class="content">
+                <p>
+                  <strong>Armando Gonzalez</strong> <small>@armagonz</small> <small>31m</small>
+                  <br />
+                  "¡Una joya escondida! La calidad de los ingredientes se nota en cada bocado. El menú ofrece opciones innovadoras y sabrosas 
+                  que deleitan el paladar. Además, el servicio es impecable, con un equipo que se asegura de que cada visita sea especial. No 
+                  te pierdas los chilaquiles verdes, ¡es absolutamente delicioso! Sin duda, este lugar se ha ganado un lugar especial en mi lista
+                   de favoritos."
+                </p>
+              </div>
+              <nav class="level is-mobile">
+                <div class="level-left">
+                  <a class="level-item">
+                    <span class="icon is-small"><i class="fas fa-reply"></i></span>
+                  </a>
+                  <a class="level-item">
+                    <span class="icon is-small"><i class="fas fa-retweet"></i></span>
+                  </a>
+                  <a class="level-item">
+                    <span class="icon is-small"><i class="fas fa-heart"></i></span>
+                  </a>
+                </div>
+              </nav>
+            </div>
+            <div class="media-right">
+              <button class="delete"></button>
+            </div>
+          </article>
+
+    <script>
+        const recompensasPorTipoData = JSON.parse('<%= recompensasPorTipo %>');
+        const recompensasPorMesData = JSON.parse('<%= recompensasPorMes %>');
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        
+        const ctxRecompensasTipo = document.getElementById('recompensasPorTipoChart').getContext('2d');
+        new Chart(ctxRecompensasTipo, {
+            type: 'pie',
+            data: {
+                labels: recompensasPorTipoData.map(item => item.tipo),
+                datasets: [{
+                    label: 'Recompensas por Tipo',
+                    data: recompensasPorTipoData.map(item => item.cantidad),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        const ctxRecompensasMes = document.getElementById('recompensasPorMesChart').getContext('2d');
+        new Chart(ctxRecompensasMes, {
+            type: 'bar',
+            data: {
+                labels: recompensasPorMesData.map(item => item.mes),
+                datasets: [{
+                    label: 'Recompensas',
+                    data: recompensasPorMesData.map(item => item.cantidad),
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

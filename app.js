@@ -2,8 +2,9 @@ const express = require('express');
 const app = express();
 
 const path = require('path');
+const port = 3000;
 
-//app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/CSS', express.static(path.resolve(__dirname, "public/CSS")));
 app.use('/logoDuper', express.static(path.resolve(__dirname, "public/logoDuper")));
@@ -43,9 +44,54 @@ app.use('/', usuariosRoutes);
 // app.use('/dueno', duenoRoutes);
 
 
-app.use((request, response, next) => {
-    response.statusCode = 404;
-    response.render('404');
-})
+//app.use((request, response, next) => {
+//    response.statusCode = 404;
+//    response.render('404');
+//})
 
-app.listen(3000);
+
+// Ruta para la vista de estadísticas
+app.get('/estadisticas', (req, res) => {
+    const ventasTotales = 15000; // Total de ventas en MXN
+    const productosPopulares = [
+        { nombre: 'Producto A', cantidad: 30 },
+        { nombre: 'Producto B', cantidad: 50 },
+        { nombre: 'Producto C', cantidad: 20 }
+    ];
+    const ingresosPorMes = [
+        { mes: 'Enero', ingresos: 3000 },
+        { mes: 'Febrero', ingresos: 4000 },
+        { mes: 'Marzo', ingresos: 3500 }
+    ];
+
+    // Renderiza la vista 'estadisticas' y pasa los datos a la plantilla
+    res.render('estadisticas', {
+        ventasTotales: ventasTotales,
+        productosPopulares: JSON.stringify(productosPopulares),
+        ingresosPorMes: JSON.stringify(ingresosPorMes)
+    });
+});
+
+app.get('/estadisticasRewards', (req, res) => {
+    res.render('estadisticasRewards', datosEjemplo);
+});
+    const datosEjemplo = {
+        totalRecompensas: 3456, // Total de recompensas otorgadas
+        recompensasPorTipo: JSON.stringify([
+            { tipo: 'Descuento', cantidad: 45 },
+            { tipo: 'Regalo', cantidad: 30 },
+            { tipo: 'Puntos', cantidad: 25 }
+        ]),
+        recompensasPorMes: JSON.stringify([
+            { mes: 'Enero', cantidad: 200 },
+            { mes: 'Febrero', cantidad: 250 },
+            { mes: 'Marzo', cantidad: 300 },
+            { mes: 'Abril', cantidad: 400 },
+            { mes: 'Mayo', cantidad: 350 }
+         ])
+};
+
+// Inicia el servidor
+app.listen(port, () => {
+    console.log(`Servidor corriendo en http://localhost:${port}`);
+});
