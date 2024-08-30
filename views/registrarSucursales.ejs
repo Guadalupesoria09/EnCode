@@ -1,28 +1,5 @@
-<!DOCTYPE html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Sucursal</title>
-    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
-    <style>
-        .formulario {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem;
-            border: 2px solid #041E3F; 
-            border-radius: 10px;
-        }
-       
-        .boton_formulario {
-            background-color: #63D2B2;
-	    color: white;
-            width: 50%;
-        }
-    </style>
-</head>
-<body>
+<%- include('includes/head.ejs') %>
 
-<main>
 <form action="/registrarSucursales" method="POST">
 <section class="section">
     <div class="container">
@@ -111,14 +88,12 @@
             
             <div class="field">
                 <div class="control">
-                    <button class="button boton_formulario">AGREGAR</button>
+                    <a href="http://localhost:3000/admin/registrarDueno" class="button boton_formulario">AGREGAR MÁS</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
 </form>
-</main>
 
-</body>
-</html>
+<%- include('includes/foot.ejs') %>
