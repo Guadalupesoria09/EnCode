@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+    <style>
+        .chart-container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px; 
+            background-color: #f5f5f5; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        }
+        .title {
+            color: #3273dc; 
+        }
+        .subtitle {
+            color: #363636; 
+        }
+        .box {
+            border: 1px solid #dbdbdb; 
+            border-radius: 4px;
+        }
+        .box p {
+            color: #4a4a4a; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <%- include('includes/head.ejs') %>
+        <h1 class="title">Estadísticas</h1>
+
+        <div class="box">
+            <h2 class="subtitle">Ventas Totales</h2>
+            <p>Total de ventas: <%= ventasTotales %> MXN</p>
+            <figure class="image is-200x200">
+                <img src="https://www.forcemanager.com/wp-content/uploads/blog_Como_hacer_un_reporte_de_ventas6.png" />
+              </figure>
+        </div>
+
+        <div class="box chart-container">
+            <h2 class="subtitle">Productos Populares</h2>
+            <canvas id="productosPopularesChart"></canvas>
+            <figure class="image is-300x300">
+                <img src="https://static.vecteezy.com/system/resources/previews/013/722/219/original/bar-graph-growth-and-up-arrow-png.png" />
+              </figure>
+        </div>
+
+        <div class="box chart-container">
+            <h2 class="subtitle">Ingresos por Mes</h2>
+            <canvas id="ingresosPorMesChart"></canvas>
+            <figure class="image is-300x300">
+                <img src="https://static.vecteezy.com/system/resources/previews/015/742/223/original/trend-up-line-graph-growth-progress-detail-infographic-chart-diagram-suitable-for-business-data-and-market-analysis-line-graph-rising-up-and-grow-business-day-by-day-concept-free-vector.jpg" />
+              </figure>
+        </div>
+    </div>
+
+    <script>
+         
+    </script>
+    <%- include('includes/foot.ejs') %>
+</body>
+</html>
+
+
+
