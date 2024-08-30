@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asignar Dueño</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
+    <style>
+        .formulario {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            border: 2px solid #041E3F; 
+            border-radius: 10px;
+        }
+
+        .boton_formulario {
+            background-color: #63D2B2;
+            color: white;
+            width: 50%;
+            margin-top: 1rem;
+        }
+
+    </style>
+</head>
+<body>
+
+<main>
+<form action="/registrarDueno" method="POST">
+<section class="section">
+    <div class="container">
+        <h1 class="title has-text-centered">ASIGNAR DUEÑO</h1>
+        <div class="box formulario">
+	 <div class="field">
+                <label class="label" for="Nombre">Nombre</label>
+                <div class="control">
+                    <input id="Nombre" name="nombre" class="input" type="text" placeholder="Juan MA" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label" for="Direccion">Direccion</label>
+                <div class="control">
+                    <input id="Direccion" name="direccion" class="input" type="text" placeholder="Las Villas, Gavilanes 40" required>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-body">
+                    <div class="field">
+                        <label class="label" for="CP">CP</label>
+                        <div class="control">
+                            <input id="CP" name="cp" class="input" type="text" placeholder="27105" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="Ciudad">Ciudad</label>
+                        <div class="control">
+                            <input id="Ciudad" name="ciudad" class="input" type="text" placeholder="Querétaro" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="Estado">Estado</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select>
+                                    <option>Querétaro</option>
+                                    <option>Aguascalientes</option>
+                                    <option>Baja California</option>
+                                    <option>Baja California Sur</option>
+                                    <option>Campeche</option>
+                                    <!-- Agrega más estados aquí -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-body">
+                    <div class="field">
+                        <label class="label" for="Numero">Numero</label>
+                        <div class="control">
+                            <input id="Numero" name="numero" class="input" type="text" placeholder="(xxx) xxx-xxxx" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="FechaNacimiento">Fecha de nacimiento</label>
+                        <div class="control has-icons-right">
+                            <input id="FechaNacimiento" name="fecha_nacimiento" class="input" type="text" placeholder="18/07/2023" required>
+                            <span class="icon is-small is-right">
+                                <i class="fas fa-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label" for="Genero">Genero</label>
+                <div class="control">
+                    <div class="select is-fullwidth">
+                        <select id="Genero" name="genero">
+                            <option>Femenino</option>
+                            <option>Masculino</option>
+                            <option>Otro</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <button class="button boton_formulario">AGREGAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</form>
+</main>
+
+</body>
+</html>
+
