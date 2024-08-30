@@ -77,9 +77,8 @@
                 <p>
                   <strong>Karla Sanchez</strong> <small>@karlasan</small> <small>31m</small>
                   <br />
-                  "¡Una experiencia culinaria excelente! La comida es fresca y deliciosa, con una variedad de opciones para todos los gustos. 
-                  El ambiente es acogedor y el personal es amable y atento. Recomiendo especialmente los chilaquiles con pollo, ¡es una verdadera 
-                  joya! Definitivamente volveré para disfrutar de otra comida maravillosa."
+                  Recompensas: 28
+                  Compras: 102
                 </p>
               </div>
               <nav class="level is-mobile">
@@ -112,10 +111,8 @@
                 <p>
                   <strong>Armando Gonzalez</strong> <small>@armagonz</small> <small>31m</small>
                   <br />
-                  "¡Una joya escondida! La calidad de los ingredientes se nota en cada bocado. El menú ofrece opciones innovadoras y sabrosas 
-                  que deleitan el paladar. Además, el servicio es impecable, con un equipo que se asegura de que cada visita sea especial. No 
-                  te pierdas los chilaquiles verdes, ¡es absolutamente delicioso! Sin duda, este lugar se ha ganado un lugar especial en mi lista
-                   de favoritos."
+                  Recompensas: 9
+                  Compras: 32
                 </p>
               </div>
               <nav class="level is-mobile">
@@ -137,67 +134,11 @@
             </div>
           </article>
 
-    <script>
-        const recompensasPorTipoData = JSON.parse('<%= recompensasPorTipo %>');
-        const recompensasPorMesData = JSON.parse('<%= recompensasPorMes %>');
-    </script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        
-        const ctxRecompensasTipo = document.getElementById('recompensasPorTipoChart').getContext('2d');
-        new Chart(ctxRecompensasTipo, {
-            type: 'pie',
-            data: {
-                labels: recompensasPorTipoData.map(item => item.tipo),
-                datasets: [{
-                    label: 'Recompensas por Tipo',
-                    data: recompensasPorTipoData.map(item => item.cantidad),
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true
-            }
-        });
+          <figure class="image is-200x200">
+            <img src="https://images.edrawmax.com/images/knowledge/line-graph-1-what-is.jpg" />
+          </figure>
 
-        const ctxRecompensasMes = document.getElementById('recompensasPorMesChart').getContext('2d');
-        new Chart(ctxRecompensasMes, {
-            type: 'bar',
-            data: {
-                labels: recompensasPorMesData.map(item => item.mes),
-                datasets: [{
-                    label: 'Recompensas',
-                    data: recompensasPorMesData.map(item => item.cantidad),
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
     </script>
+    <%- include('includes/foot.ejs') %>
 </body>
 </html>

@@ -37,74 +37,30 @@
         <div class="box">
             <h2 class="subtitle">Ventas Totales</h2>
             <p>Total de ventas: <%= ventasTotales %> MXN</p>
+            <figure class="image is-200x200">
+                <img src="https://www.forcemanager.com/wp-content/uploads/blog_Como_hacer_un_reporte_de_ventas6.png" />
+              </figure>
         </div>
 
         <div class="box chart-container">
             <h2 class="subtitle">Productos Populares</h2>
             <canvas id="productosPopularesChart"></canvas>
+            <figure class="image is-300x300">
+                <img src="https://static.vecteezy.com/system/resources/previews/013/722/219/original/bar-graph-growth-and-up-arrow-png.png" />
+              </figure>
         </div>
 
         <div class="box chart-container">
             <h2 class="subtitle">Ingresos por Mes</h2>
             <canvas id="ingresosPorMesChart"></canvas>
+            <figure class="image is-300x300">
+                <img src="https://static.vecteezy.com/system/resources/previews/015/742/223/original/trend-up-line-graph-growth-progress-detail-infographic-chart-diagram-suitable-for-business-data-and-market-analysis-line-graph-rising-up-and-grow-business-day-by-day-concept-free-vector.jpg" />
+              </figure>
         </div>
     </div>
 
     <script>
-        const productosPopularesData = JSON.parse('<%= productosPopulares %>');
-        const ingresosPorMesData = JSON.parse('<%= ingresosPorMes %>');
-
-        console.log('Productos Populares Data:', productosPopularesData);
-        console.log('Ingresos Por Mes Data:', ingresosPorMesData);
-    </script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Crear gráfico de barras para productos populares
-        const ctxProductos = document.getElementById('productosPopularesChart').getContext('2d');
-        new Chart(ctxProductos, {
-            type: 'bar',
-            data: {
-                labels: productosPopularesData.map(item => item.nombre),
-                datasets: [{
-                    label: 'Cantidad Vendida',
-                    data: productosPopularesData.map(item => item.cantidad),
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Color de fondo de las barras
-                    borderColor: 'rgba(75, 192, 192, 1)', // Color del borde de las barras
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Crear gráfico de líneas para ingresos por mes
-        const ctxIngresos = document.getElementById('ingresosPorMesChart').getContext('2d');
-        new Chart(ctxIngresos, {
-            type: 'line',
-            data: {
-                labels: ingresosPorMesData.map(item => item.mes),
-                datasets: [{
-                    label: 'Ingresos',
-                    data: ingresosPorMesData.map(item => item.ingresos),
-                    fill: false,
-                    borderColor: 'rgba(75, 192, 192, 1)', // Color de la línea
-                    tension: 0.1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+         
     </script>
     <%- include('includes/foot.ejs') %>
 </body>
