@@ -33,11 +33,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 //const duenoRoutes = require('./routes/dueno.routes');
 //app.use('/dueno', duenoRoutes);
 
-const adminRoutes = require('./routes/sucursales.routes');
-app.use('/admin', adminRoutes);
+const estadisticasRoutes = require('./routes/estadisticas.routes');
+app.use('/estad', estadisticasRoutes);
 
-const duenoRoutes = require('./routes/promociones.routes');
-app.use('/dueno', duenoRoutes);
+const sucursalesRoutes = require('./routes/sucursales.routes');
+app.use('/sucur', sucursalesRoutes);
+
+const promocionesRoutes = require('./routes/promociones.routes');
+app.use('/promo', promocionesRoutes);
 
 const usuariosRoutes = require('./routes/usuarios.routes');
 app.use('/', usuariosRoutes);
@@ -54,47 +57,6 @@ app.use('/', usuariosRoutes);
 //    response.render('404');
 //})
 
-
-// Ruta para la vista de estadísticas
-app.get('/estadisticas', (req, res) => {
-    const ventasTotales = 15000; // Total de ventas en MXN
-    const productosPopulares = [
-        { nombre: 'Producto A', cantidad: 30 },
-        { nombre: 'Producto B', cantidad: 50 },
-        { nombre: 'Producto C', cantidad: 20 }
-    ];
-    const ingresosPorMes = [
-        { mes: 'Enero', ingresos: 3000 },
-        { mes: 'Febrero', ingresos: 4000 },
-        { mes: 'Marzo', ingresos: 3500 }
-    ];
-
-    // Renderiza la vista 'estadisticas' y pasa los datos a la plantilla
-    res.render('estadisticas', {
-        ventasTotales: ventasTotales,
-        productosPopulares: JSON.stringify(productosPopulares),
-        ingresosPorMes: JSON.stringify(ingresosPorMes)
-    });
-});
-
-app.get('/estadisticasRewards', (req, res) => {
-    res.render('estadisticasRewards', datosEjemplo);
-});
-    const datosEjemplo = {
-        totalRecompensas: 3456, // Total de recompensas otorgadas
-        recompensasPorTipo: JSON.stringify([
-            { tipo: 'Descuento', cantidad: 45 },
-            { tipo: 'Regalo', cantidad: 30 },
-            { tipo: 'Puntos', cantidad: 25 }
-        ]),
-        recompensasPorMes: JSON.stringify([
-            { mes: 'Enero', cantidad: 200 },
-            { mes: 'Febrero', cantidad: 250 },
-            { mes: 'Marzo', cantidad: 300 },
-            { mes: 'Abril', cantidad: 400 },
-            { mes: 'Mayo', cantidad: 350 }
-         ])
-};
 
 // Inicia el servidor
 app.listen(port, () => {
