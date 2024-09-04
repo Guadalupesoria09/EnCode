@@ -33,10 +33,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 //const duenoRoutes = require('./routes/dueno.routes');
 //app.use('/dueno', duenoRoutes);
 
-const adminRoutes = require('./routes/admin.routes');
+const adminRoutes = require('./routes/sucursales.routes');
 app.use('/admin', adminRoutes);
 
-const duenoRoutes = require('./routes/dueno.routes');
+const duenoRoutes = require('./routes/promociones.routes');
 app.use('/dueno', duenoRoutes);
 
 const usuariosRoutes = require('./routes/usuarios.routes');
