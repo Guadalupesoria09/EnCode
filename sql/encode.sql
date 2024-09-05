@@ -16,7 +16,7 @@ PRIMARY KEY (IDUsuario)
 
 CREATE TABLE Promocion(
 IDPromocion INT NOT NULL AUTO_INCREMENT,
-NombrePromocion VARCHAR(100),
+NombrePromocion VARCHAR(200),
 FechaInicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 FechaCaducidad TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 Estatus VARCHAR (20),
@@ -25,7 +25,7 @@ PRIMARY KEY (IDPromocion)
 
 CREATE TABLE Recompensa(
 IDRecompensa INT NOT NULL AUTO_INCREMENT,
-NombreRecompensa VARCHAR(50),
+NombreRecompensa VARCHAR(100),
 PRIMARY KEY (IDRecompensa)
 );
 
