@@ -45,8 +45,7 @@ app.use('/promo', promocionesRoutes);
 const usuariosRoutes = require('./routes/usuarios.routes');
 app.use('/', usuariosRoutes);
 
-// const adminRoutes=require('./routes/admin.routes');
-// app.use('/admin', adminRoutes);
+
 
 // const duenoRoutes = require('./routes/dueno.routes');
 // app.use('/dueno', duenoRoutes);
