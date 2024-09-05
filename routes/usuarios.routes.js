@@ -1,23 +1,13 @@
 const express = require('express');
+
 const router = express.Router();
 
-// Ruta para mostrar el formulario de inicio de sesión
-router.get('/login', (req, res) => {
-    res.render('login'); // Renderiza la vista 'login.ejs'
-});
+const users_controller=require('../controllers/usuarios.controller');
 
-// Ruta para manejar el formulario de inicio de sesión
-router.post('/login', (req, res) => {
-    const { telefono, contrasena } = req.body;
-    // Aquí podrías agregar lógica para verificar credenciales
+router.get('/login',users_controller.get_login);
+router.post('/login',users_controller.post_login);
+router.get('/logout',users_controller.get_logout);
 
-    // Redirige a /usuarios/home después del login exitoso
-    res.redirect('/home'); 
-});
-
-// Ruta para mostrar la página home
-router.get('/home', (req, res) => {
-    res.render('home'); 
-});
+router.get('/home', users_controller.get_home);
 
 module.exports = router;
