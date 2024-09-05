@@ -222,7 +222,7 @@ VALUES
 (8,45,3),
 (9,48,3);
 
-INSERT INTO RolPrivilegios(IDRolPrivilegios, IDRol, IDPrivilegios)
+INSERT INTO RolPrivilegios(IDRolPrivilegios, IDRol, IDPrivilegio)
 VALUES
 (1,1,1),
 (2,1,2),
