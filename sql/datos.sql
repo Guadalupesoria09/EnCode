@@ -1,4 +1,4 @@
-INSERT INTO `Usuario`(`IDUsuario`, `NombreUsuario`, `NumTelefono`, `FechaNacimiento`, `Contraseña`, `Direccion`, `Ciudad`, `Estado`) VALUES
+INSERT INTO `Usuario`(`IDUsuario`, `NombreUsuario`, `NumTelefono`, `FechaNacimiento`, `Contrasenia`, `Direccion`, `Ciudad`, `Estado`) VALUES
 (1, 'Daniel', 1234567890, NULL, 'dani', 'Calle 1', 'Querétaro', 'Querétaro'),
 (2, 'Lupita', 1234567891, NULL, 'lupis', 'Calle 2', 'Querétaro', 'Querétaro'),
 (3, 'Neto', 1234567892, NULL, 'neto', 'Calle 3', 'Querétaro', 'Querétaro'),
@@ -100,7 +100,7 @@ INSERT INTO `Usuario`(`IDUsuario`, `NombreUsuario`, `NumTelefono`, `FechaNacimie
 (99, 'Carlos Domínguez', 1234567887, '1969-03-01 00:00:00', NULL, 'Calle 99', 'Querétaro', 'Querétaro'),
 (100, 'Sandra Aguilar', 1234567888, '2004-04-02 00:00:00', NULL, 'Calle 100', 'Querétaro', 'Querétaro');
 
-INSERT INTO Promocion(IDPromocion,NombrePromocion, Fechainicio,FechaCaducidad,Estatus) 
+INSERT INTO Promocion(IDPromocion,NombrePromocion, Fechainicio,FechaCaducidad,Valor,Estatus) 
 VALUES
 (1, 'chilaquiles sencillos salsa verde y café', '2024-01-01 00:00:00','2024-01-30 00:00:00','2','Activo'),
 (2, 'chilaquiles sencillos salsa roja y café', '2024-10-01 00:00:00','2024-10-30 00:00:00','3','Activo'),
