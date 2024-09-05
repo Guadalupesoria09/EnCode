@@ -1,9 +1,10 @@
+// estadisticas.routes.js
 const express = require('express');
 const router = express.Router();
-const estadisticas_controller = require('../controllers/estadisticas.controller');
+const estadisticasController = require('../controllers/estadisticas.controllers');
 
-// Rutas para estadísticas
-router.get('/estadisticas', estadisticas_controller.get_estadisticas);
-router.get('/estadisticasRewards', estadisticas_controller.get_estadisticas_rewards);
+// Define las rutas y asocia cada ruta con un controlador
+router.get('/estadisticas', estadisticasController.getEstadisticas);
+router.get('/estadisticasRewards', estadisticasController.getEstadisticasRewards);
 
 module.exports = router;

@@ -20,7 +20,7 @@ const session = require('express-session');
 app.use(session({
     secret: 'mi string secreto que debe ser un string aleatorio muy largo, no como éste', 
     resave: false, //La sesión no se guardará en cada petición, sino sólo se guardará si algo cambió 
-    saveUninitialized: false, //Asegura que no se guarde una sesión para una petición que no lo necesita
+    saveUninitialized: true, 
 }));
 
 //Middleware
@@ -28,6 +28,12 @@ app.use((request, response, next) => {
     console.log('Middleware!');
     next(); //Le permite a la petición avanzar hacia el siguiente middleware
 });
+
+app.use((request, response, next) => {
+    response.locals.telefono = request.session.telefono || '';
+    next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 //const duenoRoutes = require('./routes/dueno.routes');
@@ -44,18 +50,6 @@ app.use('/promo', promocionesRoutes);
 
 const usuariosRoutes = require('./routes/usuarios.routes');
 app.use('/', usuariosRoutes);
-
-
-
-// const duenoRoutes = require('./routes/dueno.routes');
-// app.use('/dueno', duenoRoutes);
-
-
-//app.use((request, response, next) => {
-//    response.statusCode = 404;
-//    response.render('404');
-//})
-
 
 // Inicia el servidor
 app.listen(port, () => {
