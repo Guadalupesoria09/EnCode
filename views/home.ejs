@@ -31,29 +31,22 @@
                     </h1>
                 </div>
                 <div class="column is-half">
-                    <div class="buttons is-large is-right">
-                        <div class="dropdown is-right is-hoverable is-fullwidth">
-                            <div class="dropdown-trigger is-fullwidth">
-                                <button class="button is-primary is-large is-fullwidth" aria-haspopup="true" aria-controls="dropdown-menu">
+                    <div class="buttons is-centered">
+                        <div class="dropdown is-hoverable">
+                            <div class="dropdown-trigger">
+                                <button class="button is-primary is-fullwidth is-large" aria-haspopup="true" aria-controls="dropdown-menu">
                                     <span>Estadísticas</span>
-                                    <span class="icon is-large">
-                                        <i class="fas fa-angle-down" aria-hidden="true"></i>
-                                    </span>
                                 </button>
                             </div>
-                            <div class="dropdown-menu is-fullwidth" id="dropdown-menu" role="menu">
+                            <div class="dropdown-menu" id="dropdown-menu" role="menu">
                                 <div class="dropdown-content">
-                                    <a href="http://localhost:3000/estadisticas" class="dropdown-item">
-                                        Estadísticas Generales
-                                    </a>
-                                    <a href="http://localhost:3000/estadisticasRewards" class="dropdown-item">
-                                        Estadísticas de Recompensas
-                                    </a>
+                                    <a href="/estad/estadisticas" class="dropdown-item">Estadísticas Generales</a>
+                                    <a href="/estad/estadisticasRewards" class="dropdown-item">Estadísticas Rewards</a>
                                 </div>
                             </div>
                         </div>
-                        <a href="http://localhost:3000/dueno/tarjeta" class="button is-primary is-large is-fullwidth my-6">Promociones</a>
-                        <a href="http://localhost:3000/admin/sucursales" class="button is-primary is-large is-fullwidth">Sucursales</a>
+                        <a href="/promo/tarjeta" class="button is-primary is-large is-fullwidth my-6">Promociones</a>
+                        <a href="/sucur/sucursales" class="button is-primary is-large is-fullwidth">Sucursales</a>
                     </div>
                 </div>
                 
