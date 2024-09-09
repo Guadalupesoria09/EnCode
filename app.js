@@ -36,9 +36,6 @@ app.use((request, response, next) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-//const duenoRoutes = require('./routes/dueno.routes');
-//app.use('/dueno', duenoRoutes);
-
 const estadisticasRoutes = require('./routes/estadisticas.routes');
 app.use('/estad', estadisticasRoutes);
 

@@ -1,21 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const sucursales_controller = require('../controllers/sucursales.controller');
+const sucursalController = require('../controllers/sucursal.controller');
 
-// Rutas para sucursales
-router.get('/registrarSucursales', (request, response, next) => {
-    console.log(response.locals.telefono);  // Imprime el valor de telefono en la consola
-    sucursales_controller.get_registrar_sucursales(request, response, next);
-});
+//Registrar Sucursal
+router.get('/registrarSucursal', sucursalController.get_registrarSucursal);
 
-router.get('/registrarDueno', (request, response, next) => {
-    console.log(response.locals.telefono);  // Imprime el valor de telefono en la consola
-    sucursales_controller.get_registrar_dueno(request, response, next);
-});
+//Registrar dueño
+router.get('/registrarDueno', sucursalController.get_registrarDueno);
 
-router.get('/sucursales', (request, response, next) => {
-    console.log(response.locals.telefono);  // Imprime el valor de telefono en la consola
-    sucursales_controller.get_sucursales(request, response, next);
-});
+//Menu sucursales
+router.get('/sucursales', sucursalController.get_sucursales);
 
 module.exports = router;
