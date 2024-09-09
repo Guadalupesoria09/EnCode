@@ -7,6 +7,17 @@ exports.get_registrarSucursal = (request, response, next) => {
     });
 };
 
+exports.post_registrarSucursal = (request, response, next) => {
+    const sucursal = new sucursal(request.body);
+    sucursal.save()
+        .then(() => {
+	    request.session.mensaje = 'Sucursal creada con éxito.';
+            response.redirect('/registrarDueno');
+	}).catch((error) => {
+            console.log(error);
+        });
+};
+
 exports.get_registrarDueno = (request, response, next) => {
     response.render('registrarDueno', {
         username: request.session.username,
