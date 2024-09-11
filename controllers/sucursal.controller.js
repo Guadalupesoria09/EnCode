@@ -8,11 +8,12 @@ exports.get_registrarSucursal = (request, response, next) => {
 };
 
 exports.post_registrarSucursal = (request, response, next) => {
+    consol.log(request.body);
     const sucursal = new sucursal(request.body);
     sucursal.save()
         .then(() => {
 	    request.session.mensaje = 'Sucursal creada con éxito.';
-            response.redirect('/registrarDueno');
+            response.redirect('registrarDueno');
 	}).catch((error) => {
             console.log(error);
         });

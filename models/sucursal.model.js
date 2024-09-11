@@ -1,4 +1,4 @@
-const db = require('../util/database');
+const db = require('./utils/database');
 
 module.exports = class sucursal {
 
