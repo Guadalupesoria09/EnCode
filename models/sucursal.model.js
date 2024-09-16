@@ -1,8 +1,8 @@
-const db = require('./utils/database');
+const db = require('../utils/database');
 
 module.exports = class sucursal {
 
-    constructor(miDireccion, miCP, miCiudad, miEstado, miNumSucursal, NombreSucursal) {
+    constructor(miDireccion, miCP, miCiudad, miEstado, miNumSucursal, miNombreSucursal) {
         this.Direccion = miDireccion;
 	this.CP = miCP;
 	this.Ciudad = miCiudad;

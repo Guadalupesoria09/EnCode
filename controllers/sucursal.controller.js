@@ -8,11 +8,12 @@ exports.get_registrarSucursal = (request, response, next) => {
 };
 
 exports.post_registrarSucursal = (request, response, next) => {
-    consol.log(request.body);
-    const sucursal = new sucursal(request.body);
+    console.log(request.body);
+    const sucursal = new sucursal(request.body.Direccion, request.body.CP, request.body.Ciudad,
+	request.body.Estado, request.body.NumSucursal, request.body.NombreSucursal);
     sucursal.save()
         .then(() => {
-	    request.session.mensaje = 'Sucursal creada con éxito.';
+	    response.status.send = 'Sucursal creada con éxito.';
             response.redirect('registrarDueno');
 	}).catch((error) => {
             console.log(error);
@@ -32,4 +33,3 @@ exports.get_sucursales = (request, response, next) => {
     	//csfrToken: request.csrfToken(),
     });
 };
-
