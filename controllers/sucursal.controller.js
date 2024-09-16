@@ -12,8 +12,7 @@ exports.post_registrarSucursal = (request, response, next) => {
     const sucursal = new sucursal(request.body.Direccion, request.body.CP, request.body.Ciudad,
 	request.body.Estado, request.body.NumSucursal, request.body.NombreSucursal);
     sucursal.save()
-        .then(() => {
-	    response.status.send = 'Sucursal creada con éxito.';
+        .then(() => { 
             response.redirect('registrarDueno');
 	}).catch((error) => {
             console.log(error);
