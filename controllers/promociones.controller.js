@@ -1,11 +1,49 @@
-exports.get_crear_promocion = (request, response, next) => {
-    response.render('crearPromocion');
+const Promociones = require('../models/promociones.model');
+const Recompensas = require('../models/recompensas.model');
+
+exports.get_promo = (request, response, next) => {
+    console.log('Ruta /promo/promociones');
+
+    let mensaje = request.session.mensaje || '';
+
+    if (request.session.mensaje) {
+        request.session.mensaje = '';
+    }
+
+    Promociones.fetchAll()
+        .then(([promociones, fieldData]) => {
+            return response.render('crearPromocion', {
+                promociones: promociones,
+                mensaje: mensaje,
+                //csrfToken: request.csrfToken(),
+            }); 
+        }).catch((error) => {
+            console.log(error);
+    });
 };
 
-exports.get_editar_tarjeta = (request, response, next) => {
-    response.render('editarTarjeta');
-};
+exports.post_promo = (request, response, next) => {
+    console.log(request.body);
 
-exports.get_registrar_recompensa = (request, response, next) => {
+    const promocion = new Promociones(request.body.NombrePromocion, request.body.FechaInicio,
+        request.body.FechaCaducidad, request.body.Valor, request.body.Estatus);
+    
+    request.session.mensaje = 'Promocion creada';
+    
+    promocion.save()
+        .then(() => {
+            return response.redirect('/promo/promociones');
+        }).catch((error) => {
+            console.log(error);
+        });
+} 
+
+exports.get_tarjeta = (request, response, next) => {
+    console.log ('Ruta /promo/tarjeta');
+    response.render('editarTarjeta'); //Renderiza la vista editarTarjeta   
+}
+
+exports.get_recompensas = (request, response, next) => {
+    console.log('Ruta /promo/recompensas');
     response.render('registrarRecompensa');
-};
+}
