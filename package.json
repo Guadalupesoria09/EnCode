@@ -18,11 +18,13 @@
   },
   "homepage": "https://github.com/Guadalupesoria09/EnCode#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "ejs": "^3.1.10",
-    "express": "^4.19.2",
+    "express": "^5.0.0",
     "express-session": "^1.18.0",
+    "mysql2": "^3.11.0",
     "nodemon": "^3.1.4"
   }
 }
