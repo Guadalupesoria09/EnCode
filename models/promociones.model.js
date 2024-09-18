@@ -18,7 +18,7 @@ module.exports = class Promociones {
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll() {
         return db.execute(
-            `SELECT NombrePromocion, FechaInicio, CONVERT (date, FechaCaducidad), Valor, Estatus
+            `SELECT NombrePromocion, FechaInicio, FechaCaducidad, Valor, Estatus
             FROM promocion`);
     }
     static fetchOne(idPromocion) {
