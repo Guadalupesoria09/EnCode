@@ -1,19 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-// Ruta para mostrar el formulario de crear promocion
-router.get('/promociones', (request, response) => {
-    response.render('crearPromocion'); // Renderiza la vista 'crearPromocion.ejs'
-});
+const promociones_controller = require('../controllers/promociones.controller');
 
-router.get('/tarjeta',(request, response)=> {
-    response.render('editarTarjeta'); //Renderiza la vista editarTarjeta
-})
-
-// Ruta para mostrar el formulario de registrar recompensa
-router.get('/recompensas', (request, response) => {
-    response.render('registrarRecompensa'); // Renderiza la vista 'registrarRecompensa.ejs'
-});
-
+router.get('/promociones', promociones_controller.get_promo);
+router.post('/promociones', promociones_controller.post_promo);
+router.get('/tarjeta', promociones_controller.get_tarjeta);
+router.get('/recompensas', promociones_controller.get_recompensas);
 
 module.exports = router;
