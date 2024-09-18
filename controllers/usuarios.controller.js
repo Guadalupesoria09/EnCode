@@ -3,11 +3,10 @@ const Usuario = require('../models/usuarios.model');
 
 exports.post_login = (req, res, next) => {
     const telefono = req.body.telefono;
-    const password = req.body.password;
 
     req.session.mensaje = '';
     console.log('Intentando iniciar sesión con teléfono:', telefono);
-    console.log('Contraseña ingresada:', password);
+    console.log('Contraseña ingresada:', req.body.password);
 
     Usuario.fetchOneByTelefono(telefono)
         .then(([usuario, fieldData]) => {
@@ -15,7 +14,7 @@ exports.post_login = (req, res, next) => {
                 console.log('Usuario encontrado:', usuario[0].NombreUsuario);
                 console.log('Hash de contraseña almacenada:', usuario[0].Contrasenia);
                 // Compara la contraseña ingresada con el hash almacenado
-                bcrypt.compare(password, usuario[0].Contrasenia)
+                bcrypt.compare(req.body.password, usuario[0].Contrasenia)
                     .then(doMatch => {
                         if (doMatch) {
                             console.log('Contraseña correcta. Iniciando sesión...');

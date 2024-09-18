@@ -16,8 +16,20 @@ module.exports = class Usuario {
         return db.execute('SELECT * FROM usuario WHERE IDUsuario = ?', [IDUsuario]);
     }
 
+    static fetchOne(telefono) {
+        return db.execute('SELECT * FROM usuario WHERE NumTelefono = ?', [telefono]);
+    }
+
     static fetchOneByTelefono(telefono) {
         return db.execute('SELECT IDUsuario, NombreUsuario, Contrasenia FROM usuario WHERE NumTelefono = ?', [telefono]);
+    }
+
+    static fetch(telefono){
+        if(telefono){
+            return this.fetchOne(telefono);
+        } else {
+            return this.fetchAll();
+        }
     }
 
     static fetch(IDUsuario) {
