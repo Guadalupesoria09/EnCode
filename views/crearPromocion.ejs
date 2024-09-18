@@ -45,18 +45,21 @@
         <div class="field has-text-left">
           <label for="valor" class="label">Valor</label>
           <div class="control">
-              <div class="select">
-                  <select id="valor" name="valor">
-                      <option id="1">1</option>
-                  </select>
-              </div>
+            <input class="input" id="valor" name="valor" type="text" placeholder="2" />
           </div>
       </div>
     
         <div class="field has-text-left">
           <label class="label" for="estatus">Estatus</label>
           <div class="control">
-            <input class="input" id="estatus" name="estatus" type="text" placeholder="Activo" />
+            <div class="select">
+              <select id="estatus" name="estatus">
+                  <option id="Activo">Activo</option>
+                  <option id="Inhabilitado">Inhabilitado</option>
+                  <option id="Bloqueado">Bloqueado</option>
+                  <option id="Canjeable">Canjeable</option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="control has-text-centered">
@@ -80,6 +83,8 @@
                 Vigencia: <time datetime="2016/1/1"><%= promocion.FechaCaducidad.toISOString().slice(0, 10) %></time>
                 <br>
                 Recompensa: 
+                <br>
+                Estatus: <%= promocion.Estatus %>
                 <br>
               </div>
             </div>
