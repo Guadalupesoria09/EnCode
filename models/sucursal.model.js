@@ -1,6 +1,6 @@
 const db = require('../utils/database');
 
-module.exports = class sucursal {
+module.exports = class Sucursal {
 
     constructor(miDireccion, miCP, miCiudad, miEstado, miNumSucursal, miNombreSucursal) {
         this.Direccion = miDireccion;
@@ -13,7 +13,7 @@ module.exports = class sucursal {
 
     save(){
         return db.execute(
-        'INSERT INTO Sucursal (Direccion, CP, Ciudad, Estado, NumSucursal, NombreSucursal) VALUES(?,?,?,?,?,?)'
+        'INSERT INTO Sucursal (Direccion, CP, Ciudad, Estado, NumSucursal, NombreSucursal) VALUES(?,?,?,?,?,?)',
 	[this.Direccion, this.CP, this.Ciudad, this.Estado, this.NumSucursal, this.NombreSucursal]);
     }
 }

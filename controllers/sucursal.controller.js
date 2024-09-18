@@ -1,4 +1,4 @@
-const sucursal = require('../models/sucursal.model');
+const Sucursal = require('../models/sucursal.model');
 
 exports.get_registrarSucursal = (request, response, next) => {
     response.render('registrarSucursal', {
@@ -9,7 +9,7 @@ exports.get_registrarSucursal = (request, response, next) => {
 
 exports.post_registrarSucursal = (request, response, next) => {
     console.log(request.body);
-    const sucursal = new sucursal(request.body.Direccion, request.body.CP, request.body.Ciudad,
+    const sucursal = new Sucursal(request.body.Direccion, request.body.CP, request.body.Ciudad,
 	request.body.Estado, request.body.NumSucursal, request.body.NombreSucursal);
     sucursal.save()
         .then(() => { 
