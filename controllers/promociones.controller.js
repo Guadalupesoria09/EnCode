@@ -14,7 +14,7 @@ exports.get_promo = (request, response, next) => {
             return response.render('crearPromocion', {
                 promociones: promociones,
                 mensaje: mensaje,
-                //csrfToken: request.csrfToken(),
+                csrfToken: request.csrfToken(),
             }); 
         }).catch((error) => {
             console.log(error);

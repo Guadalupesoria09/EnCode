@@ -3,7 +3,11 @@ const Usuario = require('../models/usuarios.model');
 
 // Controlador para mostrar la página de registro
 exports.get_register = (req, res, next) => {
-    res.render('registrar'); // Renderiza la página de registro
+    res.render('registrar',{
+        telefono: req.session.telefono ||'',
+        csrfToken: req.csrfToken()
+    }); // Renderiza la página de registro
+
 };
 
 // Controlador para registrar usuarios
@@ -54,7 +58,10 @@ exports.post_register = (req, res, next) => {
 };
 
 exports.get_login = (req, res, next) => {
-    res.render('login'); 
+    res.render('login', {
+        csrfToken: req.csrfToken()
+    });
+
 };
 
 // Controlador para iniciar sesión
@@ -62,7 +69,9 @@ exports.post_login = (req, res, next) => {
     const telefono = req.body.telefono;
 
     Usuario.fetchOneByTelefono(telefono)
+
         .then(([usuario, fieldData]) => {
+            
             if (usuario.length > 0) {
                 // Comparar la contraseña ingresada con el hash almacenado
                 bcrypt.compare(req.body.password, usuario[0].Contrasenia)
@@ -111,6 +120,8 @@ exports.get_logout = (req, res, next) => {
 };
 
 exports.get_home = (req, res, next) => {
-    const username = req.session.NombreUsuario || '';
-    res.render('home', { username });
+    res.render('home', { 
+        username: req.session.NombreUsuario || '', 
+        csrfToken: req.csrfToken()
+    });
 };

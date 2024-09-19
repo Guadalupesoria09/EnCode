@@ -1,17 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
+const isAuth=require('../utils/is-auth');
+
 const sucursalController = require('../controllers/sucursal.controller');
 
 //Registrar Sucursal
-router.get('/registrarSucursal', sucursalController.get_registrarSucursal);
-router.post('/registrarSucursal', sucursalController.post_registrarSucursal);
+router.get('/registrarSucursal', isAuth, sucursalController.get_registrarSucursal);
+router.post('/registrarSucursal', isAuth, sucursalController.post_registrarSucursal);
 
 //Registrar dueño
-router.get('/registrarDueno', sucursalController.get_registrarDueno);
+router.get('/registrarDueno', isAuth, sucursalController.get_registrarDueno);
 
 //Menu sucursales
-router.get('/sucursales', sucursalController.get_sucursales);
+router.get('/sucursales', isAuth, sucursalController.get_sucursales);
 
 
 module.exports = router;
