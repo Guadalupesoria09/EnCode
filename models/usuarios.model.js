@@ -1,38 +1,32 @@
-const db = require('../util/database');
+const db = require('../utils/database');
 
-module.exports = class Users {
-
-    //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
-    constructor(mi_username, mi_nombre, mi_password) {
-        this.username = mi_username;
-        this.nombre = mi_nombre;
-        this.password = mi_password;
+module.exports = class Usuario {
+    constructor(mi_IDUsuario, mi_nombre, mi_password) {
+        this.IDUsuario = mi_IDUsuario;
+        this.NombreUsuario = mi_nombre;
+        this.Contrasenia = mi_password;
     }
 
-    //Este método servirá para guardar de manera persistente el nuevo objeto. 
-    save() {
-        return bcrypt.hash(this.password, 12).then((password_cifrado) => {
-            return db.execute(
-                'INSERT INTO users(username, nombre, password) VALUES(?, ?, ?)', 
-                [this.username, this.nombre, password_cifrado]);
-        }).catch(error => console.log(error)); 
+    static fetchOneByTelefono(telefono) {
+        return db.execute('SELECT IDUsuario, NombreUsuario, Contrasenia FROM usuario WHERE NumTelefono = ?', [telefono]);
     }
 
-    //Este método servirá para devolver los objetos del almacenamiento persistente.
-    static fetchAll() {
-        return db.execute('SELECT * FROM users');
+    static create(usuarioData) {
+        return db.execute(
+            'INSERT INTO usuario (NombreUsuario, NumTelefono, Contrasenia) VALUES (?, ?, ?)',
+            [usuarioData.NombreUsuario, usuarioData.telefono, usuarioData.Contrasenia]
+        );
     }
 
-    static fetchOne(username) {
-        return db.execute('SELECT * FROM users WHERE username = ?', [username]);
+    static getPrivilegios(IDUsuario) {
+        return db.execute(`
+            SELECT Actividad as Privilegio 
+            FROM usuario u
+            JOIN usuariorol ur ON u.IDUsuario = ur.IDUsuario
+            JOIN rol r ON ur.IDRol = r.IDRol
+            JOIN rolprivilegios rp ON rp.IDRol = r.IDRol
+            JOIN privilegio p ON rp.IDPrivilegio = p.IDPrivilegio
+            WHERE u.IDUsuario = ?
+        `, [IDUsuario]);
     }
-
-    static fetch(username) {
-        if (username) {
-            return this.fetchOne(username);
-        } else {
-            return this.fetchAll();
-        }
-    }
-
-}
+};

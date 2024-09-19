@@ -14,15 +14,16 @@ Estado VARCHAR (30),
 PRIMARY KEY (IDUsuario)
 );
 
-CREATE TABLE Promocion(
+CREATE TABLE Promocion (
 IDPromocion INT NOT NULL AUTO_INCREMENT,
 NombrePromocion VARCHAR(100),
-FechaInicio TIMESTAMP,
+FechaInicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 FechaCaducidad TIMESTAMP,
 Valor INT NOT NULL,
-Estatus VARCHAR (20),
+Estatus VARCHAR(20),
 PRIMARY KEY (IDPromocion)
-);
+)
+
 
 CREATE TABLE Recompensa(
 IDRecompensa INT NOT NULL AUTO_INCREMENT,
