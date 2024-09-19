@@ -11,6 +11,12 @@ module.exports = class Recompensas {
             [this.NombreRecompensa]);
     }
 
+    static fetchAll() {
+        return db.execute(
+            `SELECT NombreRecompensa
+            FROM recompensa`);
+    }
+
     static fetchOne(idRecompensa) {
         return db.execute('SELECT * FROM ordenes WHERE IDRecompensa = ?', [idRecompensa]);
     }
