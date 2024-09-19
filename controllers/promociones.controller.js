@@ -1,4 +1,5 @@
 const Promociones = require('../models/promociones.model');
+const Recompensas = require('../models/recompensas.model');
 
 exports.get_promo = (request, response, next) => {
     console.log('Ruta /promo/promociones');
@@ -24,8 +25,8 @@ exports.get_promo = (request, response, next) => {
 exports.post_promo = (request, response, next) => {
     console.log(request.body);
 
-    const promocion = new Promociones(request.body.NombrePromocion, request.body.FechaInicio,
-        request.body.FechaCaducidad, request.body.Valor, request.body.Estatus);
+    const promocion = new Promociones(request.body.nombrePromo, request.body.fechaInicio,
+        request.body.fechaFin, request.body.valor, request.body.estatus);
     
     request.session.mensaje = 'Promocion creada';
     
@@ -44,5 +45,35 @@ exports.get_tarjeta = (request, response, next) => {
 
 exports.get_recompensas = (request, response, next) => {
     console.log('Ruta /promo/recompensas');
-    response.render('registrarRecompensa');
+    let mensaje = request.session.mensaje || '';
+
+    if (request.session.mensaje) {
+        request.session.mensaje = '';
+    }
+
+    Recompensas.fetchAll()
+        .then(([recompensas, fieldData]) => {
+            return response.render('registrarRecompensa', {
+                recompensas: recompensas,
+                mensaje: mensaje,
+                //csrfToken: request.csrfToken(),
+            }); 
+        }).catch((error) => {
+            console.log(error);
+    });
 }
+
+exports.post_recompensas = (request, response, next) => {
+    console.log(request.body);
+    
+    const recompensas = new Recompensas(request.body.NombreRecompensa);
+    
+    request.session.mensaje = 'Recompensa creada';
+    
+    recompensas.save()
+        .then(() => {
+            return response.redirect('/promo/recompensas');
+        }).catch((error) => {
+            console.log(error);
+        });
+} 
