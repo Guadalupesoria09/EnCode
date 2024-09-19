@@ -1,5 +1,4 @@
 const Promociones = require('../models/promociones.model');
-const Recompensas = require('../models/recompensas.model');
 
 exports.get_promo = (request, response, next) => {
     console.log('Ruta /promo/promociones');
