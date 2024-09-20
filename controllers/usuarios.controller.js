@@ -10,7 +10,8 @@ exports.post_register = (request, response, next) => {
     console.log(request.body);
     const nuevo_usuario = new Usuario(
 	request.body.NombreUsuario, request.body.NumTelefono, request.body.FechaNacimiento,
-	request.body.Contrasenia, request.body.Genero,request.body.Direccion, request.body.Ciudad, request.body.Estado);
+	request.body.Contrasenia, request.body.Genero, request.body.Direccion, request.body.Ciudad, request.body.Estado);
+  
     nuevo_usuario.save().then(() => {
 	return response.redirect('/sucur/sucursales');
     }).catch((error) => {
