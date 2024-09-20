@@ -35,11 +35,18 @@ exports.getEstadisticas = (req, res) => {
     res.render('estadisticas', {
         ventasTotales: ventasTotales,
         productosPopulares: JSON.stringify(productosPopulares),
-        ingresosPorMes: JSON.stringify(ingresosPorMes)
+        ingresosPorMes: JSON.stringify(ingresosPorMes),
+        username: req.session.NombreUsuario || '',  
+        csrfToken: req.csrfToken(),
     });
 };
 
 // Controlador para /estadisticasRewards
 exports.getEstadisticasRewards = (req, res) => {
-    res.render('estadisticasRewards', datosEjemplo);
+    res.render('estadisticasRewards', {
+        username: req.session.NombreUsuario || '',  
+        csrfToken: req.csrfToken(),
+        datosEjemplo: datosEjemplo,
+        totalRecompensas: datosEjemplo.totalRecompensas,
+    });
 };

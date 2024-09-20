@@ -5,6 +5,7 @@ const Usuario = require('../models/usuarios.model');
 exports.get_register = (req, res, next) => {
     res.render('registrar',{
         telefono: req.session.telefono ||'',
+
         csrfToken: req.csrfToken()
     }); // Renderiza la página de registro
 
