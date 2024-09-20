@@ -7,10 +7,10 @@ exports.get_register = (request, response, next) => {
 };
 
 exports.post_register = (request, response, next) => {
-    console.log(request.body);
+    
     const nuevo_usuario = new Usuario(
-	request.body.NombreUsuario, request.body.NumTelefono, request.body.FechaNacimiento,
-	request.body.Contrasenia, request.body.Genero, request.body.Direccion, request.body.Ciudad, request.body.Estado);
+	request.body.NombreUsuario, request.body.NumTelefono, request.body.FechaNacimiento, request.body.Contrasenia,
+        request.body.Genero, request.body.Direccion, request.body.Ciudad, request.body.Estado, request.body.TipoRol);
   
     nuevo_usuario.save().then(() => {
 	return response.redirect('/sucur/sucursales');
@@ -18,9 +18,7 @@ exports.post_register = (request, response, next) => {
        console.log(error);
     });
 };
-    
-
-
+   
 exports.get_login = (request, response, next) => {
     response.render('login'); 
 };

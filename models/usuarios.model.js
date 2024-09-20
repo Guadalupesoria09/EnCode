@@ -2,7 +2,7 @@ const db = require('../utils/database');
 const bcrypt = require('bcryptjs');
 
 module.exports = class Usuario {
-    constructor(miNombreUsuario, miNumTelefono, miFechaNacimiento, miContrasenia, miGenero, miDireccion, miCiudad, miEstado) {
+    constructor(miNombreUsuario, miNumTelefono, miFechaNacimiento, miContrasenia, miGenero, miDireccion, miCiudad, miEstado, miTipoRol) {
         this.NombreUsuario = miNombreUsuario;
 	this.NumTelefono = miNumTelefono;
 	this.FechaNacimiento = miFechaNacimiento    
@@ -11,16 +11,33 @@ module.exports = class Usuario {
 	this.Direccion = miDireccion ;
 	this.Ciudad = miCiudad ;
 	this.Estado = miEstado;
+	this.TipoRol = miTipoRol || null;
     }
 
     save() {
+	let IDUsuario
 	return bcrypt.hash(this.Contrasenia, 12)
             .then((Contrasenia_cifrada) => {
                 return db.execute(
                     'INSERT INTO Usuario(NombreUsuario, NumTelefono, FechaNacimiento, Contrasenia, Genero, Direccion, Ciudad, Estado) VALUES (?,?,?,?,?,?,?,?)',
                  [this.NombreUsuario, this.NumTelefono, this.FechaNacimiento, Contrasenia_cifrada,
 	         this.Genero, this.Direccion, this.Ciudad, this.Estado]);
-	}).catch(error => console.log(error));
+	})
+	.then(([result]) => {
+            IDUsuario = result.insertId;
+            return db.execute('SELECT IDRol FROM Rol WHERE TipoRol = ?',[this.TipoRol]);
+	})
+        .then(([rows]) => {
+            if (rows.length > 0) {
+               const IDRol = rows[0].IDRol;                    
+	       return db.execute(
+		   'INSERT INTO UsuarioRol(IDUsuario, IDRol) VALUES (?,?)',
+		    [IDUsuario, IDRol]);
+               } else {
+                   throw new Error('El rol especificado no existe');
+               }
+            })
+            .catch(error => console.log(error));
     }
 
     static fetchOneByTelefono(NumTelefono) {
