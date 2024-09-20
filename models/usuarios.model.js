@@ -1,4 +1,5 @@
 const db = require('../utils/database');
+const bcrypt = require('bcryptjs');
 
 module.exports = class Usuario {
     constructor(miNombreUsuario, miNumTelefono, miContrasenia, miFechaNacimiento, miGenero, miDireccion, miCiudad, miEstado) {
@@ -12,14 +13,18 @@ module.exports = class Usuario {
 	this.Estado = miEstado;
     }
 
-    static fetchOneByTelefono(NumTelefono) {
-        return db.execute('SELECT IDUsuario, NombreUsuario, Contrasenia FROM usuario WHERE NumTelefono = ?',[NumTelefono]);
+    save() {
+	return bcrypt.hash(this.Contrasenia, 12)
+            .then((Contrasenia_cifrada) => {
+                return db.execute(
+                    'INSERT INTO Usuario(NombreUsuario, NumTelefono, Contrasenia, FehcaNacimiento, Genero, Direccion, Ciudad, Estado) VALUES (?,?,?,?,?,?,?,?)',
+                 [this.NombreUsuario, this.NumTelefono, Contrasenia_cifrada, this.FechaNacimiento,
+	         this.Genero, this.Direccion, this.Ciudad, this.Estado]);
+	}).catch(error => console.log(error));
     }
 
-    save() {
-        return db.execute(
-        'INSERT INTO Usuario (NombreUsuario, NumTelefono, Contrasenia, FehcaNacimiento, Genero, Direccion, Ciudad, Estado) VALUES (?,?,?,?,?,?,?,?)',
-        [this.NombreUsuario, this.NumTelefono, this.Contrasenia, this.Contrasenia, this.FechaNacimiento, this.Genero, this.Direccion, this.Ciudad, this.Estado]);
+    static fetchOneByTelefono(NumTelefono) {
+        return db.execute('SELECT IDUsuario, NombreUsuario, Contrasenia FROM usuario WHERE NumTelefono = ?',[NumTelefono]);
     }
 
     static getPrivilegios(IDUsuario) {

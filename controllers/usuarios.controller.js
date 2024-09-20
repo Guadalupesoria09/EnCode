@@ -8,41 +8,14 @@ exports.get_register = (request, response, next) => {
 
 exports.post_register = (request, response, next) => {
     console.log(request.body);
-    const usuario = new Usuario(request.body.NombreUsuario, request.body.NumTelefono,
-	request.body.FechaNacimiento, request.body.Contrasenia, request.body.Genero,
-	request.body.Direccion, request.body.Ciudad, request.body.Estado);
-    
-    Usuario.fetchOneByTelefono(NumTelefono)
-	.then(([usuario, fieldData]) => {
-            if (usuario.length > 0) {
-                request.session.mensaje = 'El usuario ya existe'
-		return response.redirect('registrar');
-	    }else{
-              bcrypt.hash(password, 10,(err, hash) => {
-                  if (err){
-                     console.log('Error al hashear la contraseña', err);
-                     request.session.mensaje = 'Error 500: Error del servidor';
-                     return res.redirect('registrar');
-                  }
-		  usuario.save()
-		      .then(() =>{
-	    		  consele.log('usuario creado exitosamente');
-	       		  request.session.mensaje = 'Usuario registrado correctamente';
-	       		  response.redirect('sucursal');
-		      })
-	     	      .catch(err => {
-	     	          console.log('Error al crear el usuario', err);
-	    		  request.session.mensaje = 'Error 500: Error del servidor';
-	    		  response.redirect('sucursal');
-	    	      });
-	          });
-	      }     
-	  })
-	  .catch(err => {
-             console.log('Error al verificar el usuario:', err);
-             request.session.mensaje = 'Error 500: Error del servidor';
-             response.redirect('/registrar');
-          });
+    const nuevo_usuario = new Usuario(
+	request.body.NombreUsuario, request.body.NumTelefono, request.body.FechaNacimiento,
+	request.body.Contrasenia, request.body.Genero,request.body.Direccion, request.body.Ciudad, request.body.Estado);
+    nuevo_usuario.save().then(() => {
+	return response.redirect('/sucur/sucursales');
+    }).catch((error) => {
+       console.log(error);
+    });
 };
     
 
