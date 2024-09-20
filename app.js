@@ -2,8 +2,9 @@ const express = require('express');
 const app = express();
 
 const path = require('path');
+const port = 3000;
 
-//app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/CSS', express.static(path.resolve(__dirname, "public/CSS")));
 app.use('/logoDuper', express.static(path.resolve(__dirname, "public/logoDuper")));
@@ -19,31 +20,33 @@ const session = require('express-session');
 app.use(session({
     secret: 'mi string secreto que debe ser un string aleatorio muy largo, no como éste', 
     resave: false, //La sesión no se guardará en cada petición, sino sólo se guardará si algo cambió 
-    saveUninitialized: false, //Asegura que no se guarde una sesión para una petición que no lo necesita
+    saveUninitialized: true, 
 }));
 
-//Middleware
+const csrf = require('csurf');
+const csrfProtection = csrf();
+app.use(csrfProtection); 
+
 app.use((request, response, next) => {
-    console.log('Middleware!');
-    next(); //Le permite a la petición avanzar hacia el siguiente middleware
+    response.locals.telefono = request.session.telefono || '';
+    next();
 });
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-//const duenoRoutes = require('./routes/dueno.routes');
-//app.use('/dueno', duenoRoutes);
+const estadisticasRoutes = require('./routes/estadisticas.routes');
+app.use('/estad', estadisticasRoutes);
 
-const adminRoutes = require('./routes/admin.routes');
-app.use('/admin', adminRoutes);
+const sucursalesRoutes = require('./routes/sucursales.routes');
+app.use('/sucur', sucursalesRoutes);
 
-const duenoRoutes = require('./routes/dueno.routes');
-app.use('/dueno', duenoRoutes);
+const promocionesRoutes = require('./routes/promociones.routes');
+app.use('/promo', promocionesRoutes);
 
 const usuariosRoutes = require('./routes/usuarios.routes');
 app.use('/', usuariosRoutes);
 
-app.use((request, response, next) => {
-    response.statusCode = 404;
-    response.render('404');
-})
-
-app.listen(3000);
+// Inicia el servidor
+app.listen(port, () => {
+    console.log(`Servidor corriendo en http://localhost:${port}`);
+});

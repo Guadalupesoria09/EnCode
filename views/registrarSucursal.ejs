@@ -1,0 +1,91 @@
+<%- include('includes/head.ejs') %>
+<h1 class="title has-text-centered">AGREGAR SUCURSALES</h1>
+<form action="/sucur/registrarSucursal" method="POST">
+    <div class="box">
+        <div class="field">
+            <label class="label" for="Nombre">Nombre</label>
+            <div class="control">
+                <input id="NombreSucursal" name="NombreSucursal" class="input" type="text" placeholder="DUPER REWARDS" required>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label" for="Direccion">Dirección</label>
+            <div class="control">
+                <input id="Direccion" name="Direccion" class="input" type="text" placeholder="DUPER REWARDS" required> 
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-body">
+                <div class="field">
+                    <label class="label" for="CP">CP</label>
+                    <div class="control">
+                        <input id="CP" name="CP" class="input" type="text" placeholder="27105" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="Ciudad">Ciudad</label>
+                    <div class="control">
+                        <input id="Ciudad" name="Ciudad" class="input" type="text" placeholder="Querétaro" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label" for"Estado">Estado</label>
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select id="Estado" name="Estado"> 
+		                <option>Aguascalientes</option>
+                                <option>Baja California</option>
+                                <option>Baja California Sur</option>
+                                <option>Campeche</option>
+                                <option>Chiapas</option>
+                                <option>Chihuahua</option>
+                                <option>Ciudad de México</option>
+                                <option>Coahuila</option>
+                                <option>Colima</option>
+                                <option>Durango</option>
+                                <option>Estado de México</option>
+                                <option>Guanajuato</option>
+                                <option>Guerrero</option>
+                                <option>Hidalgo</option>
+                                <option>Jalisco</option>
+                                <option>Michoacán</option>
+                                <option>Morelos</option>
+                                <option>Nayarit</option>
+                                <option>Nuevo León</option>
+                                <option>Oaxaca</option>
+                                <option>Puebla</option>
+                                <option>Querétaro</option>
+                                <option>Quintana Roo</option>
+                                <option>San Luis Potosí</option>
+                                <option>Sinaloa</option>
+                                <option>Sonora</option>
+                                <option>Tabasco</option>
+                                <option>Tamaulipas</option>
+                                <option>Tlaxcala</option>
+                                <option>Veracruz</option>
+                                <option>Yucatán</option>
+                                <option>Zacatecas</option> 
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label" for="Numero">Número</label>
+            <div class="control">
+                <input id="NumSucursal" name="NumSucursal" class="input" type="text" placeholder="(xxx) xxx-xxxx" required>
+            </div>
+        </div>
+            
+        <div class="control has-text-centered">
+           <input type="submit" class="button is-link" value="REGISTRAR">
+        </div>
+    </div>
+</form>
+<%- include('includes/foot.ejs') %>

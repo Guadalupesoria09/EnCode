@@ -27,17 +27,30 @@
 
                 <div class="column is-half">
                     <h1 class="title is-1 bold has-text-primary">
-                        ¡Bienvenido de nuevo <em>user</em>!
+                        ¡Bienvenido de nuevo <em><%= username %></em>! <br>
                     </h1>
                 </div>
                 <div class="column is-half">
-                    <div class="buttons is-right">
-                        <a class="button is-primary is-large is-fullwidth">Estadísticas</a>
-                        <a href="http://localhost:3000/dueno/tarjeta" class="button is-primary is-large is-fullwidth my-6">Promociones</a>
-                        <a href="http://localhost:3000/admin/sucursales" class="button is-primary is-large is-fullwidth">Sucursales</a>
+                    <div class="buttons is-centered">
+                        <div class="dropdown is-hoverable">
+                            <div class="dropdown-trigger">
+                                <button class="button is-primary is-fullwidth is-large" aria-haspopup="true" aria-controls="dropdown-menu">
+                                    <span>Estadísticas</span>
+                                </button>
+                            </div>
+                            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                                <div class="dropdown-content">
+                                    <a href="/estad/estadisticas" class="dropdown-item">Estadísticas Generales</a>
+                                    <a href="/estad/estadisticasRewards" class="dropdown-item">Estadísticas Rewards</a>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="/promo/tarjeta" class="button is-primary is-large is-fullwidth my-6">Promociones</a>
+                        <a href="/sucur/sucursales" class="button is-primary is-large is-fullwidth">Sucursales</a>
                     </div>
                 </div>
                 
+                </div>
             </div>
         </div>
     </div>

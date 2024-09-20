@@ -1,0 +1,110 @@
+<%- include('includes/head.ejs') %>
+        
+        <h1 class="title has-text-centered">ESTADÍSTICAS REWARDS</h1>
+
+        <nav class="level">
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Recompensas</p>
+                <p class="title">3,456</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Record</p>
+                <p class="title">123</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Clientes</p>
+                <p class="title">4560</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Promociones</p>
+                <p class="title">789</p>
+              </div>
+            </div>
+          </nav>
+
+        <div class="box">
+            <h2 class="subtitle">Top Clientes</h2>
+            <p>Total de recompensas otorgadas a los clientes más destacados: <%= totalRecompensas %></p>
+        </div>
+
+        <article class="media">
+            <figure class="media-left">
+              <p class="image is-64x64">
+                <img src="https://www.pngkit.com/png/full/115-1150342_user-avatar-icon-iconos-de-mujeres-a-color.png" />
+              </p>
+            </figure>
+            <div class="media-content">
+              <div class="content">
+                <p>
+                  <strong>Karla Sanchez</strong> <small>@karlasan</small> <small>31m</small>
+                  <br />
+                  Recompensas: 28
+                  Compras: 102
+                </p>
+              </div>
+              <nav class="level is-mobile">
+                <div class="level-left">
+                  <a class="level-item">
+                    <span class="icon is-small"><i class="fas fa-reply"></i></span>
+                  </a>
+                  <a class="level-item">
+                    <span class="icon is-small"><i class="fas fa-retweet"></i></span>
+                  </a>
+                  <a class="level-item">
+                    <span class="icon is-small"><i class="fas fa-heart"></i></span>
+                  </a>
+                </div>
+              </nav>
+            </div>
+            <div class="media-right">
+              <button class="delete"></button>
+            </div>
+          </article>
+
+          <article class="media">
+            <figure class="media-left">
+              <p class="image is-64x64">
+                <img src="https://cdn-icons-png.flaticon.com/512/219/219983.png" />
+              </p>
+            </figure>
+            <div class="media-content">
+              <div class="content">
+                <p>
+                  <strong>Armando Gonzalez</strong> <small>@armagonz</small> <small>31m</small>
+                  <br />
+                  Recompensas: 9
+                  Compras: 32
+                </p>
+              </div>
+              <nav class="level is-mobile">
+                <div class="level-left">
+                  <a class="level-item">
+                    <span class="icon is-small"><i class="fas fa-reply"></i></span>
+                  </a>
+                  <a class="level-item">
+                    <span class="icon is-small"><i class="fas fa-retweet"></i></span>
+                  </a>
+                  <a class="level-item">
+                    <span class="icon is-small"><i class="fas fa-heart"></i></span>
+                  </a>
+                </div>
+              </nav>
+            </div>
+            <div class="media-right">
+              <button class="delete"></button>
+            </div>
+          </article>
+
+          <figure class="image is-200x200">
+            <img src="https://images.edrawmax.com/images/knowledge/line-graph-1-what-is.jpg" />
+          </figure>
+    <%- include('includes/foot.ejs') %>
+</body>
+</html>

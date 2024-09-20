@@ -1,10 +1,12 @@
 <!DOCTYPE html>
+<html lang="es">
 <head>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de Sesión</title>
     <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet">
     <style>
-        body, html{
+        body, html {
             height: 100%;
             margin: 0;
         }
@@ -23,10 +25,10 @@
         }
         .login-box {
             position: absolute;
-            text-align: center; /*alinear texto al centro del cuadro*/
+            text-align: center; /* Alinea texto al centro del cuadro */
             right: 25%;
             top: 50%; 
-            transform: translateY(-50%); /*Centrado del cuadro*/
+            transform: translateY(-50%); /* Centrado del cuadro */
             padding: 3%;
             border-radius: 10px;
             background-color: white;
@@ -34,37 +36,41 @@
         h1 {
             margin-bottom: 1.5rem;
         }
+        .button-container {
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body>
     <div class="background-image"></div>
     <img src="/logoDuper/dbLongWhite.jpg" alt="Logo" class="logo">
-        <div class="login-box">
-            <header>
-                <h1 class="title">¡Bienvenido!</h1>
-            </header>
-            <main>
-                <form action="/login" method="POST"> 
-                    <div class="field">
-                        <label class="label" for="Numero">Teléfono</label>
-                        <div class="control">
-                            <input id="Numero" name="telefono" class="input" type="text" placeholder="442-XXX-XXXX" required>
-                        </div>
-                    </div>
-                
-                    <div class="field">
-                        <label class="label" for="password">Contraseña</label>
-                        <div class="control">
-                            <input id="password" name="contrasena" class="input" type="password" placeholder="Contraseña" required>
-                        </div>
-                    </div>
-                
+    <div class="login-box">
+        <header>
+            <h1 class="title">¡Bienvenido!</h1>
+        </header>
+        <main>
+            <form action="/login" method="POST"> 
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <div class="field">
+                    <label class="label" for="Numero">Teléfono</label>
                     <div class="control">
-                        <input type="submit" class="button is-success" value="Entrar">
+                        <input id="Numero" name="telefono" class="input" type="text" placeholder="442-XXX-XXXX" required>
                     </div>
-                </form>
-            </main>
-        </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="password">Contraseña</label>
+                    <div class="control">
+                        <input id="password" name="password" class="input" type="password" placeholder="Contraseña" required>
+                    </div>
+                </div>
+                <div class="control">
+                    <input type="submit" class="button is-success" value="Entrar">
+                </div>
+                <div class="button-container">
+                    <a href="/registrar" class="button is-link">Registrarse</a>
+                </div>
+            </form>
+        </main>
     </div>
 </body>
 </html>

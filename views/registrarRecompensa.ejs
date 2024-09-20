@@ -1,21 +1,42 @@
 <%- include('includes/head.ejs') %>
 <h1 class="title has-text-centered">RECOMPENSAS</h1>
+<main>
+  <% if(mensaje != '') { %>
+    <div class="notification is-link">
+        <button class="delete"></button>
+        <%= mensaje %>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                const $notification = $delete.parentNode;
+
+                $delete.addEventListener('click', () => {
+                $notification.parentNode.removeChild($notification);
+                });
+            });
+        });
+    </script>
+  <% } %>
 <div class="columns">
   <div class="column is-half">
-    <form class="box has-text-centered">
+    <form class="box has-text-centered" action="/promo/recompensas" method="POST">
       <div class="field has-text-left">
-        <label class="label">Nombre</label>
+        <label class="label" for="NombreRecompensa">Nombre</label>
         <div class="control">
-          <input class="input" type="text" placeholder="2x1" />
+          <input class="input" id="NombreRecompensa" name="NombreRecompensa" type="text" placeholder="2x1" />
         </div>
       </div>
-      <button class="button is-link">Registrar</button>
+      <div class="control has-text-centered">
+        <input type="submit" class="button is-link" value=" REGISTRAR">
+      </div>
     </form>
   </div>
-  <div class="column">
+  <div class="column is-narrow">
+    <% for (recompensa of recompensas) { %>
     <div class="card">
       <header class="card-header">
-        <p class="card-header-title">Recompensa XXXX</p>
+        <p class="card-header-title"><%= recompensa.NombreRecompensa %></p>
         <button class="card-header-icon" aria-label="more options">
           <span class="icon">
             <i class="fas fa-angle-down" aria-hidden="true"></i>
@@ -27,6 +48,7 @@
         <a href="#" class="card-footer-item">Delete</a>
       </footer>
     </div>
+    <% } %>
   </div>
 </div>
 <%- include('includes/foot.ejs') %>
