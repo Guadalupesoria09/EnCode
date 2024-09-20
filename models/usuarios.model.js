@@ -13,13 +13,13 @@ module.exports = class Usuario {
     }
 
     static fetchOneByTelefono(NumTelefono) {
-        return db.execute('SELECT IDUsuario, NombreUsuario, Contrasenia FROM usuario WHERE NumTelefono = ?');
+        return db.execute('SELECT IDUsuario, NombreUsuario, Contrasenia FROM usuario WHERE NumTelefono = ?',[NumTelefono]);
     }
 
     save() {
         return db.execute(
         'INSERT INTO Usuario (NombreUsuario, NumTelefono, Contrasenia, FehcaNacimiento, Genero, Direccion, Ciudad, Estado) VALUES (?,?,?,?,?,?,?,?)',
-        [this.NombreUsuario, this.Numtelefono, this.Contrasenia, this.Contrasenia, this.FechaNacimiento, this.Genero, this.Direccion, this.Ciudad, this.Estado]);
+        [this.NombreUsuario, this.NumTelefono, this.Contrasenia, this.Contrasenia, this.FechaNacimiento, this.Genero, this.Direccion, this.Ciudad, this.Estado]);
     }
 
     static getPrivilegios(IDUsuario) {

@@ -13,15 +13,15 @@ exports.post_register = (request, response, next) => {
 	request.body.Direccion, request.body.Ciudad, request.body.Estado);
     
     Usuario.fetchOneByTelefono(NumTelefono)
-	.then(([usuario, fieldData) => {
+	.then(([usuario, fieldData]) => {
             if (usuario.length > 0) {
                 request.session.mensaje = 'El usuario ya existe'
 		return response.redirect('registrar');
 	    }else{
-              bcrypt.hash(password, 10(err, hash) => {
+              bcrypt.hash(password, 10,(err, hash) => {
                   if (err){
                      console.log('Error al hashear la contraseña', err);
-                     req.session.mensaje = 'Error 500: Error del servidor';
+                     request.session.mensaje = 'Error 500: Error del servidor';
                      return res.redirect('registrar');
                   }
 		  usuario.save()
@@ -40,8 +40,8 @@ exports.post_register = (request, response, next) => {
 	  })
 	  .catch(err => {
              console.log('Error al verificar el usuario:', err);
-             req.session.mensaje = 'Error 500: Error del servidor';
-             res.redirect('/registrar');
+             request.session.mensaje = 'Error 500: Error del servidor';
+             response.redirect('/registrar');
           });
 };
     
