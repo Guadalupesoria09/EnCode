@@ -1,60 +1,54 @@
 const bcrypt = require('bcryptjs');
 const Usuario = require('../models/usuarios.model');
 
-// Controlador para mostrar la página de registro
-exports.get_register = (req, res, next) => {
-    res.render('registrar'); // Renderiza la página de registro
+// Registrar usuario
+exports.get_register = (request, response, next) => {
+    response.render('registrar');
 };
 
-// Controlador para registrar usuarios
-exports.post_register = (req, res, next) => {
-    const nombreUsuario = req.body.NombreUsuario;
-    const telefono = req.body.telefono;
-    const password = req.body.password;
-
-    // Verifica si el usuario ya existe
-    Usuario.fetchOneByTelefono(telefono)
-        .then(([usuario, fieldData]) => {
+exports.post_register = (request, response, next) => {
+    console.log(request.body);
+    const usuario = new Usuario(request.body.NombreUsuario, request.body.NumTelefono,
+	request.body.FechaNacimiento, request.body.Contrasenia, request.body.Genero,
+	request.body.Direccion, request.body.Ciudad, request.body.Estado);
+    
+    Usuario.fetchOneByTelefono(NumTelefono)
+	.then(([usuario, fieldData) => {
             if (usuario.length > 0) {
-                req.session.mensaje = 'El usuario ya existe';
-                return res.redirect('/registrar');
-            } else {
-                // Hashea la contraseña antes de guardarla
-                bcrypt.hash(password, 10, (err, hash) => {
-                    if (err) {
-                        console.log('Error al hashear la contraseña:', err);
-                        req.session.mensaje = 'Error 500: Error del servidor';
-                        return res.redirect('/registrar');
-                    }
-
-                    // Crea el nuevo usuario en la base de datos
-                    Usuario.create({
-                        NombreUsuario: nombreUsuario,
-                        telefono: telefono,
-                        Contrasenia: hash
-                    })
-                    .then(() => {
-                        console.log('Usuario creado exitosamente');
-                        req.session.mensaje = 'Usuario registrado correctamente';
-                        res.redirect('/login');
-                    })
-                    .catch(err => {
-                        console.log('Error al crear el usuario:', err);
-                        req.session.mensaje = 'Error 500: Error del servidor';
-                        res.redirect('/registrar');
-                    });
-                });
-            }
-        })
-        .catch(err => {
-            console.log('Error al verificar el usuario:', err);
-            req.session.mensaje = 'Error 500: Error del servidor';
-            res.redirect('/registrar');
-        });
+                request.session.mensaje = 'El usuario ya existe'
+		return response.redirect('registrar');
+	    }else{
+              bcrypt.hash(password, 10(err, hash) => {
+                  if (err){
+                     console.log('Error al hashear la contraseña', err);
+                     req.session.mensaje = 'Error 500: Error del servidor';
+                     return res.redirect('registrar');
+                  }
+		  usuario.save()
+		      .then(() =>{
+	    		  consele.log('usuario creado exitosamente');
+	       		  request.session.mensaje = 'Usuario registrado correctamente';
+	       		  response.redirect('sucursal');
+		      })
+	     	      .catch(err => {
+	     	          console.log('Error al crear el usuario', err);
+	    		  request.session.mensaje = 'Error 500: Error del servidor';
+	    		  response.redirect('sucursal');
+	    	      });
+	          });
+	      }     
+	  })
+	  .catch(err => {
+             console.log('Error al verificar el usuario:', err);
+             req.session.mensaje = 'Error 500: Error del servidor';
+             res.redirect('/registrar');
+          });
 };
+    
 
-exports.get_login = (req, res, next) => {
-    res.render('login'); 
+
+exports.get_login = (request, response, next) => {
+    response.render('login'); 
 };
 
 // Controlador para iniciar sesión
@@ -104,13 +98,13 @@ exports.post_login = (req, res, next) => {
         });
 };
 
-exports.get_logout = (req, res, next) => {
-    req.session.destroy(() => {
-        res.redirect('/login');
+exports.get_logout = (request, response, next) => {
+    request.session.destroy(() => {
+        response.redirect('/login');
     });
 };
 
-exports.get_home = (req, res, next) => {
-    const username = req.session.NombreUsuario || '';
-    res.render('home', { username });
+exports.get_home = (request, response, next) => {
+    const username = request.session.NombreUsuario || '';
+    response.render('home', { username });
 };

@@ -12,8 +12,8 @@ module.exports = class Usuario {
 	this.Estado = miEstado;
     }
 
-    static fetchOneByTelefono(telefono) {
-        return db.execute('SELECT IDUsuario, NombreUsuario, Contrasenia FROM usuario WHERE NumTelefono = ?', [telefono]);
+    static fetchOneByTelefono(NumTelefono) {
+        return db.execute('SELECT IDUsuario, NombreUsuario, Contrasenia FROM usuario WHERE NumTelefono = ?');
     }
 
     save() {
