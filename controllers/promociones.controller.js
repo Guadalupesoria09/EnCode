@@ -1,8 +1,47 @@
 const Promociones = require('../models/promociones.model');
 const Recompensas = require('../models/recompensas.model');
+const PromoRecomp = require('../models/promocionRecompensa.model');
 
-exports.get_promo = (request, response, next) => {
-    console.log('Ruta /promo/promociones');
+exports.get_editarPromo = (request, response, next) => {
+    console.log('Ruta editar/promo');
+
+    const id = request.params.id;
+    
+
+    Promociones.fetchOne(id).then(([promociones, fieldData]) => {
+        if(promociones.length > 0){
+            return Recompensas.fetchAll()
+                .then (([recompensas, fieldData]) => {
+                    return response.render('crearPromocion', {
+                    promociones: promociones[0],
+                    recompensas: recompensas,
+                    //csrfToken: request.csrfToken(),
+                    editar: true,
+                });
+            });
+        } else {
+            return response.render('404', {
+                //username: request.session.username || '',
+            });
+        }
+    });
+};
+
+exports.post_editarPromo = (request, response, next) => {
+    console.log(request.body);
+
+    Promociones.edit(request.body.id, request.body.nombrePromo, request.body.fechaInicio,
+        request.body.fechaFin, request.body.valor, request.body.estatus)
+        .then((rows, fieldData) => {
+            request.session.mensaje = 'Promocion actualizada';
+            return response.redirect('/promo/promociones');
+        }).catch((error) => { 
+            console.log(error); 
+    });
+}
+
+exports.get_crear = (request, response, next) => {
+    console.log('Ruta /promo/crearPromociones')
 
     let mensaje = request.session.mensaje || '';
 
@@ -10,10 +49,10 @@ exports.get_promo = (request, response, next) => {
         request.session.mensaje = '';
     }
 
-    Promociones.fetchAll()
-        .then(([promociones, fieldData]) => {
+    Recompensas.fetchAll()
+        .then(([recompensas, fieldData]) => {
             return response.render('crearPromocion', {
-                promociones: promociones,
+                recompensas: recompensas,
                 mensaje: mensaje,
                 //csrfToken: request.csrfToken(),
             }); 
@@ -22,7 +61,8 @@ exports.get_promo = (request, response, next) => {
     });
 };
 
-exports.post_promo = (request, response, next) => {
+exports.post_crear = (request, response, next) => {
+
     console.log(request.body);
 
     const promocion = new Promociones(request.body.nombrePromo, request.body.fechaInicio,
@@ -35,7 +75,45 @@ exports.post_promo = (request, response, next) => {
             return response.redirect('/promo/promociones');
         }).catch((error) => {
             console.log(error);
-        });
+    });
+};
+
+exports.get_promo = (request, response, next) => {
+    console.log('Ruta /promo/promociones');
+
+    let mensaje = request.session.mensaje || '';
+
+    if (request.session.mensaje) {
+        request.session.mensaje = '';
+    }
+
+    // Comparacion de los promoRecomps
+    PromoRecomp.fetchAll()
+        .then(([promoRecomps, fieldData]) => {
+            return Recompensas.fetchAll()
+                .then(([recompensas, fieldData]) => {
+                    return Promociones.fetchAll()
+                        .then(([promociones, fieldData]) => {
+                            return response.render('promociones', {
+                            promociones: promociones,
+                            recompensas: recompensas,
+                            promoRecomps: promoRecomps,
+                            mensaje: mensaje,
+                            editar: false,
+                            //csrfToken: request.csrfToken(),
+                        });
+                    });
+                });
+        }).catch((error) => { 
+        console.log(error); 
+    });
+};
+
+exports.post_promo = (request, response, next) => {
+    console.log(request.body);
+    
+    
+    
 } 
 
 exports.get_tarjeta = (request, response, next) => {
@@ -77,3 +155,4 @@ exports.post_recompensas = (request, response, next) => {
             console.log(error);
         });
 } 
+

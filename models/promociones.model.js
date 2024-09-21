@@ -9,26 +9,43 @@ module.exports = class Promociones {
         this.Valor = mi_valor;
         this.Estatus = mi_estatus;
     }
+
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
         return db.execute(
             'INSERT INTO promocion(NombrePromocion, FechaInicio, FechaCaducidad, Valor, Estatus) VALUES(?, ?, ?, ?, ?)', 
             [this.NombrePromocion, this.FechaInicio, this.FechaCaducidad, this.Valor, this.Estatus]);
     }
+
+    fetchID() {
+        return db.execute(
+            `SELECT IDPromocion
+            FROM promocion`);
+    }
+
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll() {
         return db.execute(
-            `SELECT NombrePromocion, FechaInicio, FechaCaducidad, Valor, Estatus
+            `SELECT *
             FROM promocion`);
     }
+
     static fetchOne(idPromocion) {
-        return db.execute('SELECT * FROM ordenes WHERE IDPromocion = ?', [idPromocion]);
+        return db.execute('SELECT * FROM recompensa WHERE IDPromocion = ?', [idPromocion]);
     }
+    
     static fetch(idPromocion) {
         if (idPromocion) {
             return this.fetchOne(idPromocion);
         } else {
             return this.fetchAll();
         }
+    }
+
+    static edit(idPromocion, nuevoNombrePromo, nuevoFechaInicio, nuevoFechaFin, nuevoValor, nuevoEstatus) {
+        return db.execute(`
+            UPDATE promociones SET NombrePromocion = ?, FechaInicio = ?, FechaCaducidad = ?, Valor = ?, Estatus = ?
+            WHERE IDPromocion = ?`, 
+            [nuevoNombrePromo, nuevoFechaInicio, nuevoFechaFin,nuevoValor,nuevoEstatus, idPromocion]);
     }
 }
