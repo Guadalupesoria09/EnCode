@@ -15,13 +15,15 @@ exports.get_editarPromo = (request, response, next) => {
                     return response.render('crearPromocion', {
                     promociones: promociones[0],
                     recompensas: recompensas,
-                    //csrfToken: request.csrfToken(),
+                    username: request.session.NombreUsuario || '', 
+                    csrfToken: request.csrfToken(),
                     editar: true,
                 });
             });
         } else {
             return response.render('404', {
-                //username: request.session.username || '',
+                username: request.session.NombreUsuario || '',
+                csrfToken: request.csrfToken(),
             });
         }
     });
@@ -106,7 +108,8 @@ exports.get_promo = (request, response, next) => {
                             promoRecomps: promoRecomps,
                             mensaje: mensaje,
                             editar: false,
-                            //csrfToken: request.csrfToken(),
+                            username: request.session.NombreUsuario || '',  
+                            csrfToken: request.csrfToken(),
                         });
                     });
                 });
