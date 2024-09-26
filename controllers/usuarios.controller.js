@@ -7,7 +7,7 @@ exports.get_register = (request, response, next) => {
         telefono: request.session.telefono ||'',
         username: request.session.NombreUsuario || '',  
         csrfToken: request.csrfToken()
-    }); // Renderiza la página de registro
+    });
 
 };
 
