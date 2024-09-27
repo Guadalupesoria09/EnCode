@@ -14,17 +14,34 @@ module.exports = class promoRecomp {
 
     static fetchAll() {
         return db.execute(
-            `SELECT *
+            `SELECT IDPromocion, IDRecompensa
             FROM promocionrecompensa`);
     }
 
-    static fetchAllnombreR(){
+    static fetchIDPromo(){
         return db.execute(
-            `SELECT NombreRecompensa
-            FROM promocionrecompensa pr INNER JOIN 
-            recompensa r ON
-            pr.IDRecompensa = r.IDRecompensa`)
+            `SELECT IDPromocion
+            FROM promocionrecompensa`);
+    }
 
+    static fetchIDRecomp(){
+        return db.execute(
+            `SELECT IDRecompensa
+            FROM promocionrecompensa`);
+    }
+    
+
+    static fetchAllnombreR(idPromo) {
+        return db.execute(
+            `SELECT
+                r.NombreRecompensa, pr.IDPromocion
+            FROM
+                promocionrecompensa pr
+            INNER JOIN recompensa r ON
+                pr.IDRecompensa = r.IDRecompensa
+            WHERE
+                pr.IDPromocion = ?`, [idPromo]
+        );
     }
 
     static fetchOne(IDpromorecomp) {

@@ -17,7 +17,7 @@ module.exports = class Recompensas {
             FROM recompensa`);
     }
 
-    static fetchOne(){
+    static fetchID(){
         return db.execute(
             `SELECT IDRecompensa
             FROM recompensa`);
