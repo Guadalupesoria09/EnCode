@@ -23,11 +23,9 @@ app.use(session({
     saveUninitialized: true, 
 }));
 
-//Middleware
-app.use((request, response, next) => {
-    console.log('Middleware!');
-    next(); //Le permite a la petición avanzar hacia el siguiente middleware
-});
+const csrf = require('csurf');
+const csrfProtection = csrf();
+app.use(csrfProtection); 
 
 app.use((request, response, next) => {
     response.locals.telefono = request.session.telefono || '';

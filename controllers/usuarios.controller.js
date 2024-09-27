@@ -3,7 +3,10 @@ const Usuario = require('../models/usuarios.model');
 
 // Registrar usuario
 exports.get_register = (request, response, next) => {
-    response.render('registrar');
+    response.render('registrar');{
+        telefono: req.session.telefono ||'',
+        csrfToken: req.csrfToken()
+    }); 
 };
 
 exports.post_register = (request, response, next) => {
@@ -20,15 +23,18 @@ exports.post_register = (request, response, next) => {
 };
    
 exports.get_login = (request, response, next) => {
-    response.render('login'); 
-};
+    response.render('login');
+	csrfToken: request.csrfToken()
+});
 
 // Controlador para iniciar sesión
 exports.post_login = (req, res, next) => {
     const telefono = req.body.telefono;
 
     Usuario.fetchOneByTelefono(telefono)
+
         .then(([usuario, fieldData]) => {
+            
             if (usuario.length > 0) {
                 // Comparar la contraseña ingresada con el hash almacenado
                 bcrypt.compare(req.body.password, usuario[0].Contrasenia)
