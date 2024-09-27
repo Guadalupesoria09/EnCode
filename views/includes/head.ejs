@@ -34,12 +34,19 @@
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <a href="/login" class="button has-text-primary-20 is-white">
-                            <strong>Sign In</strong>
-                        </a>
-                        <a class="button is-link">
-                            Log out
-                        </a>
+                        <% if (username && username !== '') { %>
+                            <a class="button is-link">Bienvenido(a) <%= username %></a>
+                            <a href="/logout" class="button has-text-primary-20 is-white">
+                                <strong>Salir</strong>
+                            </a>
+                        <% } else { %>
+                            <a href="/signup" class="button is-link">
+                                <strong>Registrarse</strong>
+                            </a>
+                            <a href="/login" class="button is-link">
+                                <strong>Entrar</strong>
+                            </a>
+                        <% } %>
                     </div>
                 </div>
             </div>
