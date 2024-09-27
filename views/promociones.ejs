@@ -40,11 +40,14 @@
                   Vigencia: <time datetime="2016/1/1"><%= promocion.FechaCaducidad.toISOString().slice(0, 10) %></time>
                   <br>
                   
-                  Recompensa: <%= recompensasRelacionadas.find(r => r.IDPromocion === promocion.IDPromocion)?.NombreRecompensa || 'Sin recompensa' %>
-
-                  
-                  <br>
-                  Estatus: <%= promocion.Estatus %>
+                  Recompensa/s: 
+                  <% if (promocion.recompensas.length == 0) { %> 'Sin recompensa' <% } %>
+                  <% for (let recompensa of promocion.recompensas) { %>
+                    <ul>
+                      <li><%= recompensa.NombreRecompensa %></li>
+                    </ul>
+                  <% } %> 
+                  Estatus: <%= promocion.Estatus %> 
                   <br>
                 </div>
               </div>

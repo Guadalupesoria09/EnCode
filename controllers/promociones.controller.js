@@ -116,30 +116,16 @@ exports.get_promo = (request, response, next) => {
         request.session.mensaje = '';
     }
 
-    PromoRecomp.fetchAll().then(([promoRecomps, fieldData]) => {
-        return Recompensas.fetchAll().then(([recompensas, fieldData]) => {
-            return Promociones.fetchAll()
-                .then(([promociones, fieldData]) => {
-                    const recompensasRelacionadasPromises = promociones.map(promo => {
-                        return PromoRecomp.fetchAllnombreR(promo.IDPromocion).then(([nombreRecompensa]) => {
-                            return {
-                                IDPromocion: promo.IDPromocion,
-                                NombreRecompensa: nombreRecompensa.length ? nombreRecompensa[0].NombreRecompensa : "Sin recompensa"
-                            };
-                        });
-                    });
-                    Promise.all(recompensasRelacionadasPromises).then(recompensasRelacionadas => {
-                        return response.render('promociones', {
-                        promoRecomps: promoRecomps,
-                        promociones: promociones,
-                        recompensasRelacionadas: recompensasRelacionadas,
-                        recompensas: recompensas,
-                        mensaje: mensaje,
-                        username: request.session.NombreUsuario || '',  
-                        csrfToken: request.csrfToken(),
-                    });
-                });
-            });
+    PromoRecomp.fetchAll().then(async ([promociones, fieldData]) => {
+        for (let promo of promociones) {
+            let [recompensas, fieldData] = await PromoRecomp.fetchAllnombreR(promo.IDPromocion);
+            promo.recompensas = recompensas;
+        }
+        return response.render('promociones', {
+            promociones: promociones,
+            mensaje: mensaje,
+            username: request.session.NombreUsuario || '',  
+            csrfToken: request.csrfToken(),
         });
     }).catch((error) => { 
         console.log(error);
