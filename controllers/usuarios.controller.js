@@ -126,3 +126,10 @@ exports.get_home = (request, response, next) => {
         csrfToken: request.csrfToken()
     });
 };
+
+// exports.get_recuperar=(request, respone, next)=>{
+//     response.render('recuperar', response.redirect('/recuperar'),{
+//         username: request.session.NombreUsuario || '', 
+//         csrfToken: request.csrfToken()
+//     })
+// }
