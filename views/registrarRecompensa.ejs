@@ -21,6 +21,7 @@
 <div class="columns">
   <div class="column is-half">
     <form class="box has-text-centered" action="/promo/recompensas" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <div class="field has-text-left">
         <label class="label" for="NombreRecompensa">Nombre</label>
         <div class="control">
