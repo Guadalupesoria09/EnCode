@@ -1,6 +1,23 @@
 <%- include('includes/head.ejs') %>
 <h1 class="title has-text-centered">PROMOCIONES</h1>
 <main>
+  <% if(mensaje != '') { %>
+    <div class="notification is-link">
+        <button class="delete"></button>
+        <%= mensaje %>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                const $notification = $delete.parentNode;
+
+                $delete.addEventListener('click', () => {
+                $notification.parentNode.removeChild($notification);
+                });
+            });
+        });
+    </script>
+  <% } %>
   <% if (editar) { %>
     <div class="columns">
       <div class="column">

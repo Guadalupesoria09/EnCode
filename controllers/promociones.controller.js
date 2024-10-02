@@ -61,6 +61,7 @@ exports.get_crear = (request, response, next) => {
             }); 
         }).catch((error) => {
             console.log(error);
+
         });
 };
 
@@ -103,6 +104,8 @@ exports.post_crear = (request, response, next) => {
 
     }).catch((error) => { 
         console.log(error);
+        request.session.mensaje = 'Ya existe un promoción con este nombre'
+        return response.redirect('/promo/crearPromociones');
     });
 
 };
@@ -180,5 +183,7 @@ exports.post_recompensas = (request, response, next) => {
             return response.redirect('/promo/recompensas');
         }).catch((error) => {
             console.log(error);
+            request.session.mensaje = 'Ya existe un recompensa con este nombre'
+            return response.redirect('/promo/recompensas');
         });
 };
