@@ -9,9 +9,6 @@ const sucursalController = require('../controllers/sucursal.controller');
 router.get('/registrarSucursal', isAuth, sucursalController.get_registrarSucursal);
 router.post('/registrarSucursal', isAuth, sucursalController.post_registrarSucursal);
 
-//Registrar dueño
-router.get('/registrarDueno', isAuth, sucursalController.get_registrarDueno);
-
 //Menu sucursales
 router.get('/sucursales', isAuth, sucursalController.get_sucursales);
 
