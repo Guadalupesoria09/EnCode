@@ -3,8 +3,9 @@ const UserSucur = require('../models/userSucur.model');
 
 exports.get_registrarSucursal = (request, response, next) => {
     response.render('registrarSucursal', {
+        	
         username: request.session.NombreUsuario ||'',
-        csfrToken: request.csrfToken(),
+        csrfToken: request.csrfToken(),
     });
 };
 
@@ -14,7 +15,7 @@ exports.post_registrarSucursal = (request, response, next) => {
 	request.body.Estado, request.body.NumSucursal, request.body.NombreSucursal);
      
     request.session.sucursal = sucursal;
-    response.redirect('registrar');
+    response.redirect('/registrar');
 		
 };
 
