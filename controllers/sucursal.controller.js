@@ -13,7 +13,7 @@ exports.post_registrarSucursal = (request, response, next) => {
 	request.body.Estado, request.body.NumSucursal, request.body.NombreSucursal);
     sucursal.save()
         .then(() => { 
-            response.redirect('registrarDueno');
+            response.redirect('registrar');
 	}).catch((error) => {
             console.log(error);
         });

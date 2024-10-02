@@ -1,71 +1,78 @@
 <%- include('includes/head.ejs') %>
 <h1 class="title has-text-centered">PROMOCIONES</h1>
 <main>
+  <% if (editar) { %>
+    <div class="columns">
+      <div class="column">
+      <form class="box has-text-centered" action="/promo/editarPromo:id" method="POST">
+      <input type="hidden" id="id" name="id" value="<%= promocion.id %>">
+  <% } else { %>
     <div class="columns">
       <div class="column">
       <form class="box has-text-centered" action="/promo/crearPromociones" method="POST">
-  
-      <div class="field has-text-left">
-        <label class="label" for="nombrePromo">Nombre</label>
-        <div class="control">
-          <input class="input" id="nombrePromo" name="nombrePromo" type="text" placeholder="DuperRewards"/> 
-        </div>
-      </div>
-  
-      <div class="field has-text-left">
-        <label class="label" for="fechaInicio">Fecha inicio</label>
-        <div class="control">
-          <input class="input" id="fechaInicio" name="fechaInicio" type="date" data-display-mode="default"/> 
-        </div>
-      </div>
-  
-      <div class="field has-text-left">
-        <label class="label" for="fechaFin">Fecha fin</label>
-        <div class="control">
-          <input class="input" id="fechaFin" name="fechaFin" type="date" datetime="YYYY/MM/DD"/>
-        </div>
-      </div>
-
-      <div class="field has-text-left">
-        <label for="valor" class="label">Valor</label>
-        <div class="control">
-          <input class="input" id="valor" name="valor" type="text" placeholder="2"/>
-        </div>
-      </div>
-      <div class="field has-text-left">
-        <label class="label" for="estatus">Estatus</label>
-        <div class="control">
-          <div class="select">
-            <select id="estatus" name="estatus">
-                <option id="Activo">Activo</option>
-                <option id="Inhabilitado">Inhabilitado</option>
-                <option id="Bloqueado">Bloqueado</option>
-                <option id="Canjeable">Canjeable</option>
-            </select>
+  <% } %>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+        <div class="field has-text-left">
+          <label class="label" for="nombrePromo">Nombre</label>
+          <div class="control">
+            <input class="input" id="nombrePromo" name="nombrePromo" type="text" placeholder="DuperRewards" required/>
           </div>
         </div>
-      </div>
-      
-      <div class="field has-text-left">
-        <label class="label" for="recompensa">Recompensa</label>
-        <div class="control">
-          <div class="select">
-            <select id="recompensa" name="recompensa">
-              <% for(recompensa of recompensas) { %> 
-                <option value="<%= recompensa.IDRecompensa %>"><%= recompensa.NombreRecompensa %></option>
-            <% } %>
-            </select>
+    
+        <div class="field has-text-left">
+          <label class="label" for="fechaInicio">Fecha inicio</label>
+          <div class="control">
+            <input class="input" id="fechaInicio" name="fechaInicio" type="date" data-display-mode="default" required/> 
           </div>
         </div>
-      </div>
+    
+        <div class="field has-text-left">
+          <label class="label" for="fechaFin">Fecha fin</label>
+          <div class="control">
+            <input class="input" id="fechaFin" name="fechaFin" type="date" datetime="YYYY/MM/DD" required/>
+          </div>
+        </div>
 
-      <div class="control has-text-centered">
-          <input type="submit" class="button is-link" value="AGREGAR">
+        <div class="field has-text-left">
+          <label for="valor" class="label">Valor</label>
+          <div class="control">
+            <input class="input" id="valor" name="valor" type="number" placeholder="2" required/>
+          </div>
+        </div>
+        <div class="field has-text-left">
+          <label class="label" for="estatus">Estatus</label>
+          <div class="control">
+            <div class="select">
+              <select id="estatus" name="estatus" required>
+                  <option id="Activo">Activo</option>
+                  <option id="Inhabilitado">Inhabilitado</option>
+                  <option id="Bloqueado">Bloqueado</option>
+                  <option id="Canjeable">Canjeable</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="field has-text-left">
+          <label class="label" for="recompensa">Recompensa</label>
+          <div class="control">
+            <div class="select">
+              <select id="recompensa" name="recompensa" required>
+                <% for(recompensa of recompensas) { %> 
+                  <option value="<%= recompensa.IDRecompensa %>"><%= recompensa.NombreRecompensa %></option>
+              <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="control has-text-centered">
+            <input type="submit" class="button is-link" value="AGREGAR">
+        </div>
+      </form>
+      <div class="has-text-centered">
+        <a href="/promo/recompensas"class="button is-link">RECOMPENSAS</a>
       </div>
-    </form>
-    <div class="has-text-centered">
-      <a href="/promo/recompensas"class="button is-link">RECOMPENSAS</a>
+      <br>
     </div>
-    <br>
-  </div>
 <%- include('includes/foot.ejs') %>

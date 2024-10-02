@@ -6,7 +6,6 @@ exports.get_editarPromo = (request, response, next) => {
     console.log('Ruta editar/promo');
 
     const id = request.params.id;
-    
 
     Promociones.fetchOne(id).then(([promociones, fieldData]) => {
         if(promociones.length > 0){
@@ -56,6 +55,7 @@ exports.get_crear = (request, response, next) => {
             return response.render('crearPromocion', {
                 recompensas: recompensas,
                 username: request.session.NombreUsuario || '',  
+                editar: false,
                 mensaje: mensaje,
                 csrfToken: request.csrfToken(),
             }); 
@@ -68,6 +68,8 @@ exports.post_crear = (request, response, next) => {
 
     console.log(request.body);
 
+    const idRecompensa = request.body.recompensa;
+
     const promocion = new Promociones(
         request.body.nombrePromo, 
         request.body.fechaInicio,
@@ -78,12 +80,31 @@ exports.post_crear = (request, response, next) => {
 
     request.session.mensaje = 'Promoción creada';
 
-    promocion.save()
-        .then(() => {
-            return response.redirect('/promo/promociones');
-        }).catch((error) => {
+    promocion.save().then(() => {
+
+        Promociones.fetchIDPROMO(request.body.nombrePromo).then(([promociones, fieldData]) => {
+            const idPromo = promociones[0].IDPromocion;
+            
+            const promoRecomps = new PromoRecomp(
+                idPromo,
+                idRecompensa
+            );
+            
+            promoRecomps.save()
+                .then(() => {
+                    return response.redirect('/promo/promociones');
+                }).catch((error) => { 
+                    console.log(error);
+            });
+
+        }).catch((error) => { 
             console.log(error);
+        });
+
+    }).catch((error) => { 
+        console.log(error);
     });
+
 };
 
 exports.get_promo = (request, response, next) => {
@@ -95,26 +116,19 @@ exports.get_promo = (request, response, next) => {
         request.session.mensaje = '';
     }
 
-    // Comparacion de los promoRecomps
-    PromoRecomp.fetchAll()
-        .then(([promoRecomps, fieldData]) => {
-            return Recompensas.fetchAll()
-                .then(([recompensas, fieldData]) => {
-                    return Promociones.fetchAll()
-                        .then(([promociones, fieldData]) => {
-                            return response.render('promociones', {
-                            promociones: promociones,
-                            recompensas: recompensas,
-                            promoRecomps: promoRecomps,
-                            mensaje: mensaje,
-                            editar: false,
-                            username: request.session.NombreUsuario || '',  
-                            csrfToken: request.csrfToken(),
-                        });
-                    });
-                });
-        }).catch((error) => { 
-        console.log(error); 
+    PromoRecomp.fetchAll().then(async ([promociones, fieldData]) => {
+        for (let promo of promociones) {
+            let [recompensas, fieldData] = await PromoRecomp.fetchAllnombreR(promo.IDPromocion);
+            promo.recompensas = recompensas;
+        }
+        return response.render('promociones', {
+            promociones: promociones,
+            mensaje: mensaje,
+            username: request.session.NombreUsuario || '',  
+            csrfToken: request.csrfToken(),
+        });
+    }).catch((error) => { 
+        console.log(error);
     });
 };
 

@@ -39,15 +39,20 @@
                 <div class="content">
                   Vigencia: <time datetime="2016/1/1"><%= promocion.FechaCaducidad.toISOString().slice(0, 10) %></time>
                   <br>
-                  Recompensa: 
-                  <br>
-                  Estatus: <%= promocion.Estatus %>
+                  
+                  Recompensa/s: 
+                  <% if (promocion.recompensas.length == 0) { %> 'Sin recompensa' <% } %>
+                  <% for (let recompensa of promocion.recompensas) { %>
+                    <ul>
+                      <li><%= recompensa.NombreRecompensa %></li>
+                    </ul>
+                  <% } %> 
+                  Estatus: <%= promocion.Estatus %> 
                   <br>
                 </div>
               </div>
               <footer class="card-footer">
-                <!-- <a href="/promo/editarPromo/<%= promocion.IDPromocion %>" class="card-footer-item">Editar</a> -->
-                <a href="#" class="card-footer-item">Editar</a>
+                <a href="/promo/editarPromo/<%= promocion.IDPromocion %>" class="card-footer-item">Editar</a>
                 <a href="#" class="card-footer-item">Delete</a>
               </footer>
             </div>

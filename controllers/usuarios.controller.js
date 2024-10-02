@@ -7,62 +7,25 @@ exports.get_register = (request, response, next) => {
         telefono: request.session.telefono ||'',
         username: request.session.NombreUsuario || '',  
         csrfToken: request.csrfToken()
-    });
-
+    }); 
 };
 
-// Controlador para registrar usuarios
 exports.post_register = (request, response, next) => {
-    const nombreUsuario = request.body.NombreUsuario;
-    const telefono = request.body.telefono;
-    const password = request.body.password;
-
-    // Verifica si el usuario ya existe
-    Usuario.fetchOneByTelefono(telefono)
-        .then(([usuario, fieldData]) => {
-            if (usuario.length > 0) {
-                request.session.mensaje = 'El usuario ya existe';
-                return response.redirect('/registrar');
-            } else {
-                // Hashea la contraseña antes de guardarla
-                bcrypt.hash(password, 10, (err, hash) => {
-                    if (err) {
-                        console.log('Error al hashear la contraseña:', err);
-                        request.session.mensaje = 'Error 500: Error del servidor';
-                        return response.redirect('/registrar');
-                    }
-
-                    // Crea el nuevo usuario en la base de datos
-                    Usuario.create({
-                        NombreUsuario: nombreUsuario,
-                        telefono: telefono,
-                        Contrasenia: hash
-                    })
-                    .then(() => {
-                        console.log('Usuario creado exitosamente');
-                        request.session.mensaje = 'Usuario registrado correctamente';
-                        response.redirect('/login');
-                    })
-                    .catch(err => {
-                        console.log('Error al crear el usuario:', err);
-                        request.session.mensaje = 'Error 500: Error del servidor';
-                        response.redirect('/registrar');
-                    });
-                });
-            }
-        })
-        .catch(err => {
-            console.log('Error al verificar el usuario:', err);
-            request.session.mensaje = 'Error 500: Error del servidor';
-            response.redirect('/registrar');
-        });
+    const nuevo_usuario = new Usuario(
+	request.body.NombreUsuario, request.body.NumTelefono, request.body.FechaNacimiento, request.body.Contrasenia,
+        request.body.Genero, request.body.Direccion, request.body.Ciudad, request.body.Estado, request.body.TipoRol);
+  
+    nuevo_usuario.save().then(() => {
+	return response.redirect('/sucur/sucursales');
+    }).catch((error) => {
+       console.log(error);
+    });
 };
 
 exports.get_login = (request, response, next) => {
     response.render('login', {
         csrfToken: request.csrfToken()
     });
-
 };
 
 // Controlador para iniciar sesión
@@ -126,10 +89,3 @@ exports.get_home = (request, response, next) => {
         csrfToken: request.csrfToken()
     });
 };
-
-// exports.get_recuperar=(request, respone, next)=>{
-//     response.render('recuperar', response.redirect('/recuperar'),{
-//         username: request.session.NombreUsuario || '', 
-//         csrfToken: request.csrfToken()
-//     })
-// }

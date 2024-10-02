@@ -1,21 +1,47 @@
 const db = require('../utils/database');
+const bcrypt = require('bcryptjs');
 
 module.exports = class Usuario {
-    constructor(mi_IDUsuario, mi_nombre, mi_password) {
-        this.IDUsuario = mi_IDUsuario;
-        this.NombreUsuario = mi_nombre;
-        this.Contrasenia = mi_password;
+    constructor(miNombreUsuario, miNumTelefono, miFechaNacimiento, miContrasenia, miGenero, miDireccion, miCiudad, miEstado, miTipoRol) {
+        this.NombreUsuario = miNombreUsuario;
+	this.NumTelefono = miNumTelefono;
+	this.FechaNacimiento = miFechaNacimiento    
+        this.Contrasenia = miContrasenia;
+	this.Genero = miGenero ;
+	this.Direccion = miDireccion ;
+	this.Ciudad = miCiudad ;
+	this.Estado = miEstado;
+	this.TipoRol = miTipoRol || null;
     }
 
-    static fetchOneByTelefono(telefono) {
-        return db.execute('SELECT IDUsuario, NombreUsuario, Contrasenia FROM usuario WHERE NumTelefono = ?', [telefono]);
+    save() {
+	let IDUsuario
+	return bcrypt.hash(this.Contrasenia, 12)
+            .then((Contrasenia_cifrada) => {
+                return db.execute(
+                    'INSERT INTO Usuario(NombreUsuario, NumTelefono, FechaNacimiento, Contrasenia, Genero, Direccion, Ciudad, Estado) VALUES (?,?,?,?,?,?,?,?)',
+                 [this.NombreUsuario, this.NumTelefono, this.FechaNacimiento, Contrasenia_cifrada,
+	         this.Genero, this.Direccion, this.Ciudad, this.Estado]);
+	})
+	.then(([result]) => {
+            IDUsuario = result.insertId;
+            return db.execute('SELECT IDRol FROM Rol WHERE TipoRol = ?',[this.TipoRol]);
+	})
+        .then(([rows]) => {
+            if (rows.length > 0) {
+               const IDRol = rows[0].IDRol;                    
+	       return db.execute(
+		   'INSERT INTO UsuarioRol(IDUsuario, IDRol) VALUES (?,?)',
+		    [IDUsuario, IDRol]);
+               } else {
+                   throw new Error('El rol especificado no existe');
+               }
+            })
+            .catch(error => console.log(error));
     }
 
-    static create(usuarioData) {
-        return db.execute(
-            'INSERT INTO usuario (NombreUsuario, NumTelefono, Contrasenia) VALUES (?, ?, ?)',
-            [usuarioData.NombreUsuario, usuarioData.telefono, usuarioData.Contrasenia]
-        );
+    static fetchOneByTelefono(NumTelefono) {
+        return db.execute('SELECT IDUsuario, NombreUsuario, Contrasenia FROM usuario WHERE NumTelefono = ?',[NumTelefono]);
     }
 
     static getPrivilegios(IDUsuario) {
@@ -29,4 +55,4 @@ module.exports = class Usuario {
             WHERE u.IDUsuario = ?
         `, [IDUsuario]);
     }
-};
+}
