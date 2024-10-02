@@ -55,4 +55,15 @@ module.exports = class Usuario {
             WHERE u.IDUsuario = ?
         `, [IDUsuario]);
     }
+
+    //actualizar la contraseña de un usuario
+    static actualizarContrasena(IDUsuario, nuevaContrasenia) {
+        return bcrypt.hash(nuevaContrasenia, 12)
+            .then((Contrasenia_cifrada) => {
+                return db.execute('UPDATE usuario SET Contrasenia = ? WHERE IDUsuario = ?', [Contrasenia_cifrada, IDUsuario]);
+            })
+            .catch(error => console.log(error));
+    }
 }
+
+

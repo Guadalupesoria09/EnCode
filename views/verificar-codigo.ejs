@@ -1,0 +1,15 @@
+<%- include('includes/head.ejs') %>
+
+<form>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <h1>Verificar Código</h1>
+
+    <form action="/verificar-codigo" method="POST">
+        <label for="codigo">Introduce el código que recibiste:</label>
+        <input type="text" id="codigo" name="codigo" required>
+        <button type="submit">Verificar Código</button>
+    </form>
+
+</form>
+
+<%- include('includes/foot.ejs') %>
