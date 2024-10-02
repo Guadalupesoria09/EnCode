@@ -16,4 +16,5 @@ module.exports = class Sucursal {
         'INSERT INTO Sucursal (Direccion, CP, Ciudad, Estado, NumSucursal, NombreSucursal) VALUES(?,?,?,?,?,?)',
 	[this.Direccion, this.CP, this.Ciudad, this.Estado, this.NumSucursal, this.NombreSucursal]);
     }
+   
 }

@@ -1,69 +1,62 @@
 <%- include('includes/head.ejs') %>
-
-<form action="/sucursales" method="POST">
-<section class="section">
-    <div class="container">
-        <h1 class="title has-text-centered">SUCURSALES</h1>
-        <div class="columns is-multiline">
-            <!-- Sucursal 1 -->
-            <div class="column is-half">
-                <div class="card">
-                    <header class="card-header">
-                      <p class="card-header-title">Sucursal XXXX</p>
-                      <button class="card-header-icon" aria-label="more options">
-                        <span class="icon is-medium">
-                          <img src="https://www.creativefabrica.com/wp-content/uploads/2021/04/05/Photo-Image-Icon-Graphics-10388619-1-1-580x386.jpg" aria-hidden="true"></i>
-                        </span>
-                      </button>
-                    </header>
-                    <div class="card-content">
-                      <div class="content">
-                        Dirección: ""
-                        <br>
-                        Número: ""
-                        <br>
-                      </div>
-                    </div>
-                    <footer class="card-footer">
-                      <a href="#" class="card-footer-item">Editar</a>
-                      <a href="#" class="card-footer-item">Eliminar</a>
-                    </footer>
-                  </div>
-            </div>
-
-            <!-- Repite el código para cada sucursal -->
-            <div class="column is-half">
-                <div class="card">
-                    <header class="card-header">
-                      <p class="card-header-title">Sucursal XXXX</p>
-                      <button class="card-header-icon" aria-label="more options">
-                        <span class="icon is-medium">
-                            <img src="https://www.creativefabrica.com/wp-content/uploads/2021/04/05/Photo-Image-Icon-Graphics-10388619-1-1-580x386.jpg" aria-hidden="true"></i>
-                          </span>
-                      </button>
-                    </header>
-                    <div class="card-content">
-                      <div class="content">
-                        Dirección: ""
-                        <br>
-                        Número: ""
-                        <br>
-                      </div>
-                    </div>
-                    <footer class="card-footer">
-                      <a href="#" class="card-footer-item">Editar</a>
-                      <a href="#" class="card-footer-item">Eliminar</a>
-                    </footer>
-                  </div>
-            </div>
-
-            <!-- Añade más sucursales según sea necesario -->
-        </div>
-        <div class="control has-text-centered">
-            <a href="/sucur/registrarSucursal" class="button agregar-btn is-link">AGREGAR MÁS</a>
-        </div>
+<h1 class="title has-text-centered">SUCURSALES</h1>
+<% if (mensaje && mensaje.trim() !== '') { %>
+    <div class="notification is-link">
+        <button class="delete"></button>
+        <%= mensaje %>
     </div>
-</section>
-</form>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                const $notification = $delete.parentNode;
 
+                $delete.addEventListener('click', () => {
+                    $notification.parentNode.removeChild($notification);
+                });
+            });
+        });
+    </script>
+<% } %>
+
+<div class="control has-text-centered">
+    <a href="/sucur/registrarSucursales" class="button agregar-btn is-link">AGREGAR MÁS</a>
+</div>
+<br>
+<div class="columns is-multiline">
+    <% for (sucursal of sucursales) { %>
+        <div class="column is-half">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title"><%= sucursal.NombreSucursal %></p>
+                    <button class="card-header-icon" aria-label="more options">
+                        <span class="icon">
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <strong>Dueño:</strong>
+                        <% if (sucursal.NombreUsuario.length == 0) { %> 'Sin Dueño' <% } %>
+                        <% for (let usuarios of sucursal.NombreUsuario) { %>
+                            <ul>
+                               <li><%= usuarios.NombreUsuario %></li>
+                            </ul>
+                        <% } %> 
+                        <strong>Número:</strong> <%= sucursal.NumSucursal %><br>
+                        <strong>Ciudad:</strong> <%= sucursal.Ciudad %><br>
+                        <strong>Estado:</strong> <%= sucursal.Estado %><br>
+                        <strong>Dirección:</strong> <%= sucursal.Direccion %><br>
+                        <strong>CP:</strong> <%= sucursal.CP %>
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <a href="/sucur/editarSucursal/<%= sucursal.IDSucursal %>" class="card-footer-item">Editar</a>
+                    <a href="/sucur/eliminarSucursal/<%= sucursal.IDSucursal %>" class="card-footer-item" onclick="return confirm('¿Estás seguro de que deseas eliminar esta sucursal?');">Eliminar</a>
+                </footer>
+            </div>
+        </div>
+        <% } %>
+   </div>
 <%- include('includes/foot.ejs') %>
+
