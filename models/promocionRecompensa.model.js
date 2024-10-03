@@ -18,21 +18,7 @@ module.exports = class promoRecomp {
             FROM promocionrecompensa pr, promocion p
             WHERE pr.IDPromocion = p.IDPromocion`);
     }
-
-
-    static fetchIDPromo(){
-        return db.execute(
-            `SELECT IDPromocion
-            FROM promocionrecompensa`);
-    }
-
-    static fetchIDRecomp(){
-        return db.execute(
-            `SELECT IDRecompensa
-            FROM promocionrecompensa`);
-    }
     
-
     static fetchAllnombreR(idPromo) {
         return db.execute(
             `SELECT
@@ -46,10 +32,21 @@ module.exports = class promoRecomp {
         );
     }
 
+    static fetchPromoRecomp(idPromo){
+        return db.execute(`SELECT p.IDPromocion, NombrePromocion, FechaInicio, FechaCaducidad, Estatus, Valor
+                            FROM promocionrecompensa pr, promocion p
+                            WHERE pr.IDPromocion = ?`, [idPromo]);
+
+    }
+
     static fetchOne(IDpromorecomp) {
         return db.execute('SELECT * FROM promocionrecompensa WHERE IDPromocionRecompensa = ?', [IDpromorecomp]);
     }
     
+    static fetchIDPR(idPromo) {
+        return db.execute('SELECT IDPromocionRecompensa FROM promocionrecompensa WHERE IDPromocion = ?', [idPromo])
+    }
+
     static fetch(IDpromorecomp) {
         if (IDpromorecomp) {
             return this.fetchOne(IDpromorecomp);
@@ -57,13 +54,8 @@ module.exports = class promoRecomp {
             return this.fetchAll();
         }
     }   
-    
-    static compare(idpromocion){
-        return db.execute(`
-            SELECT IDRecompensa 
-            FROM promocionrecompensa pr INNER JOIN promocion p 
-            WHERE pr.IDPromocion = p.IDPromocion = ?; 
-            `
-        )
+
+    static deletePromo(idPromorecomp){
+        return db.execute(`DELETE FROM promocionrecompensa WHERE promocionrecompensa.IDPromocionRecompensa = ?`, [idPromorecomp]);
     }
 }

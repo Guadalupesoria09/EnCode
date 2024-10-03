@@ -21,8 +21,8 @@
   <% if (editar) { %>
     <div class="columns">
       <div class="column">
-      <form class="box has-text-centered" action="/promo/editarPromo:id" method="POST">
-      <input type="hidden" id="id" name="id" value="<%= promocion.id %>">
+      <form class="box has-text-centered" action="/promo/editarPromo" method="POST">
+      <input type="hidden" id="id" name="id" value="<%= promocion.IDPromocion %>">
   <% } else { %>
     <div class="columns">
       <div class="column">
@@ -76,7 +76,9 @@
             <div class="select">
               <select id="recompensa" name="recompensa" required>
                 <% for(recompensa of recompensas) { %> 
-                  <option value="<%= recompensa.IDRecompensa %>"><%= recompensa.NombreRecompensa %></option>
+                  <option value="<%= recompensa.IDRecompensa %>" <% if (promocion.recompensas == recompensa.NombreRecompensa) { %>selected<% } %>>
+                    <%= recompensa.NombreRecompensa %>
+                  </option>
               <% } %>
               </select>
             </div>

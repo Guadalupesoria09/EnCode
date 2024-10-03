@@ -34,4 +34,15 @@ module.exports = class Recompensas {
             return this.fetchAll();
         }
     }    
+
+    static edit(idRecompensa, nuevoNombreRecomp) {
+        return db.execute(`
+            UPDATE recompensa SET NombreRecompensa = ?
+            WHERE IDRecompensa = ?`, 
+            [nuevoNombreRecomp, idRecompensa]);
+    }
+
+    static delete(idRecompensa){
+        return db.execute(`DELETE FROM recompensa WHERE recompensa.IDRecompensa = ?`, [idRecompensa]);
+    }
 }
