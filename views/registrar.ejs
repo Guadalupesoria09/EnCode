@@ -6,14 +6,29 @@
         <div class="field">
             <label class="label" for="Nombre">Nombre</label>
             <div class="control">
-                <input id="NombreUsuario" name="NombreUsuario" class="input" type="text" placeholder="DUPER REWARDS" required>
+                <input id="NombreUsuario" name="NombreUsuario" class="input" type="text" placeholder="Ricardo Cortés Espinosa" required>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label" for="NombreSucursal">Sucursal</label>
+            <div class="control">
+                <div class="select">
+                    <select id="NombreSucursal" name="NombreSucursal" required>
+                        <% for(sucursal of sucursales) { %> 
+                            <option value="<%= sucursal.NombreSucursal %>" <% if (sucursal.NombreSucursal == sucursal.NombreSucursal ) { %>selected<% } %>>
+                            <%= sucursal.NombreSucursal %>
+                            </option>
+                         <% } %>
+                  </select>
+                </div>
             </div>
         </div>
 
         <div class="field">
             <label class="label" for="Telefono">Telefono</label>
             <div class="control">
-                <input id="NumTelefono" name="NumTelefono" class="input" type="number" placeholder="DUPER REWARDS" required> 
+                <input id="NumTelefono" name="NumTelefono" class="input" type="number" placeholder="+52 442 238 3100" required> 
             </div>
         </div>
 

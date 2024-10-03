@@ -32,7 +32,7 @@
     "mysql2": "^3.11.3",
     "node": "^22.9.0",
     "nodemon": "^3.1.6",
-    "twilio": "^5.3.2",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "twilio": "^5.3.2"
   }
 }
