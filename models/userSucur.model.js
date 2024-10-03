@@ -4,9 +4,7 @@ module.exports = class UserSucur{
 
 	static fetchAll(){
             return db.execute(`
-                SELECT DISTINCT s.IDSucursal, NombreSucursal, NumSucursal, Ciudad, Estado, Direccion, CP
-                FROM Pertenece pe, Sucursal s
-                WHERE pe.IDSucursal = s.IDSucursal;`);
+                SELECT * FROM Sucursal ;`);
 	}
 
 	static fetchDuenos(IDSucursal){
@@ -18,6 +16,12 @@ module.exports = class UserSucur{
                 INNER JOIN Rol ON UsuarioRol.IDRol = Rol.IDRol
                 WHERE Rol.TipoRol = 'Dueño' AND Pertenece.IDSucursal = ?`,[IDSucursal]); 
 
+	}
+ 
+        save(){
+            return db.execute(
+	    'INSERT INTO Pertenece(IDUsuario, IDSucursal VALUES (?,?)',
+            [IDUsuario, IDSucursal]);
 	}
 
 }

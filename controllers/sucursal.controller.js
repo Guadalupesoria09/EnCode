@@ -2,8 +2,7 @@ const Sucursal = require('../models/sucursal.model');
 const UserSucur = require('../models/userSucur.model');
 
 exports.get_registrarSucursal = (request, response, next) => {
-    response.render('registrarSucursal', {
-        	
+    response.render('registrarSucursal', {	
         username: request.session.NombreUsuario ||'',
         csrfToken: request.csrfToken(),
     });
@@ -14,9 +13,12 @@ exports.post_registrarSucursal = (request, response, next) => {
     const sucursal = new Sucursal(request.body.Direccion, request.body.CP, request.body.Ciudad,
 	request.body.Estado, request.body.NumSucursal, request.body.NombreSucursal);
      
-    request.session.sucursal = sucursal;
-    response.redirect('/registrar');
-		
+   sucursal.save()
+        .then(() => { 
+            response.redirect('/registrar');
+	}).catch((error) => {
+            console.log(error);
+        });
 };
 
 exports.get_sucursales = (request, response, next) => {
