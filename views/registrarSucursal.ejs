@@ -2,6 +2,27 @@
 <h1 class="title has-text-centered">AGREGAR SUCURSALES</h1>
 <form action="/sucur/registrarSucursal" method="POST">
 <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+
+
+<% if (mensaje && mensaje.trim() !== '') { %>
+    <div class="notification is-link">
+        <button class="delete"></button>
+        <%= mensaje %>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                const $notification = $delete.parentNode;
+
+                $delete.addEventListener('click', () => {
+                    $notification.parentNode.removeChild($notification);
+                });
+            });
+        });
+    </script>
+<% } %>
+
+
     <div class="box">
         <div class="field">
             <label class="label" for="Nombre">Nombre</label>

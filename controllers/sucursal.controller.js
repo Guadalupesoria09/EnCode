@@ -1,23 +1,34 @@
 const Sucursal = require('../models/sucursal.model');
 const UserSucur = require('../models/userSucur.model');
 
-exports.get_registrarSucursal = (request, response, next) => {
-    response.render('registrarSucursal', {	
+exports.get_registrarSucursal = (request, response, next) => { 
+
+    let mensaje = request.session.mensaje || '';
+
+    if (request.session.mensaje) {
+        request.session.mensaje = '';
+    }	
+
+    response.render('registrarSucursal', {
+        mensaje:mensaje,
         username: request.session.NombreUsuario ||'',
         csrfToken: request.csrfToken(),
     });
 };
 
 exports.post_registrarSucursal = (request, response, next) => {
-    console.log(request.body);
     const sucursal = new Sucursal(request.body.Direccion, request.body.CP, request.body.Ciudad,
 	request.body.Estado, request.body.NumSucursal, request.body.NombreSucursal);
      
    sucursal.save()
-        .then(() => { 
+        .then(() => {
+	    request.session.mensaje = 'Sucursal creada';
             response.redirect('/registrar');
+	
 	}).catch((error) => {
-            console.log(error);
+	    console.log(error);	
+	    request.session.mensaje = 'El nombre de la sucursal que intenta registrar ya existe';	
+            reponse.redirect('registrarSucursal')
         });
 };
 
