@@ -53,14 +53,14 @@
         <div class="field has-text-left">
           <label for="valor" class="label">Valor</label>
           <div class="control">
-            <input class="input" id="valor" name="valor" type="number" placeholder="2" value="<% if (editar) { %> <%= promociones.Valor %> <% } %>"required/>
+            <input class="input" id="valor" name="valor" type="number" placeholder="2" value="<% if (editar) { %> <%= promociones.Valor %> <% } %>" required/>
           </div>
         </div>
         <div class="field has-text-left">
           <label class="label" for="estatus">Estatus</label>
           <div class="control">
             <div class="select">
-              <select id="estatus" name="estatus" value="<% if (editar) { %> <%= promociones.Estatus %> <% } %>"required>
+              <select id="estatus" name="estatus" value="<% if (editar) { %> <%= promociones.Estatus %> <% } %>" required>
                   <option id="Activo">Activo</option>
                   <option id="Inhabilitado">Inhabilitado</option>
                   <option id="Bloqueado">Bloqueado</option>
@@ -76,7 +76,7 @@
             <div class="select">
               <select id="recompensa" name="recompensa" required>
                 <% for(recompensa of recompensas) { %> 
-                  <option value="<%= recompensa.IDRecompensa %>" <% if (promocion.recompensas == recompensa.NombreRecompensa) { %>selected<% } %>>
+                  <option value="<%= recompensa.IDRecompensa %> <% if (editar) { %> <%= promociones.recompensas %> <% } %>">
                     <%= recompensa.NombreRecompensa %>
                   </option>
               <% } %>

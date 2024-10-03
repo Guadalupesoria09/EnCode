@@ -153,16 +153,11 @@ exports.post_promo = (request, response, next) => {
 
 exports.get_deletePromo = (request, response, next) => {
     const id = request.params.id;
-
-    PromoRecomp.fetchIDPR(id).then(async ([promociones, fieldData]) => {
-        for (let promo of promociones) {
-            await PromoRecomp.deletePromo(promo.IDPromocionRecompensa);
-        }
-        Promociones.deletePromo(id).then(() => {
+   
+    Promociones.deletePromo(id).then(() => {
             request.session.mensaje = "Promocion eliminada";
             return response.redirect('/promo/promociones');
-        })
-    }).catch((error) => {
+        }).catch((error) => {
         console.log(error);
     });
 }
@@ -175,7 +170,6 @@ exports.get_tarjeta = (request, response, next) => {
         csrfToken: request.csrfToken(),
     });  
 };
-
 
 // METHODS GET & POST RECOMPENSAS
 exports.get_editarRecompensa = (request, response, next) => {

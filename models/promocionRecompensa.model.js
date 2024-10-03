@@ -14,9 +14,9 @@ module.exports = class promoRecomp {
 
     static fetchAll() {
         return db.execute(
-            `SELECT DISTINCT p.IDPromocion, NombrePromocion, FechaInicio, FechaCaducidad, Estatus, Valor
+            `SELECT DISTINCT p.IDPromocion, NombrePromocion, FechaInicio, FechaCaducidad, Estatus, Valor, deleted_at
             FROM promocionrecompensa pr, promocion p
-            WHERE pr.IDPromocion = p.IDPromocion`);
+            WHERE pr.IDPromocion = p.IDPromocion  AND deleted_at IS NULL`);
     }
     
     static fetchAllnombreR(idPromo) {
@@ -55,7 +55,5 @@ module.exports = class promoRecomp {
         }
     }   
 
-    static deletePromo(idPromorecomp){
-        return db.execute(`DELETE FROM promocionrecompensa WHERE promocionrecompensa.IDPromocionRecompensa = ?`, [idPromorecomp]);
-    }
+    
 }

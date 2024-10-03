@@ -57,7 +57,7 @@ module.exports = class Promociones {
     }
 
     static deletePromo(idPromocion){
-        return db.execute(`DELETE FROM promocion WHERE promocion.IDPromocion = ?`, [idPromocion]);
+        return db.execute(`UPDATE promocion SET deleted_at = CURRENT_TIMESTAMP WHERE IDPromocion = ?`, [idPromocion]);
     };
     
 }
