@@ -1,26 +1,29 @@
 const bcrypt = require('bcryptjs');
 const Usuario = require('../models/usuarios.model');
 const { userInfo } = require('os');
-
 const twilio = require('twilio');
 const { request } = require('http');
 const client = new twilio(process.env.TWILIO_ACCOUNT_SID,process.env.TWILIO_AUTH_TOKEN);
-
+const UserSucur = require('../models/userSucur.model');
 
 // Controlador para mostrar la página de registro
 exports.get_register = (request, response, next) => {
-    response.render('registrar',{
-        telefono: request.session.telefono ||'',
-        username: request.session.NombreUsuario || '',  
-        csrfToken: request.csrfToken()
+
+    UserSucur.fetchAll().then(([sucursales, fieldData]) =>{
+        response.render('registrar',{
+	    sucursales: sucursales,
+            telefono: request.session.telefono ||'',
+            username: request.session.NombreUsuario || '',  
+            csrfToken: request.csrfToken()
+        });
     }); 
 };
 
-exports.post_register = (request, response, next) => {
+exports.post_register = (request, response, next) => { 
     const nuevo_usuario = new Usuario(
-	request.body.NombreUsuario, request.body.NumTelefono, request.body.FechaNacimiento, request.body.Contrasenia,
-        request.body.Genero, request.body.Direccion, request.body.Ciudad, request.body.Estado, request.body.TipoRol);
-  
+	request.body.NombreUsuario, request.body.NumTelefono, request.body.FechaNacimiento,
+	request.body.Contrasenia,request.body.Genero, request.body.Direccion, request.body.Ciudad,
+	request.body.Estado, request.body.TipoRol, request.body.NombreSucursal);
     nuevo_usuario.save().then(() => {
 	return response.redirect('/sucur/sucursales');
     }).catch((error) => {
