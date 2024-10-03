@@ -50,11 +50,14 @@ exports.post_login = (request, response, next) => {
                             request.session.isLoggedIn = true;
                             request.session.NombreUsuario = usuario[0].NombreUsuario;
                             request.session.IDUsuario = usuario[0].IDUsuario;
-
+                            console.log('ID de usuario:', usuario[0].IDUsuario);
+                            
                             // Obtener privilegios del usuario
                             Usuario.getPrivilegios(usuario[0].IDUsuario)
                                 .then(([privilegios, fieldData]) => {
                                     request.session.privilegios = privilegios;
+                                    console.log('Usuario privilegios: ', privilegios);
+
                                     return request.session.save(err => {
                                         response.redirect('/home');
                                     });
@@ -93,9 +96,9 @@ exports.get_home = (request, response, next) => {
     response.render('home', { 
         username: request.session.NombreUsuario || '', 
         csrfToken: request.csrfToken(),
-        mensaje: request.session.mensaje || ''  
-        
+        mensaje: request.session.mensaje || ''        
     });
+    // console.log('Roles:', Usuario.getPrivilegios())
 };
 
 exports.get_recuperar = (request, response, next) => {
@@ -108,7 +111,7 @@ exports.get_recuperar = (request, response, next) => {
 
 
 exports.post_codigo = (request, response, next) => {
-    let telefono = request.body.telefono;
+    const telefono = request.body.telefono;
     console.log('Número de teléfono recibido:', telefono);
 
     //Limpiar el número de teléfono, eliminar espacios en blanco
