@@ -32,7 +32,7 @@ exports.getEstadisticas = (request, response) => {
     ];
 
     // Renderiza la vista 'estadisticas' y pasa los datos a la plantilla
-    res.render('estadisticas', {
+    response.render('estadisticas', {
         ventasTotales: ventasTotales,
         productosPopulares: JSON.stringify(productosPopulares),
         ingresosPorMes: JSON.stringify(ingresosPorMes),
@@ -42,8 +42,8 @@ exports.getEstadisticas = (request, response) => {
 };
 
 // Controlador para /estadisticasRewards
-exports.getEstadisticasRewards = (request, res) => {
-    res.render('estadisticasRewards', {
+exports.getEstadisticasRewards = (request, response) => {
+    response.render('estadisticasRewards', {
         username: request.session.NombreUsuario || '',  
         csrfToken: request.csrfToken(),
         datosEjemplo: datosEjemplo,

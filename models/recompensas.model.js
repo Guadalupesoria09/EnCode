@@ -14,7 +14,8 @@ module.exports = class Recompensas {
     static fetchAll() {
         return db.execute(
             `SELECT *
-            FROM recompensa`);
+            FROM recompensa 
+            WHERE deleted_at IS NULL`);
     }
 
     static fetchID(){
@@ -43,6 +44,6 @@ module.exports = class Recompensas {
     }
 
     static delete(idRecompensa){
-        return db.execute(`DELETE FROM recompensa WHERE recompensa.IDRecompensa = ?`, [idRecompensa]);
+        return db.execute(`UPDATE recompensa SET deleted_at = CURRENT_TIMESTAMP WHERE IDRecompensa = ?`, [idRecompensa]);
     }
 }
