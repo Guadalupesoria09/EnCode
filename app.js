@@ -52,6 +52,9 @@ app.use('/sucur', sucursalesRoutes);
 const promocionesRoutes = require('./routes/promociones.routes');
 app.use('/promo', promocionesRoutes);
 
+const configuracionRoutes = require('./routes/configuracion.routes');
+app.use('/config', configuracionRoutes);
+
 const usuariosRoutes = require('./routes/usuarios.routes');
 app.use('/',usuariosRoutes);
 
