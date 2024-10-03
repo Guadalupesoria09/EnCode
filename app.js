@@ -1,10 +1,14 @@
 const express = require('express');
 const app = express();
 
+const favicon = require('serve-favicon');
+
 const path = require('path');
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 app.use('/CSS', express.static(path.resolve(__dirname, "public/CSS")));
 app.use('/logoDuper', express.static(path.resolve(__dirname, "public/logoDuper")));
