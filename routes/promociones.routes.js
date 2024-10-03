@@ -8,8 +8,6 @@ const promociones_controller = require('../controllers/promociones.controller');
 //rutas crear promocion
 router.get('/promociones', isAuth, promociones_controller.get_promo);
 router.post('/promociones', isAuth, promociones_controller.post_promo);
-router.get('/promociones', isAuth, promociones_controller.get_promo);
-router.post('/promociones', isAuth, promociones_controller.post_promo);
 router.get('/crearPromociones', isAuth, promociones_controller.get_crear);
 router.post('/crearPromociones', isAuth, promociones_controller.post_crear);
 router.get('/editarPromo/:id', isAuth, promociones_controller.get_editarPromo);

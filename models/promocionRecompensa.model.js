@@ -33,9 +33,9 @@ module.exports = class promoRecomp {
     }
 
     static fetchPromoRecomp(idPromo){
-        return db.execute(`SELECT p.IDPromocion, NombrePromocion, FechaInicio, FechaCaducidad, Estatus, Valor
-                            FROM promocionrecompensa pr, promocion p
-                            WHERE pr.IDPromocion = ?`, [idPromo]);
+        return db.execute(`SELECT DISTINCT p.IDPromocion, NombrePromocion, FechaInicio, FechaCaducidad, Estatus, Valor 
+                FROM promocionrecompensa pr, promocion p WHERE pr.IDPromocion = p.IDPromocion 
+                AND pr.IDPromocion = ?`, [idPromo]);
 
     }
 
