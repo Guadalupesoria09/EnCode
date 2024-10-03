@@ -55,4 +55,9 @@ module.exports = class Promociones {
             WHERE IDPromocion = ?`, 
             [nuevoNombrePromo, nuevoFechaInicio, nuevoFechaFin,nuevoValor,nuevoEstatus, idPromocion]);
     }
+
+    static deletePromo(idPromocion){
+        return db.execute(`DELETE FROM promocion WHERE promocion.IDPromocion = ?`, [idPromocion]);
+    };
+    
 }
