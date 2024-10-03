@@ -3,6 +3,7 @@ const Usuario = require('../models/usuarios.model');
 const { userInfo } = require('os');
 
 const twilio = require('twilio');
+const { request } = require('http');
 const client = new twilio(process.env.TWILIO_ACCOUNT_SID,process.env.TWILIO_AUTH_TOKEN);
 
 
@@ -26,6 +27,14 @@ exports.post_register = (request, response, next) => {
        console.log(error);
     });
 };
+
+exports.get_root = (request, response, next) => {
+    response. render('login',{
+    csrfToken: request.csrfToken(),
+    mensaje: request.session.mensaje || ''  
+    });
+};
+
 
 exports.get_login = (request, response, next) => {
     response.render('login', {

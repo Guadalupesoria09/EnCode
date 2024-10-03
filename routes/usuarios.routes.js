@@ -18,4 +18,7 @@ router.get('/recuperar',users_controller.get_recuperar);
 router.post('/enviar-codigo', users_controller.post_codigo);
 
 router.get('/verificar-codigo', users_controller.get_verificar_codigo);
+
+router.get('/', users_controller.get_root);
+
 module.exports = router;
