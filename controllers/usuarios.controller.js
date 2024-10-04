@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const Usuario = require('../models/usuarios.model');
 const { userInfo } = require('os');
+
 const twilio = require('twilio');
 const { request } = require('http');
 const client = new twilio(process.env.TWILIO_ACCOUNT_SID,process.env.TWILIO_AUTH_TOKEN);
@@ -14,7 +15,8 @@ exports.get_register = (request, response, next) => {
 	    sucursales: sucursales,
             telefono: request.session.telefono ||'',
             username: request.session.NombreUsuario || '',  
-            csrfToken: request.csrfToken()
+            csrfToken: request.csrfToken(),
+            editar: true
         });
     }); 
 };
@@ -30,6 +32,59 @@ exports.post_register = (request, response, next) => {
        console.log(error);
     });
 };
+
+// Controlador para listar usuarios de una sucursal
+exports.get_usuariosDeSucursal = (request, response, next) => {
+    const IDSucursal = request.params.IDSucursal;
+    UserSucur.fetchAllUsuario(IDSucursal).then(async([usuarios, fieldData]) => {
+
+        return response.render('listarUsuarios', {
+            usuarios: usuarios,
+            username: request.session.NombreUsuario || '', 
+            csrfToken: request.csrfToken()
+        });
+    })
+        .catch(err => {
+            console.log('Error al obtener usuarios de la sucursal:', err);
+            response.redirect('/sucur/sucursales');
+        });
+};
+
+
+
+//Controlador para la edición
+exports.get_editarUsuario = (request, response, next) => {
+    const IDUsuario = request.params.IDUsuario;
+    Usuario.fetchOneByTelefono(IDUsuario)
+        .then(([usuario]) => {
+            response.render('editarUsuarios', {
+                usuario: usuario[0],
+                username: request.session.NombreUsuario ||'',
+                csrfToken: request.csrfToken(),
+                editar: true
+            });
+        })
+        .catch(err => {
+            console.log('Error al cargar los datos del usuario:', err);
+            response.redirect('/sucur/sucursales');
+        });
+};
+
+//Controlador para guardar los cambios del usuario
+exports.post_editarUsuario = (request, response, next) => {
+    const IDUsuario = request.body.IDUsuario;
+    const { NombreUsuario, NumTelefono, FechaNacimiento, Contrasenia, Genero, Direccion, Ciudad, Estado, TipoRol, NombreSucursal } = request.body;
+    
+    Usuario.actualizarUsuario(IDUsuario, NombreUsuario, NumTelefono, FechaNacimiento, Contrasenia, Genero, Direccion, Ciudad, Estado, TipoRol, NombreSucursal)
+        .then(() => {
+            response.redirect('/sucur/sucursales');
+        })
+        .catch(err => {
+            console.log('Error al actualizar los datos del usuario:', err);
+            response.redirect(`/editar/${IDUsuario}`);
+        });
+};
+
 
 exports.get_root = (request, response, next) => {
     response. render('login',{

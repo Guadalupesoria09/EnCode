@@ -1,0 +1,26 @@
+<%- include('includes/head.ejs') %>
+<body>
+    <h2>Usuarios en la Sucursal</h2>
+    
+    <ul>
+        <div class="columns is-multiline">
+        <% for (usuario of usuarios) { %>
+            <div class="column is-narrow">
+                <div class="box" >
+                    <li>
+                        <strong>Nombre:</strong> <%= usuario.NombreUsuario %><br>
+                        <strong>Rol:</strong> <%= usuario.TipoRol %><br><br>
+
+                        <a href="/editar/<%= usuarios.IDSUsuario %>" class="button is-link">Editar</a>
+                    </li>
+                <br>
+                </div>
+            </div>
+        <% }; %>
+        </div>
+    </ul>
+    <br><br>
+    <a href="/sucur/sucursales" class="button is-warning">Regresar a Sucursales</a>
+</body>
+<%- include('includes/foot.ejs') %>
+
