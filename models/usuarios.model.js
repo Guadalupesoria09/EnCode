@@ -41,7 +41,6 @@ module.exports = class Usuario {
                 }
             })
             .then(() => {
-		console.log('NombreSucursal a buscar:', this.NombreSucursal);
                 return db.execute('SELECT IDSucursal FROM Sucursal WHERE NombreSucursal = ?', [this.NombreSucursal]);
             })
             .then(([rows]) => {
@@ -61,7 +60,16 @@ module.exports = class Usuario {
     static fetchOneByTelefono(NumTelefono) {
         return db.execute('SELECT IDUsuario, NombreUsuario, Contrasenia FROM usuario WHERE NumTelefono = ?',[NumTelefono]);
     }
-
+    
+    static fetchOneByID(IDUsuario) {
+        return db.execute(`
+            SELECT u.IDUsuario, u.NombreUsuario, u.NumTelefono, u.FechaNacimiento, u.Genero, u.Direccion, u.Ciudad, u.Estado, r.TipoRol
+            FROM usuario u
+            INNER JOIN UsuarioRol ur ON u.IDUsuario = ur.IDUsuario
+            INNER JOIN Rol r ON ur.IDRol = r.IDRol
+            WHERE u.IDUsuario = ?`, [IDUsuario]);
+    }
+ 
     static getPrivilegios(IDUsuario) {
         return db.execute(`
             SELECT Actividad as Privilegio 
@@ -82,6 +90,44 @@ module.exports = class Usuario {
             })
             .catch(error => console.log(error));
     }
+
+    static update(IDUsuario, NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado, Rol) {
+        return db.execute(`
+            UPDATE usuario 
+            SET NombreUsuario = ?, NumTelefono = ?, FechaNacimiento = ?, Genero = ?, Direccion = ?, Ciudad = ?, Estado = ?
+            WHERE IDUsuario = ?`, 
+            [NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado, IDUsuario]);
+    }
+    
+    
+    static updateSucursal(IDUsuario, IDSucursal) {
+        return db.execute(`
+            UPDATE pertenece 
+            SET IDSucursal = ?
+            WHERE IDUsuario = ?`, 
+            [IDSucursal, IDUsuario]);
+    }
+    
+    static updateRol(IDUsuario, IDRol) {
+    return db.execute(`
+        UPDATE usuarioRol 
+        SET IDRol = ?
+        WHERE IDUsuario = ?`, 
+        [IDRol, IDUsuario]);
+}
+
+    
+    static fetchUsuariosPorSucursal(IDSucursal) {
+        return db.execute(`
+            SELECT Usuario.IDUsuario, Usuario.NombreUsuario, Rol.TipoRol
+            FROM Pertenece
+            INNER JOIN Usuario ON Pertenece.IDUsuario = Usuario.IDUsuario
+            INNER JOIN UsuarioRol ON Usuario.IDUsuario = UsuarioRol.IDUsuario
+            INNER JOIN Rol ON UsuarioRol.IDRol = Rol.IDRol
+            WHERE Pertenece.IDSucursal = ?`, [IDSucursal]);
+    }
+    
+
 }
 
 

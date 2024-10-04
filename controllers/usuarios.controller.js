@@ -15,8 +15,10 @@ exports.get_register = (request, response, next) => {
 	    sucursales: sucursales,
             telefono: request.session.telefono ||'',
             username: request.session.NombreUsuario || '',  
+            usuario: request.session.NombreUsuario || '',
             csrfToken: request.csrfToken(),
-            editar: true
+            editar: false
+
         });
     }); 
 };
@@ -36,54 +38,79 @@ exports.post_register = (request, response, next) => {
 // Controlador para listar usuarios de una sucursal
 exports.get_usuariosDeSucursal = (request, response, next) => {
     const IDSucursal = request.params.IDSucursal;
-    UserSucur.fetchAllUsuario(IDSucursal).then(async([usuarios, fieldData]) => {
-
-        return response.render('listarUsuarios', {
-            usuarios: usuarios,
-            username: request.session.NombreUsuario || '', 
-            csrfToken: request.csrfToken()
-        });
-    })
+    
+    Usuario.fetchUsuariosPorSucursal(IDSucursal)
+        .then(([usuarios]) => {
+            response.render('listarUsuarios', {
+                usuarios: usuarios,
+                username: request.session.NombreUsuario || '',
+                csrfToken: request.csrfToken()
+            });
+        })
         .catch(err => {
             console.log('Error al obtener usuarios de la sucursal:', err);
             response.redirect('/sucur/sucursales');
         });
 };
 
-
-
-//Controlador para la edición
+//editar usuario
 exports.get_editarUsuario = (request, response, next) => {
     const IDUsuario = request.params.IDUsuario;
-    Usuario.fetchOneByTelefono(IDUsuario)
+
+    let usuarioData;
+
+    // Obtener datos del usuario
+    Usuario.fetchOneByID(IDUsuario)
         .then(([usuario]) => {
-            response.render('editarUsuarios', {
-                usuario: usuario[0],
-                username: request.session.NombreUsuario ||'',
+            if (!usuario || usuario.length === 0) {
+                return response.redirect('/error');
+            }
+            usuarioData = usuario[0];
+
+            // Obtener todas las sucursales usando el modelo UserSucur
+            return UserSucur.fetchAll();
+        })
+        .then(([sucursales]) => {
+            response.render('registrar', {
+                usuario: usuarioData,
+                sucursales: sucursales,
+                username: request.session.NombreUsuario || '',
                 csrfToken: request.csrfToken(),
                 editar: true
             });
+            console.log('Datos:', usuarioData)
         })
         .catch(err => {
-            console.log('Error al cargar los datos del usuario:', err);
+            console.log('Error al cargar los datos del usuario o las sucursales:', err);
             response.redirect('/sucur/sucursales');
         });
 };
 
-//Controlador para guardar los cambios del usuario
+//guardar los cambios
 exports.post_editarUsuario = (request, response, next) => {
     const IDUsuario = request.body.IDUsuario;
-    const { NombreUsuario, NumTelefono, FechaNacimiento, Contrasenia, Genero, Direccion, Ciudad, Estado, TipoRol, NombreSucursal } = request.body;
-    
-    Usuario.actualizarUsuario(IDUsuario, NombreUsuario, NumTelefono, FechaNacimiento, Contrasenia, Genero, Direccion, Ciudad, Estado, TipoRol, NombreSucursal)
+    const { NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado, IDSucursal, IDRol } = request.body;
+
+    // Asegurarse de que Rol (IDRol) está presente
+    const rol = IDRol || null;
+
+    // Actualizamos los datos del usuario
+    Usuario.update(IDUsuario, NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado, rol)
         .then(() => {
-            response.redirect('/sucur/sucursales');
+            // Actualizamos la sucursal en la tabla 'pertenece'
+            return Usuario.updateSucursal(IDUsuario, IDSucursal);
+        })
+        .then(() => {
+            request.session.mensaje = 'Usuario y sucursal modificados exitosamente';
+            response.redirect('/sucursales');
         })
         .catch(err => {
-            console.log('Error al actualizar los datos del usuario:', err);
-            response.redirect(`/editar/${IDUsuario}`);
+            console.log('Error al modificar los datos del usuario o la sucursal:', err);
+            response.redirect(`/editarUsuario/${IDUsuario}`);
         });
 };
+
+
 
 
 exports.get_root = (request, response, next) => {

@@ -1,72 +1,53 @@
 <%- include('includes/head.ejs') %>
+<h1 class="title"><%= editar ? 'Editar Usuario' : 'Registro de Usuario'%></h1>
+<form action="<%=editar ? '/editarUsuario' : '/registrar' %>" method="POST">
 
-<% if (editar) { %>
-  <div class="columns">
-    <div class="column">
-    <form class="box has-text-centered" action="/promo/editarUsuario" method="POST">
-    <input type="hidden" id="id" name="id" value="<%= promocion.IDPromocion %>">
-<% } else { %>
-  <div class="columns">
-    <div class="column">
-    <form class="box has-text-centered" action="/promo/crearPromociones" method="POST">
-<% } %>
-
-
-<h1 class="title">Registro de Usuario</h1>
-<form action="/registrar" method="POST">
 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+<% if (editar) { %>
+
+    <input type="hidden" name="IDUsuario" value="<%= usuario.IDUsuario %>">
+<% } %>
     <div class="box">
         <div class="field">
             <label class="label" for="Nombre">Nombre</label>
             <div class="control">
-                <input id="NombreUsuario" name="NombreUsuario" class="input" type="text" placeholder="Ricardo Cortés Espinosa" required>
+                <input id="NombreUsuario" name="NombreUsuario" class="input" type="text" placeholder="Ricardo Cortés Espinosa" value="<%= editar ? usuario.NombreUsuario : '' %>" required>
             </div>
         </div>
 
         <div class="field">
             <label class="label" for="NombreSucursal">Sucursal</label>
             <div class="control">
-                <div class="select">
-                    <select id="NombreSucursal" name="NombreSucursal" required>
-                        <% for(sucursal of sucursales) { %> 
-                            <option value="<%= sucursal.NombreSucursal %>" <% if (sucursal.NombreSucursal == sucursal.NombreSucursal ) { %>selected<% } %>>
-                            <%= sucursal.NombreSucursal %>
-                            </option>
-                         <% } %>
-                  </select>
+                <div class="control">
+                    <div class="select">
+                        <select id="IDSucursal" name="IDSucursal" required>
+                            <% for (let sucursal of sucursales) { %>
+                                <option value="<%= sucursal.IDSucursal %>" <%= sucursal.IDSucursal === usuario.IDSucursal ? 'selected' : '' %>>
+                                    <%= sucursal.NombreSucursal %>
+                                </option>
+                            <% } %>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
 
         <div class="field">
-            <label class="label" for="Telefono">Telefono</label>
+            <label class="label" for="Teléfono">Telefono</label>
             <div class="control">
-                <input id="NumTelefono" name="NumTelefono" class="input" type="number" placeholder="+52 442 238 3100" required> 
-            </div>
-        </div>
-
-        <div class="field">
-            <label class="label" for="Rol">Rol</label>
-            <div class="control">
-                <div class="select is-fullwidth">
-                    <select id="TipoRol" name="TipoRol">
-                        <option>Dueño</option>
-                        <option>Empleado</option>
-                    </select>
-                </div>
+                <input id="NumTelefono" name="NumTelefono" class="input" type="number" placeholder="+52 442 238 3100" value="<%= editar ? usuario.NumTelefono : '' %>" required> 
             </div>
         </div>
 
         <div class="field is-horizontal">
             <div class="field-body">
                 <div class="field">
-                    <label class="label" for="Genero">Genero</label>
+                    <label class="label" for="Genero">Género</label>
                     <div class="control">
                         <div class="select is-fullwidth">
                             <select id="Genero" name="Genero">
-                                <option>Femenino</option>
-                                <option>Masculino</option>
-                                <option>Otro</option>
+                                <option value="Femenino" <%= usuario && usuario.Genero === 'Femenino' ? 'selected' : '' %>>Femenino</option>
+                                <option value="Masculino" <%= usuario && usuario.Genero === 'Masculino' ? 'selected' : '' %>>Masculino</option>
+                                <option value="Otro" <%= usuario && usuario.Genero === 'Otro' ? 'selected' : '' %>>Otro</option>
                             </select>
                         </div>
                     </div>
@@ -75,12 +56,12 @@
                 <div class="field">
                     <label class="label" for="FechaNacimiento">Fecha de nacimiento</label>
                     <div class="control has-icons-right">
-                        <input id="FechaNacimiento" name="FechaNacimiento" class="input" type="date" placeholder="18/07/2023" required>
+                        <input id="FechaNacimiento" name="FechaNacimiento" class="input" type="date" value="<%= usuario.FechaNacimiento %>" required>
                         <span class="icon is-small is-right">
-                             <i class="fas fa-calendar"></i>
+                            <i class="fas fa-calendar"></i>
                         </span>
                     </div>
-                </div>
+                </div>               
             </div>
         </div>
 
@@ -89,71 +70,82 @@
                 <div class="field">
                     <label class="label" for="Ciudad">Ciudad</label>
                     <div class="control">
-                        <input id="Ciudad" name="Ciudad" class="input" type="text" placeholder="Querétaro" required>
+                        <input id="Ciudad" name="Ciudad" class="input" type="text" placeholder="Querétaro" value="<%= editar ? usuario.Ciudad : '' %>" required>
                     </div>
                 </div>
 
                 <div class="field">
-                    <label class="label" for"Estado">Estado</label>
+                    <label class="label" for="Estado">Estado</label>
                     <div class="control">
                         <div class="select is-fullwidth">
-                            <select id="Estado" name="Estado"> 
-		                <option>Aguascalientes</option>
-                                <option>Baja California</option>
-                                <option>Baja California Sur</option>
-                                <option>Campeche</option>
-                                <option>Chiapas</option>
-                                <option>Chihuahua</option>
-                                <option>Ciudad de México</option>
-                                <option>Coahuila</option>
-                                <option>Colima</option>
-                                <option>Durango</option>
-                                <option>Estado de México</option>
-                                <option>Guanajuato</option>
-                                <option>Guerrero</option>
-                                <option>Hidalgo</option>
-                                <option>Jalisco</option>
-                                <option>Michoacán</option>
-                                <option>Morelos</option>
-                                <option>Nayarit</option>
-                                <option>Nuevo León</option>
-                                <option>Oaxaca</option>
-                                <option>Puebla</option>
-                                <option>Querétaro</option>
-                                <option>Quintana Roo</option>
-                                <option>San Luis Potosí</option>
-                                <option>Sinaloa</option>
-                                <option>Sonora</option>
-                                <option>Tabasco</option>
-                                <option>Tamaulipas</option>
-                                <option>Tlaxcala</option>
-                                <option>Veracruz</option>
-                                <option>Yucatán</option>
-                                <option>Zacatecas</option> 
+                            <select id="Estado" name="Estado">
+                                <option value="Aguascalientes" <%= usuario && usuario.Estado === 'Aguascalientes' ? 'selected' : '' %>>Aguascalientes</option>
+                                <option value="Baja California" <%= usuario && usuario.Estado === 'Baja California' ? 'selected' : '' %>>Baja California</option>
+                                <option value="Baja California Sur" <%= usuario && usuario.Estado === 'Baja California Sur' ? 'selected' : '' %>>Baja California Sur</option>
+                                <option value="Campeche" <%= usuario && usuario.Estado === 'Campeche' ? 'selected' : '' %>>Campeche</option>
+                                <option value="Chiapas" <%= usuario && usuario.Estado === 'Chiapas' ? 'selected' : '' %>>Chiapas</option>
+                                <option value="Chihuahua" <%= usuario && usuario.Estado === 'Chihuahua' ? 'selected' : '' %>>Chihuahua</option>
+                                <option value="Coahuila" <%= usuario && usuario.Estado === 'Coahuila' ? 'selected' : '' %>>Coahuila</option>
+                                <option value="Colima" <%= usuario && usuario.Estado === 'Colima' ? 'selected' : '' %>>Colima</option>
+                                <option value="Durango" <%= usuario && usuario.Estado === 'Durango' ? 'selected' : '' %>>Durango</option>
+                                <option value="Guanajuato" <%= usuario && usuario.Estado === 'Guanajuato' ? 'selected' : '' %>>Guanajuato</option>
+                                <option value="Guerrero" <%= usuario && usuario.Estado === 'Guerrero' ? 'selected' : '' %>>Guerrero</option>
+                                <option value="Hidalgo" <%= usuario && usuario.Estado === 'Hidalgo' ? 'selected' : '' %>>Hidalgo</option>
+                                <option value="Jalisco" <%= usuario && usuario.Estado === 'Jalisco' ? 'selected' : '' %>>Jalisco</option>
+                                <option value="Estado de México" <%= usuario && usuario.Estado === 'Estado de México' ? 'selected' : '' %>>Estado de México</option>
+                                <option value="Michoacán" <%= usuario && usuario.Estado === 'Michoacán' ? 'selected' : '' %>>Michoacán</option>
+                                <option value="Morelos" <%= usuario && usuario.Estado === 'Morelos' ? 'selected' : '' %>>Morelos</option>
+                                <option value="Nayarit" <%= usuario && usuario.Estado === 'Nayarit' ? 'selected' : '' %>>Nayarit</option>
+                                <option value="Nuevo León" <%= usuario && usuario.Estado === 'Nuevo León' ? 'selected' : '' %>>Nuevo León</option>
+                                <option value="Oaxaca" <%= usuario && usuario.Estado === 'Oaxaca' ? 'selected' : '' %>>Oaxaca</option>
+                                <option value="Puebla" <%= usuario && usuario.Estado === 'Puebla' ? 'selected' : '' %>>Puebla</option>
+                                <option value="Querétaro" <%= usuario && usuario.Estado === 'Querétaro' ? 'selected' : '' %>>Querétaro</option>
+                                <option value="Quintana Roo" <%= usuario && usuario.Estado === 'Quintana Roo' ? 'selected' : '' %>>Quintana Roo</option>
+                                <option value="San Luis Potosí" <%= usuario && usuario.Estado === 'San Luis Potosí' ? 'selected' : '' %>>San Luis Potosí</option>
+                                <option value="Sinaloa" <%= usuario && usuario.Estado === 'Sinaloa' ? 'selected' : '' %>>Sinaloa</option>
+                                <option value="Sonora" <%= usuario && usuario.Estado === 'Sonora' ? 'selected' : '' %>>Sonora</option>
+                                <option value="Tabasco" <%= usuario && usuario.Estado === 'Tabasco' ? 'selected' : '' %>>Tabasco</option>
+                                <option value="Tamaulipas" <%= usuario && usuario.Estado === 'Tamaulipas' ? 'selected' : '' %>>Tamaulipas</option>
+                                <option value="Tlaxcala" <%= usuario && usuario.Estado === 'Tlaxcala' ? 'selected' : '' %>>Tlaxcala</option>
+                                <option value="Veracruz" <%= usuario && usuario.Estado === 'Veracruz' ? 'selected' : '' %>>Veracruz</option>
+                                <option value="Yucatán" <%= usuario && usuario.Estado === 'Yucatán' ? 'selected' : '' %>>Yucatán</option>
+                                <option value="Zacatecas" <%= usuario && usuario.Estado === 'Zacatecas' ? 'selected' : '' %>>Zacatecas</option>
                             </select>
                         </div>
                     </div>
+                </div>                
+            </div>
+        </div>
+
+        <div class="field"> </div>
+            <label class="label" for="Direccion">Dirección</label>
+            <div class="control">
+                <input id="Direccion" name="Direccion" class="input" type="text" value="<%= editar ? usuario.Direccion : '' %>" required>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label" for="Rol">Rol</label>
+            <div class="control">
+                <div class="select is-fullwidth">
+                    <select id="Rol" name="Rol" required>
+                        <option value="Dueño" <%= usuario.Rol === 'Dueño' ? 'selected' : '' %>>Dueño</option>
+                        <option value="Empleado" <%= usuario.Rol === 'Empleado' ? 'selected' : '' %>>Empleado</option>
+                    </select>
                 </div>
             </div>
         </div>
 
-        <div class="field">
-            <label class="label" for="Direccion">Dirección</label>
-            <div class="control">
-                <input id="Direccion" name="Direccion" class="input" type="text" placeholder="DUPER REWARDS" required> 
+            <div class="field">
+                <label class="label" for="Contrasenia">Contraseña</label>
+                <div class="control">
+                    <input id="Contrasenia" name="Contrasenia" class="input" type="password" placeholder="Ingrese su contraseña" required>
+                </div>
             </div>
-        </div>
-
-        <div class="field">
-            <label class="label" for="Contrasenia">Contraseña</label>
-            <div class="control">
-		<input id="Contrasenia" name="Contrasenia" class="input" type="password" required>
-            </div>
-        </div>
 
         <div class="control has-text-centered">
-           <input type="submit" class="button is-link" value="REGISTRAR">
-        </div> 
+            <input type="submit" class="button is-link" value="<%= editar ? 'Modificar' : 'Registrar' %>">
+        </div>
     </div>
 </form>
 <%- include('includes/foot.ejs') %>
