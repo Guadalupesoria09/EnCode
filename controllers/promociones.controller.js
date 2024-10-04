@@ -171,6 +171,15 @@ exports.get_tarjeta = (request, response, next) => {
     });  
 };
 
+exports.get_editorTarjeta = (request, response, next) => {
+    console.log('Ruta /promo/editorTarjeta');
+
+    response.render('editorTarjeta', {
+        username: request.session.NombreUsuario || '', 
+        csrfToken: request.csrfToken(),
+    });  
+}
+
 // METHODS GET & POST RECOMPENSAS
 exports.get_editarRecompensa = (request, response, next) => {
     console.log('Ruta /editRecompensas');
