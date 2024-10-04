@@ -235,8 +235,8 @@ exports.get_deleteRecomp = (request, response, next) => {
     });
 };
 
-exports.get_recompensas = (request, response, next) => {
-    console.log('Ruta /promo/recompensas');
+exports.get_agregarRecompensas = (request, response, next) => {
+    console.log('Ruta /promo/recompensas/agregar');
     let mensaje = request.session.mensaje || '';
 
     if (request.session.mensaje) {
@@ -259,7 +259,7 @@ exports.get_recompensas = (request, response, next) => {
         });
 };
 
-exports.post_recompensas = (request, response, next) => {
+exports.post_agregarRecompensas = (request, response, next) => {
     console.log(request.body);
 
     const recompensas = new Recompensas(request.body.NombreRecompensa);
@@ -272,6 +272,31 @@ exports.post_recompensas = (request, response, next) => {
         }).catch((error) => {
             console.log(error);
             request.session.mensaje = 'Ya existe una recompensa con este nombre'
-            return response.redirect('/promo/recompensas');
+            return response.redirect('/promo/recompensas/agregar');
         });
 };
+
+exports.get_recompensas = (request, response, next) => {
+    console.log('Ruta /promo/recompensas');
+
+    let mensaje = request.session.mensaje || '';
+
+    if (request.session.mensaje) {
+        request.session.mensaje = '';
+    }
+
+    Recompensas.fetchAll()
+        .then(([recompensas, fieldData]) => {
+            return response.render('recompensas', {
+                username: request.session.NombreUsuario || '',  
+                csrfToken: request.csrfToken(),
+                recompensas: recompensas,
+                mensaje: mensaje,
+                editar: false,
+            }); 
+        }).catch((error) => {
+            console.log(error);
+            request.session.mensaje = 'Ya existe una recompensa con este nombre'
+            return response.redirect('/promo/recompensas');
+    });
+}
