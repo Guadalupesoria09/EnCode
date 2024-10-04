@@ -1,0 +1,170 @@
+<%- include('includes/head.ejs') %>
+<h1 class="title has-text-centered">MIS TARJETAS</h1>
+<main>
+    <div class="buttons is-centered">
+        <a href="/promo/tarjeta" class="button is-link">Editar tarjeta</a>
+    </div>
+
+   
+    <div class="columns is-multiline">
+        <div class="column is-narrow">
+            <div class="cardDB">
+                <div class="card-innerDB">
+                    <div class="frontDB">
+                        <img src="/Dupper-brands-logo.png" class="db-img" width="600px">
+                        <div class="rowDB">
+                            <p class="text has-text-right has-text-primary"><strong>DUPER REWARDS<strong></p>
+                        </div>
+                        <div class="rowDB sellos">
+                            <div id="circle"></div>
+                            <div id="circle"></div>
+                            <div id="circle"></div>
+                            <div id="circle"></div>
+                            <div id="circle"></div>
+                        </div>
+                        <div class="rowDB sellos">
+                            <div id="circle"></div>
+                            <div id="circle"></div>
+                            <div id="circle"></div>
+                            <div id="circle"></div>
+                            <div id="circle"></div>
+                        </div>
+                        <div class="rowFDB">
+                            <div class="left has-text-left">
+                            <p class="text has-text-left has-text-primary">@usuario</p>
+                            <p class="text has-text-left has-text-primary">@teléfono</p>
+                            </div>
+                            <div class="right has-text-right">
+                                <p class="text has-text-right has-text-primary">@sucursal</p>
+                                <p class="text has-text-right has-text-primary">@teléfono sucursal</p>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column ">
+            <div class="file">
+                <label class="file-label">
+                  <input class="file-input" type="file" name="resume" />
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-upload"></i>
+                    </span>
+                    <span class="file-label"> Choose a file… </span>
+                  </span>
+                </label>
+            </div>
+            <div class="bgc">
+                <div class="cbg">
+                  <div id="preview"></div>
+                  <input type="range" class="rg" id="r" max="255" min="0" value="255" step="1" oninput="updateColor('r', this.value)">
+                  <input type="range" class="rg" id="g" max="255" min="0" value="255" step="1" oninput="updateColor('g', this.value)">
+                  <input type="range" class="rg" id="b" max="255" min="0" value="255" step="1" oninput="updateColor('b', this.value)">
+                  <div class="inps">
+                    <input type="number" max="255" min="0" class="inp" id="rd" placeholder="R" oninput="updateColor('r', this.value)">
+                    <input type="number" max="255" min="0" class="inp" id="gn" placeholder="G" oninput="updateColor('g', this.value)">
+                    <input type="number" max="255" min="0" class="inp" id="bl" placeholder="B" oninput="updateColor('b', this.value)">
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const colorList = document.getElementById("colorList");
+        const searchInput = document.getElementById("searchInput");
+        const refreshBtn = document.getElementById("refreshBtn");
+    
+        // Initial color palette generation
+        generateColorPalette();
+    
+        // Generate color palette function
+        function generateColorPalette() {
+            const maxColorBoxes = 21;
+            const colorListArray = [];
+    
+            for (let i = 0; i < maxColorBoxes; i++) {
+                const randomHexColor =
+                    "#" +
+                    Math.floor(Math.random() * 0xffffff)
+                        .toString(16)
+                        .padStart(6, "0");
+                colorListArray.push(randomHexColor);
+            }
+    
+            renderColorList(colorListArray);
+        }
+    
+        // Render color list
+        function renderColorList(colorListArray) {
+            colorList.innerHTML = ""; // Clear previous list
+    
+            colorListArray.forEach((hexValue, index) => {
+                const listItem = document.createElement("li");
+                listItem.classList.add("color");
+                listItem.innerHTML = `
+                            <div class="rect-box" style="background:
+                            ${hexValue}"></div>
+                            <span class="hex-value">${hexValue}</span>
+                        `;
+                listItem.addEventListener("click", () =>
+                    copyColorToClipboard(hexValue, index)
+                );
+                colorList.appendChild(listItem);
+            });
+        }
+    
+        // Copy color to clipboard
+        function copyColorToClipboard(hexValue, index) {
+            navigator.clipboard
+                .writeText(hexValue)
+                .then(() => {
+                    alert("Copied");
+                })
+                .catch(() => {
+                    alert("Failed to copy the color code!");
+                });
+        }
+    
+        // Search input event listener
+        searchInput.addEventListener("input", () => {
+            const searchValue = searchInput.value.toLowerCase();
+    
+            const colorMapping = {
+                red: ["#FF0000", "#FF5733", "#c21919", "#FF6347", "#FF4500"],
+                green: ["#00FF00", "#33FF73", "#C3FF00", "#228B22", "#008000"],
+                blue: ["#0000FF", "#3373FF", "#00C3FF", "#1E90FF", "#4169E1"]
+                // Add more color mappings as needed
+            };
+    
+            const matchingColors = colorMapping[searchValue] || [];
+    
+            if (matchingColors.length > 0) {
+                renderColorList(matchingColors);
+            } else {
+                generateColorPalette();
+            }
+        });
+    
+        // Refresh button event listener
+        refreshBtn.addEventListener("click", generateColorPalette);
+    });
+    window.onload = function () {
+        var btn = document.getElementById("refreshBtn");
+        btn.onclick = function (event) {
+            btn.children[0].classList.add("spin-animation");
+            setTimeout(function () {
+                btn.children[0].classList.remove("spin-animation");
+            }, 500);
+        };
+    };
+</script>
+    
+           
+    
+
+<%- include('includes/foot.ejs') %>
+

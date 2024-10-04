@@ -39,7 +39,7 @@
         <div class="field has-text-left">
           <label class="label" for="fechaInicio">Fecha inicio</label>
           <div class="control">
-            <input class="input" id="fechaInicio" name="fechaInicio" type="date" data-display-mode="default" value="<% if (editar) { %> <%= promociones.FechaInicio %> <% } %>" required/> 
+            <input class="input" id="fechaInicio" name="fechaInicio" type="date" data-display-mode="default" value="<%= editar ? promociones.FechaInicio : '' %>" required/> 
           </div>
         </div>
     
@@ -53,7 +53,7 @@
         <div class="field has-text-left">
           <label for="valor" class="label">Valor</label>
           <div class="control">
-            <input class="input" id="valor" name="valor" type="number" placeholder="2" value="<% if (editar) { %> <%= promociones.Valor %> <% } %>" required/>
+            <input class="input" id="valor" name="valor" type="number" placeholder="2" value="<%= editar ? promociones.FechaInicio : '' %>" required/>
           </div>
         </div>
         <div class="field has-text-left">
