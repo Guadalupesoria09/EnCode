@@ -4,6 +4,7 @@ const { userInfo } = require('os');
 const twilio = require('twilio');
 const { request } = require('http');
 const client = new twilio(process.env.TWILIO_ACCOUNT_SID,process.env.TWILIO_AUTH_TOKEN);
+const UserSucur = require('../models/userSucur.model');
 
 // Controlador para mostrar la página de registro
 exports.get_register = (request, response, next) => {
