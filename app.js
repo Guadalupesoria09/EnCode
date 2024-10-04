@@ -43,6 +43,9 @@ app.use((request, response, next) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+const configuracionRoutes = require('./routes/configuracion.routes');
+app.use('/config', configuracionRoutes);
+
 const estadisticasRoutes = require('./routes/estadisticas.routes');
 app.use('/estad', estadisticasRoutes);
 
