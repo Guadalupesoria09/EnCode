@@ -13,12 +13,19 @@ module.exports = class Recompensas {
 
     static fetchAll() {
         return db.execute(
-            `SELECT NombreRecompensa
+            `SELECT *
+            FROM recompensa 
+            WHERE deleted_at IS NULL`);
+    }
+
+    static fetchID(){
+        return db.execute(
+            `SELECT IDRecompensa
             FROM recompensa`);
     }
 
     static fetchOne(idRecompensa) {
-        return db.execute('SELECT * FROM ordenes WHERE IDRecompensa = ?', [idRecompensa]);
+        return db.execute('SELECT * FROM recompensa WHERE IDRecompensa = ?', [idRecompensa]);
     }
     
     static fetch(idRecompensa) {
@@ -28,4 +35,15 @@ module.exports = class Recompensas {
             return this.fetchAll();
         }
     }    
+
+    static edit(idRecompensa, nuevoNombreRecomp) {
+        return db.execute(`
+            UPDATE recompensa SET NombreRecompensa = ?
+            WHERE IDRecompensa = ?`, 
+            [nuevoNombreRecomp, idRecompensa]);
+    }
+
+    static delete(idRecompensa){
+        return db.execute(`UPDATE recompensa SET deleted_at = CURRENT_TIMESTAMP WHERE IDRecompensa = ?`, [idRecompensa]);
+    }
 }

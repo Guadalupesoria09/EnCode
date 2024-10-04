@@ -18,9 +18,17 @@
         });
     </script>
   <% } %>
-<div class="columns">
-  <div class="column is-half">
-    <form class="box has-text-centered" action="/promo/recompensas" method="POST">
+  <% if (editar) { %>
+    <div class="columns">
+      <div class="column is-half">
+      <form class="box has-text-centered" action="/promo/editRecompensas" method="POST">
+      <input type="hidden" id="id" name="id" value="<%= recompensa.IDRecompensa %>">
+  <% } else { %>
+    <div class="columns">
+      <div class="column is-half">
+      <form class="box has-text-centered" action="/promo/recompensas" method="POST">
+  <% } %>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <div class="field has-text-left">
         <label class="label" for="NombreRecompensa">Nombre</label>
         <div class="control">
@@ -44,8 +52,8 @@
         </button>
       </header>
       <footer class="card-footer">
-        <a href="#" class="card-footer-item">Edit</a>
-        <a href="#" class="card-footer-item">Delete</a>
+        <a href="/promo/editRecompensas/<%= recompensa.IDRecompensa %>" class="card-footer-item">Editar</a>
+        <a href="/promo/delete/<%= recompensa.IDRecompensa %>" class="card-footer-item">Eliminar</a>
       </footer>
     </div>
     <% } %>

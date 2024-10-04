@@ -1,10 +1,19 @@
 const express = require('express');
 const app = express();
 
+const favicon = require('serve-favicon');
+
+require('dotenv').config();
+
+console.log('TWILIO_ACCOUNT_SID:', process.env.TWILIO_ACCOUNT_SID);
+console.log('TWILIO_AUTH_TOKEN:', process.env.TWILIO_AUTH_TOKEN);
+
 const path = require('path');
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 app.use('/CSS', express.static(path.resolve(__dirname, "public/CSS")));
 app.use('/logoDuper', express.static(path.resolve(__dirname, "public/logoDuper")));
@@ -34,6 +43,9 @@ app.use((request, response, next) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+const configuracionRoutes = require('./routes/configuracion.routes');
+app.use('/config', configuracionRoutes);
+
 const estadisticasRoutes = require('./routes/estadisticas.routes');
 app.use('/estad', estadisticasRoutes);
 
@@ -44,7 +56,7 @@ const promocionesRoutes = require('./routes/promociones.routes');
 app.use('/promo', promocionesRoutes);
 
 const usuariosRoutes = require('./routes/usuarios.routes');
-app.use('/', usuariosRoutes);
+app.use('/',usuariosRoutes);
 
 // Inicia el servidor
 app.listen(port, () => {

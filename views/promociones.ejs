@@ -1,0 +1,63 @@
+<%- include('includes/head.ejs') %>
+<h1 class="title has-text-centered">PROMOCIONES</h1>
+<main>
+    <% if(mensaje != '') { %>
+        <div class="notification is-link">
+            <button class="delete"></button>
+            <%= mensaje %>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                    const $notification = $delete.parentNode;
+    
+                    $delete.addEventListener('click', () => {
+                    $notification.parentNode.removeChild($notification);
+                    });
+                });
+            });
+        </script>
+    <% } %>
+    <br />
+    <div class="control has-text-centered">
+        <a href="/promo/crearPromociones" class="button agregar-btn is-link">AGREGAR MÁS</a>
+    </div>
+    <br>
+    <div class="columns is-multiline">
+        <% for (promocion of promociones) { %>
+        <div id="promocionesA" class="column is-half">
+            <div class="card">
+              <header class="card-header">
+                <p class="card-header-title"><%= promocion.NombrePromocion %></p>
+                <button class="card-header-icon" aria-label="more options">
+                  <span class="icon">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+              </header>
+              <div class="card-content">
+                <div class="content">
+                  Vigencia: <time datetime="2016/1/1"><%= promocion.FechaCaducidad.toISOString().slice(0, 10) %></time>
+                  <br>
+                  
+                  Recompensa/s: 
+                  <% if (promocion.recompensas.length == 0) { %> 'Sin recompensa' <% } %>
+                  <% for (let recompensa of promocion.recompensas) { %>
+                    <ul>
+                      <li><%= recompensa.NombreRecompensa %></li>
+                    </ul>
+                  <% } %> 
+                  Estatus: <%= promocion.Estatus %> 
+                  <br>
+                </div>
+              </div>
+              <footer class="card-footer">
+                <a href="/promo/editarPromo/<%= promocion.IDPromocion %>" class="card-footer-item">Editar</a>
+                <a href="/promo/deletePromo/<%= promocion.IDPromocion %>" class="card-footer-item">Eliminar</a>
+              </footer>
+            </div>
+            <br>
+        </div>
+        <% } %>
+    </div>
+<%- include('includes/foot.ejs') %>

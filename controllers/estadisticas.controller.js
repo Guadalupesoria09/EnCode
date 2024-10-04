@@ -18,7 +18,7 @@ const datosEjemplo = {
 };
 
 // Controlador para /estadisticas
-exports.getEstadisticas = (req, res) => {
+exports.getEstadisticas = (request, response) => {
     const ventasTotales = 15000; // Total de ventas en MXN
     const productosPopulares = [
         { nombre: 'Producto A', cantidad: 30 },
@@ -32,20 +32,20 @@ exports.getEstadisticas = (req, res) => {
     ];
 
     // Renderiza la vista 'estadisticas' y pasa los datos a la plantilla
-    res.render('estadisticas', {
+    response.render('estadisticas', {
         ventasTotales: ventasTotales,
         productosPopulares: JSON.stringify(productosPopulares),
         ingresosPorMes: JSON.stringify(ingresosPorMes),
-        username: req.session.NombreUsuario || '',  
-        csrfToken: req.csrfToken(),
+        username: request.session.NombreUsuario || '',  
+        csrfToken: request.csrfToken(),
     });
 };
 
 // Controlador para /estadisticasRewards
-exports.getEstadisticasRewards = (req, res) => {
-    res.render('estadisticasRewards', {
-        username: req.session.NombreUsuario || '',  
-        csrfToken: req.csrfToken(),
+exports.getEstadisticasRewards = (request, response) => {
+    response.render('estadisticasRewards', {
+        username: request.session.NombreUsuario || '',  
+        csrfToken: request.csrfToken(),
         datosEjemplo: datosEjemplo,
         totalRecompensas: datosEjemplo.totalRecompensas,
     });

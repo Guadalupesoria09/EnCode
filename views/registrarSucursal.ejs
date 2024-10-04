@@ -1,18 +1,40 @@
 <%- include('includes/head.ejs') %>
 <h1 class="title has-text-centered">AGREGAR SUCURSALES</h1>
 <form action="/sucur/registrarSucursal" method="POST">
+<input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+
+
+<% if (mensaje && mensaje.trim() !== '') { %>
+    <div class="notification is-link">
+        <button class="delete"></button>
+        <%= mensaje %>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                const $notification = $delete.parentNode;
+
+                $delete.addEventListener('click', () => {
+                    $notification.parentNode.removeChild($notification);
+                });
+            });
+        });
+    </script>
+<% } %>
+
+
     <div class="box">
         <div class="field">
             <label class="label" for="Nombre">Nombre</label>
             <div class="control">
-                <input id="NombreSucursal" name="NombreSucursal" class="input" type="text" placeholder="DUPER REWARDS" required>
+                <input id="NombreSucursal" name="NombreSucursal" class="input" type="text" placeholder="Chilako" required>
             </div>
         </div>
 
         <div class="field">
             <label class="label" for="Direccion">Dirección</label>
             <div class="control">
-                <input id="Direccion" name="Direccion" class="input" type="text" placeholder="DUPER REWARDS" required> 
+                <input id="Direccion" name="Direccion" class="input" type="text" placeholder="Calle Benito Juárez Nte. 127, Centro" required> 
             </div>
         </div>
 

@@ -1,0 +1,8 @@
+<%- include('includes/head.ejs') %>
+<form action="/enviar-codigo" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <label for="telefono">Número de teléfono:</label>
+    <input type="text" id="telefono" name="telefono" placeholder="+52 1 XXX XXXXXXX" required>
+    <button type="submit">Enviar código</button>
+</form>
+<%- include('includes/foot.ejs') %>

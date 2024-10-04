@@ -1,4 +1,5 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&display=swap');
 
 :root {
     --bulma-primary-h: 214deg;
@@ -28,3 +29,197 @@ body {
             width: 50%;
             margin-top: 1rem;
 };
+
+.containerCard {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #041E3F;
+}
+
+.cardDB{
+    width: 500px;
+    height: 300px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.card-innerDB{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.frontDB{
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-style: solid;
+    border-color: black;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 20px 30px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.rowDB{
+    font-size: 25px;
+    margin-top: -250px;
+
+}
+
+#circle { 
+    width: 70px;
+    height: 70px;
+    background: #041E3F; 
+    -moz-border-radius: 35px; 
+    -webkit-border-radius: 35px; 
+    border-radius: 35px;
+}
+
+.sellos {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 20px;
+}
+
+.db-img{
+    opacity: 0.3;
+}
+
+.rowFDB {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-top: 20px;
+ 
+}
+
+.bgc {
+    background-color: #fff;
+   
+    overflow-x: hidden;
+    display: grid;
+    place-items: center;
+}
+  
+.cbg {
+    background-color: #cccdce;
+    height: 260px;
+    width: 320px;
+    border-radius: 24px;
+    padding: 20px;
+}
+  
+#preview {
+    display: grid;
+    place-items: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    background-color: #000;
+    width: 100%;
+    height: 50px;
+    border-radius: 14px;
+    border: 2.5px solid blue;
+    margin: 0 0 2rem 0;
+}
+  
+.rg {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 16px;
+    margin: 0 0 1.5rem 0;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    border-radius: 8px;
+}
+  
+.rg:hover {
+    opacity: 1;
+}
+  
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: auto;
+    appearance: auto;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    border: 2px solid #eef;
+    border-radius: 50%;
+}
+  
+input[type="range"]::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    border: 2px solid #eef;
+    border-radius: 50%;
+}
+  
+#r::-webkit-slider-thumb {
+    background-color: #d00;
+}
+  
+#r::-moz-range-thumb {
+    background-color: #d00;
+}
+  
+#g::-webkit-slider-thumb {
+    background-color: #0d0;
+}
+  
+#g::-moz-range-thumb {
+    background-color: #0d0;
+}
+  
+#b::-webkit-slider-thumb {
+    background-color: #00d;
+}
+  
+#b::-moz-range-thumb {
+    background-color: #00d;
+}
+  
+#r {
+    background-color: #f00;
+}
+  
+#g {
+    background-color: #0f0;
+}
+  
+#b {
+    background-color: #00f;
+}
+  
+.inps {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+}
+  
+.inp {
+    width: 60px;
+    height: 30px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    padding: 5px;
+}
+  
+.inp::placeholder {
+    color: #aaa;
+}
+  
+

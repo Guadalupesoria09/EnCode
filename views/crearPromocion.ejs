@@ -18,42 +18,49 @@
         });
     </script>
   <% } %>
-  <div class="columns">
-    <div class="column is-half">
-      <form class="box has-text-centered" action="/promo/promociones" method="POST">
+  <% if (editar) { %>
+    <div class="columns">
+      <div class="column">
+      <form class="box has-text-centered" action="/promo/editarPromo" method="POST">
+      <input type="hidden" id="id" name="id" value="<%= promociones.IDPromocion %>">
+  <% } else { %>
+    <div class="columns">
+      <div class="column">
+      <form class="box has-text-centered" action="/promo/crearPromociones" method="POST">
+  <% } %>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
         <div class="field has-text-left">
           <label class="label" for="nombrePromo">Nombre</label>
           <div class="control">
-            <input class="input" id="nombrePromo" name="nombrePromo" type="text" placeholder="DuperRewards" />
+            <input class="input" id="nombrePromo" name="nombrePromo" type="text" placeholder="DuperRewards" value="<% if (editar) { %> <%= promociones.NombrePromocion %> <% } %>" required/>
           </div>
         </div>
     
         <div class="field has-text-left">
           <label class="label" for="fechaInicio">Fecha inicio</label>
           <div class="control">
-            <input class="input" id="fechaInicio" name="fechaInicio" type="date" data-display-mode="default"/> 
+            <input class="input" id="fechaInicio" name="fechaInicio" type="date" data-display-mode="default" value="<%= editar ? promociones.FechaInicio : '' %>" required/> 
           </div>
         </div>
     
         <div class="field has-text-left">
           <label class="label" for="fechaFin">Fecha fin</label>
           <div class="control">
-            <input class="input" id="fechaFin" name="fechaFin" type="date" datetime="YYYY/MM/DD"/>
+            <input class="input" id="fechaFin" name="fechaFin" type="date" datetime="YYYY/MM/DD" value="<% if (editar) { %> <%= promociones.FechaCaducidad %> <% } %>" required/>
           </div>
         </div>
 
         <div class="field has-text-left">
           <label for="valor" class="label">Valor</label>
           <div class="control">
-            <input class="input" id="valor" name="valor" type="text" placeholder="2" />
+            <input class="input" id="valor" name="valor" type="number" placeholder="2" value="<%= editar ? promociones.FechaInicio : '' %>" required/>
           </div>
-      </div>
-    
+        </div>
         <div class="field has-text-left">
           <label class="label" for="estatus">Estatus</label>
           <div class="control">
             <div class="select">
-              <select id="estatus" name="estatus">
+              <select id="estatus" name="estatus" value="<% if (editar) { %> <%= promociones.Estatus %> <% } %>" required>
                   <option id="Activo">Activo</option>
                   <option id="Inhabilitado">Inhabilitado</option>
                   <option id="Bloqueado">Bloqueado</option>
@@ -62,40 +69,29 @@
             </div>
           </div>
         </div>
+        
+        <div class="field has-text-left">
+          <label class="label" for="recompensa">Recompensa</label>
+          <div class="control">
+            <div class="select">
+              <select id="recompensa" name="recompensa" required>
+                <% for(recompensa of recompensas) { %> 
+                  <option value="<%= recompensa.IDRecompensa %> <% if (editar) { %> <%= promociones.recompensas %> <% } %>">
+                    <%= recompensa.NombreRecompensa %>
+                  </option>
+              <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <div class="control has-text-centered">
             <input type="submit" class="button is-link" value="AGREGAR">
         </div>
       </form>
+      <div class="has-text-centered">
+        <a href="/promo/recompensas"class="button is-link">RECOMPENSAS</a>
+      </div>
+      <br>
     </div>
-    <div class="column is-narrow">
-    <% for (promocion of promociones) { %>
-          <div class="card">
-            <header class="card-header">
-              <p class="card-header-title"><%= promocion.NombrePromocion %></p>
-              <button class="card-header-icon" aria-label="more options">
-                <span class="icon">
-                  <i class="fas fa-angle-down" aria-hidden="true"></i>
-                </span>
-              </button>
-            </header>
-            <div class="card-content">
-              <div class="content">
-                Vigencia: <time datetime="2016/1/1"><%= promocion.FechaCaducidad.toISOString().slice(0, 10) %></time>
-                <br>
-                Recompensa: 
-                <br>
-                Estatus: <%= promocion.Estatus %>
-                <br>
-              </div>
-            </div>
-            <footer class="card-footer">
-              <a href="#" class="card-footer-item">Edit</a>
-              <a href="#" class="card-footer-item">Delete</a>
-            </footer>
-          </div>
-    <% } %>
-  </div>
-  <div class="has-text-centered">
-    <a href="/promo/recompensas"class="button is-link">RECOMPENSAS</a>
-  </div>
 <%- include('includes/foot.ejs') %>

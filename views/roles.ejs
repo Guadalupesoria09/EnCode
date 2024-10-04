@@ -1,5 +1,5 @@
 <%- include('includes/head.ejs') %>
-<h1 class="title has-text-centered">SUCURSALES</h1>
+<h1 class="title has-text-centered">ROLES</h1>
 <% if (mensaje && mensaje.trim() !== '') { %>
     <div class="notification is-link">
         <button class="delete"></button>
@@ -19,15 +19,15 @@
 <% } %>
 
 <div class="control has-text-centered">
-    <a href="/sucur/registrarSucursal" class="button agregar-btn is-link">AGREGAR MÁS</a>
+    <a href="/config/crearRol" class="button agregar-btn is-link">AGREGAR MÁS</a>
 </div>
 <br>
 <div class="columns is-multiline">
-    <% for (sucursal of sucursales) { %>
+    <% for (rol of roles) { %>
         <div class="column is-half">
             <div class="card">
                 <header class="card-header">
-                    <p class="card-header-title"><%= sucursal.NombreSucursal %></p>
+                    <p class="card-header-title"><%= rol.TipoRol %></p>
                     <button class="card-header-icon" aria-label="more options">
                         <span class="icon">
                             <i class="fas fa-angle-down" aria-hidden="true"></i>
@@ -36,30 +36,21 @@
                 </header>
                 <div class="card-content">
                     <div class="content">
-                        <strong>Dueño:</strong>
-                        <% if (sucursal.NombreUsuario.length == 0) { %> 'Sin Dueño' <% } %>
-                        <% for (let usuarios of sucursal.NombreUsuario) { %>
+                        <strong>Privilegios:</strong>
+                        <% if (rol.Actividad.length == 0) { %> 'Sin permisos' <% } %>
+                        <% for (let actividades of rol.Actividad) { %>
                             <ul>
-                               <li><%= usuarios.NombreUsuario %></li>
+                               <li><%= actividades.Actividad %></li>
                             </ul>
                         <% } %> 
-                        <br><br>
-                        <strong>Número:</strong> <%= sucursal.NumSucursal %><br>
-                        <strong>Ciudad:</strong> <%= sucursal.Ciudad %><br>
-                        <strong>Estado:</strong> <%= sucursal.Estado %><br>
-                        <strong>Dirección:</strong> <%= sucursal.Direccion %><br>
-                        <strong>CP:</strong> <%= sucursal.CP %>
                     </div>
                 </div>
-                
                 <footer class="card-footer">
-                    <a href="/sucur/<%= sucursal.IDSucursal %>/usuarios" class="card-footer-item">Editar usuarios</a>
-
-                    <a href="/sucur/editarSucursal/<%= sucursal.IDSucursal %>" class="card-footer-item">Editar sucursal</a>
-                    <a href="/sucur/eliminarSucursal/<%= sucursal.IDSucursal %>" class="card-footer-item" onclick="return confirm('¿Estás seguro de que deseas eliminar esta sucursal?');">Eliminar</a>
+                    <a href="/config/editarRol/<%= rol.IDRol %>" class="card-footer-item">Editar</a>
+                    <a href="/config/eliminarRol/<%= rol.IDRol %>" class="card-footer-item" onclick="return confirm('¿Estás seguro de que deseas eliminar esta sucursal?');">Eliminar</a>
                 </footer>
             </div>
         </div>
-    <% } %>
-</div>
+        <% } %>
+   </div>
 <%- include('includes/foot.ejs') %>
