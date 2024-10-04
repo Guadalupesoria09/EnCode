@@ -12,7 +12,7 @@ module.exports = class rolPriv {
             SELECT Privilegio.Actividad
 	    FROM RolPrivilegios
 	    INNER JOIN Privilegio ON RolPrivilegios.IDPrivilegio = Privilegio.IDPrivilegio
-	    WHERE RolPrivilegio.IDRol = ?`,[IDRol])
+	    WHERE RolPrivilegios.IDRol = ?`,[IDRol]);
     }
 
     static fetchActividades(){

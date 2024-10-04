@@ -23,7 +23,7 @@ exports.post_crearRol = (request, response, next) => {
     rol.save()
         .then(() => {
             request.session.mensaje = 'Rol creado';
-	    response.redirect('/home')
+	    response.redirect('roles')
 
 	}).catch((error) => {
             console.log(error);
@@ -42,10 +42,11 @@ exports.get_roles = (request, response, next) => {
     
     RolPriv.fetchAll().then(async([roles, fieldData]) => {
         for(let rol of roles){
-            let[Actividades, fieldData] = await RolPriv.fetchPrivilegios(rol.IDRol);
-	        Rol.Actividad = Actividades;
+            let[privilegios, fieldData] = await RolPriv.fetchPrivilegios(rol.IDRol);
+	    rol.Actividad = privilegios;
         } 
         return response.render('roles', {
+            roles: roles,
             mensaje: mensaje,
             username: request.session.NombreUsuario || '',
             csrfToken: request.csrfToken(),
