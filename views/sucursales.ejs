@@ -43,6 +43,7 @@
                                <li><%= usuarios.NombreUsuario %></li>
                             </ul>
                         <% } %> 
+                        <br><br>
                         <strong>Número:</strong> <%= sucursal.NumSucursal %><br>
                         <strong>Ciudad:</strong> <%= sucursal.Ciudad %><br>
                         <strong>Estado:</strong> <%= sucursal.Estado %><br>
@@ -50,13 +51,15 @@
                         <strong>CP:</strong> <%= sucursal.CP %>
                     </div>
                 </div>
+                
                 <footer class="card-footer">
-                    <a href="/sucur/editarSucursal/<%= sucursal.IDSucursal %>" class="card-footer-item">Editar</a>
+                    <a href="/sucur/<%= sucursal.IDSucursal %>/usuarios" class="card-footer-item">Editar usuarios</a>
+
+                    <a href="/sucur/editarSucursal/<%= sucursal.IDSucursal %>" class="card-footer-item">Editar sucursal</a>
                     <a href="/sucur/eliminarSucursal/<%= sucursal.IDSucursal %>" class="card-footer-item" onclick="return confirm('¿Estás seguro de que deseas eliminar esta sucursal?');">Eliminar</a>
                 </footer>
             </div>
         </div>
-        <% } %>
-   </div>
+    <% } %>
+</div>
 <%- include('includes/foot.ejs') %>
-

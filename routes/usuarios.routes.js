@@ -16,8 +16,16 @@ router.get('/home', isAuth, users_controller.get_home);
 router.get('/recuperar',users_controller.get_recuperar);
 
 router.post('/enviar-codigo', users_controller.post_codigo);
-
 router.get('/verificar-codigo', users_controller.get_verificar_codigo);
+
+router.get('/editarUsuario/:IDUsuario', isAuth, users_controller.get_editarUsuario);
+router.post('/editarUsuario', isAuth, users_controller.post_editarUsuario);
+router.get('/eliminarUsuario/:IDUsuario', users_controller.get_deleteUsuario);
+
+
+router.get('/sucur/:IDSucursal/usuarios', isAuth, users_controller.get_usuariosDeSucursal);
+
+
 
 router.get('/', users_controller.get_root);
 

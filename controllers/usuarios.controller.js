@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const Usuario = require('../models/usuarios.model');
 const { userInfo } = require('os');
+
 const twilio = require('twilio');
 const { request } = require('http');
 const client = new twilio(process.env.TWILIO_ACCOUNT_SID,process.env.TWILIO_AUTH_TOKEN);
@@ -14,7 +15,10 @@ exports.get_register = (request, response, next) => {
 	    sucursales: sucursales,
             telefono: request.session.telefono ||'',
             username: request.session.NombreUsuario || '',  
-            csrfToken: request.csrfToken()
+            usuario: request.session.NombreUsuario || '',
+            csrfToken: request.csrfToken(),
+            editar: false
+
         });
     }); 
 };
@@ -26,9 +30,97 @@ exports.post_register = (request, response, next) => {
 	request.body.Estado, request.body.TipoRol, request.body.NombreSucursal);
     nuevo_usuario.save().then(() => {
 	return response.redirect('/sucur/sucursales');
+    
     }).catch((error) => {
        console.log(error);
     });
+};
+
+// Controlador para listar usuarios de una sucursal
+exports.get_usuariosDeSucursal = (request, response, next) => {
+    const IDSucursal = request.params.IDSucursal;
+    
+    Usuario.fetchUsuariosPorSucursal(IDSucursal)
+        .then(([usuarios]) => {
+            response.render('listarUsuarios', {
+                usuarios: usuarios,
+                username: request.session.NombreUsuario || '',
+                csrfToken: request.csrfToken()
+            });
+        })
+        .catch(err => {
+            console.log('Error al obtener usuarios de la sucursal:', err);
+            response.redirect('/sucur/sucursales');
+        });
+};
+
+//editar usuario
+exports.get_editarUsuario = (request, response, next) => {
+    const IDUsuario = request.params.IDUsuario;
+
+    let usuarioData;
+
+    // Obtener datos del usuario
+    Usuario.fetchOneByID(IDUsuario)
+        .then(([usuario]) => {
+            if (!usuario || usuario.length === 0) {
+                return response.redirect('/error');
+            }
+            usuarioData = usuario[0];
+
+            // Obtener todas las sucursales usando el modelo UserSucur
+            return UserSucur.fetchAll();
+        })
+        .then(([sucursales]) => {
+            response.render('registrar', {
+                usuario: usuarioData,
+                sucursales: sucursales,
+                username: request.session.NombreUsuario || '',
+                csrfToken: request.csrfToken(),
+                editar: true
+            });
+            console.log('Datos:', usuarioData)
+        })
+        .catch(err => {
+            console.log('Error al cargar los datos del usuario o las sucursales:', err);
+            response.redirect('/sucur/sucursales');
+        });
+};
+
+//guardar los cambios
+exports.post_editarUsuario = (request, response, next) => {
+    const IDUsuario = request.body.IDUsuario;
+    const { NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado, IDSucursal, IDRol } = request.body;
+
+    const rol = IDRol || null;
+
+    Usuario.update(IDUsuario, NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado, rol)
+        .then(() => {
+        //sucursal en tabla pertenece
+            return Usuario.updateSucursal(IDUsuario, IDSucursal);
+        })
+        .then(() => {
+            request.session.mensaje = 'Usuario modificado exitosamente';
+            response.redirect('/sucur/sucursales');
+        })
+        .catch(err => {
+            console.log('Error al modificar los datos del usuario o la sucursal:', err);
+            response.redirect(`/editarUsuario/${IDUsuario}`);
+        });
+};
+
+exports.get_deleteUsuario = (req, res, next) => {
+    const IDUsuario = req.params.IDUsuario;
+
+    Usuario.deleteUsuario(IDUsuario)
+        .then(() => {
+            req.session.mensaje = "Usuario eliminado exitosamente";
+            return res.redirect('/sucur/sucursales');  // Redirigir a la vista de sucursales
+        })
+        .catch(err => {
+            console.log('Error al eliminar el usuario:', err);
+            return res.redirect('/sucur/sucursales');  // Redirigir en caso de error
+        });
 };
 
 exports.get_root = (request, response, next) => {

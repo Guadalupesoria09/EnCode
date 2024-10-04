@@ -47,7 +47,7 @@ exports.get_sucursales = (request, response, next) => {
 	}
         return response.render('sucursales', {
             sucursales: sucursales,     
-	    mensaje: mensaje,
+	        mensaje: mensaje,
             username: request.session.NombreUsuario || '',
             csrfToken: request.csrfToken(),
         });
