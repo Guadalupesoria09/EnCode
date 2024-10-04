@@ -1,0 +1,51 @@
+<%- include('includes/head.ejs') %>
+<h1 class="title has-text-centered">CREAR ROL</h1>
+<form action="/config/crearRol" method="POST">
+<input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+
+<% if (mensaje && mensaje.trim() !== '') { %>
+    <div class="notification is-link">
+        <button class="delete"></button>
+        <%= mensaje %>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                const $notification = $delete.parentNode;
+
+                $delete.addEventListener('click', () => {
+                    $notification.parentNode.removeChild($notification);
+                });
+            });
+        });
+    </script>
+<% } %>
+
+    <div class="box">
+        <div class="field">
+            <label class="label" for="TipoRol">Nombre del rol</label>
+            <div class="control">
+                <input id="TipoRol" name="TipoRol" class="input" type="text" placeholder="Empleado" required>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label" for="Actividad">Actividades</label>
+            <div class="control">
+                <% for (privilegio of privilegios) { %>
+                    <label class="checkbox">
+                        <input type="checkbox" id="Actividad" name="Actividad" value="<%= privilegio.Actividad %>" 
+                            <% if (privilegio.Actividad == privilegio.Actividad) { %>checked<% } %> >
+                        <%= privilegio.Actividad %>
+                    </label>
+                    <br> 
+                <% } %>
+            </div>
+        </div>
+   
+        <div class="control has-text-centered">
+           <input type="submit" class="button is-link" value="CREAR">
+        </div> 
+    </div>
+</form>
+<%- include('includes/foot.ejs') %>        

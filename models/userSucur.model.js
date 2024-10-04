@@ -17,11 +17,5 @@ module.exports = class UserSucur{
                 WHERE Rol.TipoRol = 'Dueño' AND Pertenece.IDSucursal = ?`,[IDSucursal]); 
 
 	}
- 
-        save(){
-            return db.execute(
-	    'INSERT INTO Pertenece(IDUsuario, IDSucursal VALUES (?,?)',
-            [IDUsuario, IDSucursal]);
-	}
-
+    
 }

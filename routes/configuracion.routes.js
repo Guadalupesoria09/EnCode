@@ -2,11 +2,16 @@ const express = require('express');
 const router = express.Router();
 
 const isAuth = require('../utils/is-auth');
-const configuracionController = ('../controllers/configuracion.controller');
+const configController = require('../controllers/configuracion.controller');
 
-router.get('/crearRol', isAuth, configuracionController.get_crearRol);
-router.post('/crearRol', isAuth, configuracionController.post_crearRol);
+//Crear Rol
+router.get('/crearRol', isAuth, configController.get_crearRol);
+router.post('/crearRol', isAuth, configController.post_crearRol);
 
-router.get('/general', isAuth, configuracionController.get_general);
+//Menu roles
+router.get('/roles', isAuth, configController.get_roles);
+
+//Configuración general
+router.get('/general', isAuth, configController.get_general);
 
 module.exports = router;
