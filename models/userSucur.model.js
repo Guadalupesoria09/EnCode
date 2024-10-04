@@ -22,7 +22,7 @@ module.exports = class UserSucur{
             INNER JOIN Usuario ON Pertenece.IDUsuario = Usuario.IDUsuario
             INNER JOIN UsuarioRol ON Usuario.IDUsuario = UsuarioRol.IDUsuario
             INNER JOIN Rol ON UsuarioRol.IDRol = Rol.IDRol
-            WHERE Rol.TipoRol = 'Dueño' AND Pertenece.IDSucursal = ?`,[IDSucursal]); 
+            WHERE Rol.TipoRol = 'Dueño' AND Usuario.deleted_at IS NULL AND Pertenece.IDSucursal = ?`,[IDSucursal]); 
 
 	}
  

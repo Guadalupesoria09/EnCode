@@ -22,7 +22,7 @@
                     <div class="select">
                         <select id="IDSucursal" name="IDSucursal" required>
                             <% for (let sucursal of sucursales) { %>
-                                <option value="<%= sucursal.IDSucursal %>" <%= sucursal.IDSucursal === usuario.IDSucursal ? 'selected' : '' %>>
+                                <option value="<%= sucursal.IDSucursal %>" <%= sucursal.NombreSucursal === sucursal.IDSucursal ? 'selected' : '' %>>
                                     <%= sucursal.NombreSucursal %>
                                 </option>
                             <% } %>
@@ -128,9 +128,9 @@
             <label class="label" for="Rol">Rol</label>
             <div class="control">
                 <div class="select is-fullwidth">
-                    <select id="Rol" name="Rol" required>
-                        <option value="Dueño" <%= usuario.Rol === 'Dueño' ? 'selected' : '' %>>Dueño</option>
-                        <option value="Empleado" <%= usuario.Rol === 'Empleado' ? 'selected' : '' %>>Empleado</option>
+                    <select id="TipoRol" name="TipoRol" required>
+                        <option value="Dueño" <%= usuario.TipoRol === 'Dueño' ? 'selected' : '' %>>Dueño</option>
+                        <option value="Empleado" <%= usuario.TipoRol === 'Empleado' ? 'selected' : '' %>>Empleado</option>
                     </select>
                 </div>
             </div>

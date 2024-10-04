@@ -30,6 +30,7 @@ exports.post_register = (request, response, next) => {
 	request.body.Estado, request.body.TipoRol, request.body.NombreSucursal);
     nuevo_usuario.save().then(() => {
 	return response.redirect('/sucur/sucursales');
+    
     }).catch((error) => {
        console.log(error);
     });
@@ -91,13 +92,11 @@ exports.post_editarUsuario = (request, response, next) => {
     const IDUsuario = request.body.IDUsuario;
     const { NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado, IDSucursal, IDRol } = request.body;
 
-    // Asegurarse de que Rol (IDRol) está presente
     const rol = IDRol || null;
 
-    // Actualizamos los datos del usuario
     Usuario.update(IDUsuario, NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado, rol)
         .then(() => {
-            // Actualizamos la sucursal en la tabla 'pertenece'
+        //sucursal en tabla pertenece
             return Usuario.updateSucursal(IDUsuario, IDSucursal);
         })
         .then(() => {
