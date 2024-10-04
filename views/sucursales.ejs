@@ -37,12 +37,18 @@
                 <div class="card-content">
                     <div class="content">
                         <strong>Dueño:</strong>
-                        <% if (sucursal.NombreUsuario.length == 0) { %> 'Sin Dueño' <% } %>
-                        <% for (let usuarios of sucursal.NombreUsuario) { %>
+                        
+                        <!-- Usuarios dentro de la sucursal -->
+                        <% if (sucursal.usuarios && sucursal.usuarios.length > 0) { %>
                             <ul>
-                               <li><%= usuarios.NombreUsuario %></li>
+                                <% sucursal.usuarios.forEach(usuario => { %>
+                                    <li><%= usuario.NombreUsuario %> - <%= usuario.TipoRol %></li>
+                                <% }) %>
                             </ul>
-                        <% } %> 
+                        <% } else { %>
+                            <p>No hay usuarios registrados en esta sucursal.</p>
+                        <% } %>
+
                         <strong>Número:</strong> <%= sucursal.NumSucursal %><br>
                         <strong>Ciudad:</strong> <%= sucursal.Ciudad %><br>
                         <strong>Estado:</strong> <%= sucursal.Estado %><br>
@@ -62,4 +68,3 @@
     <% } %>
 </div>
 <%- include('includes/foot.ejs') %>
-

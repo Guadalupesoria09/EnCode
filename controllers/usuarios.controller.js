@@ -101,8 +101,8 @@ exports.post_editarUsuario = (request, response, next) => {
             return Usuario.updateSucursal(IDUsuario, IDSucursal);
         })
         .then(() => {
-            request.session.mensaje = 'Usuario y sucursal modificados exitosamente';
-            response.redirect('/sucursales');
+            request.session.mensaje = 'Usuario modificado exitosamente';
+            response.redirect('/sucur/sucursales');
         })
         .catch(err => {
             console.log('Error al modificar los datos del usuario o la sucursal:', err);
@@ -110,8 +110,19 @@ exports.post_editarUsuario = (request, response, next) => {
         });
 };
 
+exports.get_deleteUsuario = (req, res, next) => {
+    const IDUsuario = req.params.IDUsuario;
 
-
+    Usuario.deleteUsuario(IDUsuario)
+        .then(() => {
+            req.session.mensaje = "Usuario eliminado exitosamente";
+            return res.redirect('/sucur/sucursales');  // Redirigir a la vista de sucursales
+        })
+        .catch(err => {
+            console.log('Error al eliminar el usuario:', err);
+            return res.redirect('/sucur/sucursales');  // Redirigir en caso de error
+        });
+};
 
 exports.get_root = (request, response, next) => {
     response. render('login',{

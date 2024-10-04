@@ -6,7 +6,7 @@ module.exports = class Usuario {
         this.NombreUsuario = miNombreUsuario;
 	this.NumTelefono = miNumTelefono;
 	this.FechaNacimiento = miFechaNacimiento    
-        this.Contrasenia = miContrasenia;
+    this.Contrasenia = miContrasenia;
 	this.Genero = miGenero ;
 	this.Direccion = miDireccion ;
 	this.Ciudad = miCiudad ;
@@ -114,17 +114,23 @@ module.exports = class Usuario {
         SET IDRol = ?
         WHERE IDUsuario = ?`, 
         [IDRol, IDUsuario]);
-}
+    }
 
     
     static fetchUsuariosPorSucursal(IDSucursal) {
         return db.execute(`
-            SELECT Usuario.IDUsuario, Usuario.NombreUsuario, Rol.TipoRol
+            SELECT Usuario.IDUsuario, Usuario.NombreUsuario, Usuario.NumTelefono, Rol.TipoRol
             FROM Pertenece
             INNER JOIN Usuario ON Pertenece.IDUsuario = Usuario.IDUsuario
             INNER JOIN UsuarioRol ON Usuario.IDUsuario = UsuarioRol.IDUsuario
             INNER JOIN Rol ON UsuarioRol.IDRol = Rol.IDRol
-            WHERE Pertenece.IDSucursal = ?`, [IDSucursal]);
+            WHERE Pertenece.IDSucursal = ? AND Usuario.deleted_at IS NULL
+        `, [IDSucursal]);
+    }
+    
+    
+    static deleteUsuario(IDUsuario) {
+        return db.execute(`UPDATE usuario SET deleted_at = CURRENT_TIMESTAMP WHERE IDUsuario = ?`, [IDUsuario]);
     }
     
 
