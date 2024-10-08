@@ -2,19 +2,19 @@ const db = require('../utils/database');
 
 module.exports = class Promociones {
      //Constructor de la clase. Sirve para crear un nuevo objeto, y en él se definen las propiedades del modelo
-     constructor(mi_nombrePromo, mi_fechaInicio, mi_fechaFin, mi_valor, mi_estatus) {
+     constructor(mi_nombrePromo, mi_fechaInicio, mi_fechaFin, mi_compra,mi_precio) {
         this.NombrePromocion = mi_nombrePromo;
         this.FechaInicio = mi_fechaInicio;
         this.FechaCaducidad = mi_fechaFin;
-        this.Valor = mi_valor;
-        this.Estatus = mi_estatus;
+        this.compra = mi_compra;
+        this.Precio = mi_precio;
     }
 
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
     save() {
         return db.execute(
-        `INSERT INTO promocion(NombrePromocion, FechaInicio, FechaCaducidad, Valor, Estatus) VALUES(?, ?, ?, ?, ?)`, 
-        [this.NombrePromocion, this.FechaInicio, this.FechaCaducidad, this.Valor, this.Estatus]);
+        `INSERT INTO promocion(NombrePromocion, FechaInicio, FechaCaducidad, Compra, Precio) VALUES(?, ?, ?, ?, ?)`, 
+        [this.NombrePromocion, this.FechaInicio, this.FechaCaducidad, this.compra, this.Precio]);
     }
 
     static fetchID() {
@@ -49,11 +49,11 @@ module.exports = class Promociones {
         }
     }
 
-    static edit(idPromocion, nuevoNombrePromo, nuevoFechaInicio, nuevoFechaFin, nuevoValor, nuevoEstatus) {
+    static edit(idPromocion, nuevoNombrePromo, nuevoFechaInicio, nuevoFechaFin, nuevaCompra, nuevoPrecio) {
         return db.execute(`
-            UPDATE promocion SET NombrePromocion = ?, FechaInicio = ?, FechaCaducidad = ?, Valor = ?, Estatus = ?
+            UPDATE promocion SET NombrePromocion = ?, FechaInicio = ?, FechaCaducidad = ?, Compra = ?, Precio = ?
             WHERE IDPromocion = ?`, 
-            [nuevoNombrePromo, nuevoFechaInicio, nuevoFechaFin,nuevoValor,nuevoEstatus, idPromocion]);
+            [nuevoNombrePromo, nuevoFechaInicio, nuevoFechaFin,nuevaCompra,nuevoPrecio, idPromocion]);
     }
 
     static deletePromo(idPromocion){

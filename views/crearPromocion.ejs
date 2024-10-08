@@ -46,43 +46,39 @@
         <div class="field has-text-left">
           <label class="label" for="fechaFin">Fecha fin</label>
           <div class="control">
-            <input class="input" id="fechaFin" name="fechaFin" type="date" datetime="YYYY/MM/DD" value="<% if (editar) { %> <%= promociones.FechaCaducidad %> <% } %>" required/>
+            <input class="input" id="fechaFin" name="fechaFin" type="date" datetime="YYYY/MM/DD" value="<%= editar ? promociones.FechaCaducidad : '' %>" required/>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-body">
+            <div class="field has-text-left">
+                <label class="label" for="compra">Compra</label>
+                <div class="control">
+                  <input class="input" id="compra" name="compra" type="number" placeholder="2" value="<%= editar ? promociones.Compra : '' %>" required/>
+                </div>
+            </div>
+            <div class="field has-text-left">
+              <label class="label" for="precio">Precio</label>
+              <div class="control">
+                <input class="input" id="precio" name="precio" type="number" placeholder="100.00" value="<%= editar ? promociones.Precio : '' %>" required/>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="field has-text-left">
-          <label for="valor" class="label">Valor</label>
-          <div class="control">
-            <input class="input" id="valor" name="valor" type="number" placeholder="2" value="<%= editar ? promociones.FechaInicio : '' %>" required/>
-          </div>
-        </div>
-        <div class="field has-text-left">
-          <label class="label" for="estatus">Estatus</label>
-          <div class="control">
-            <div class="select">
-              <select id="estatus" name="estatus" value="<% if (editar) { %> <%= promociones.Estatus %> <% } %>" required>
-                  <option id="Activo">Activo</option>
-                  <option id="Inhabilitado">Inhabilitado</option>
-                  <option id="Bloqueado">Bloqueado</option>
-                  <option id="Canjeable">Canjeable</option>
-              </select>
+          <label class="label" for="recompensa">Recompensas</label>
+            <div class="control">
+                <% for (recompensa of recompensas) { %>
+                    <label class="checkbox">
+                        <input type="checkbox" id="recompensa" name="recompensa" value="<%= recompensa.IDRecompensa %>" 
+                        <% if (editar) { %> <% if (promociones.recompensas[0].NombreRecompensa == recompensa.NombreRecompensa) { %>checked<% } %><% } %> >
+                        <%= recompensa.NombreRecompensa %>
+                    </label>
+                    <br> 
+                <% } %>
             </div>
-          </div>
-        </div>
-        
-        <div class="field has-text-left">
-          <label class="label" for="recompensa">Recompensa</label>
-          <div class="control">
-            <div class="select">
-              <select id="recompensa" name="recompensa" required>
-                <% for(recompensa of recompensas) { %> 
-                  <option value="<%= recompensa.IDRecompensa %> <% if (editar) { %> <%= promociones.recompensas %> <% } %>">
-                    <%= recompensa.NombreRecompensa %>
-                  </option>
-              <% } %>
-              </select>
-            </div>
-          </div>
         </div>
 
         <div class="control has-text-centered">

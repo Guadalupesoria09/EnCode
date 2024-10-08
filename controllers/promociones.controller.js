@@ -1,6 +1,7 @@
 const Promociones = require('../models/promociones.model');
 const Recompensas = require('../models/recompensas.model');
 const PromoRecomp = require('../models/promocionRecompensa.model');
+const EditorTarjeta = require('../models/editorTarjeta.model');
 
 // METHODS GET & POST DE PROMOCIONES
 exports.get_editarPromo = (request, response, next) => {
@@ -20,6 +21,16 @@ exports.get_editarPromo = (request, response, next) => {
             let [recompensas, fieldData] = await PromoRecomp.fetchAllnombreR(promo.IDPromocion);
             promo.recompensas = recompensas;
         }
+        
+        //promociones[0].FechaInicio = promociones[0].FechaInicio.getFullYear()+'-'+promociones[0].FechaInicio.getMonth()+'-'+promociones[0].FechaInicio.getDate();
+        let fecha = promociones[0].FechaInicio.toISOString();
+        console.log(fecha);
+        promociones[0].FechaInicio = fecha.split('T')[0];
+
+        let fechaC = promociones[0].FechaCaducidad.toISOString();
+        console.log(fechaC);
+        promociones[0].FechaCaducidad = fechaC.split('T')[0];
+
         console.log(promociones);
         return Recompensas.fetchAll().then(([recompensas, fieldData]) => {
             return response.render('crearPromocion', {
@@ -41,7 +52,7 @@ exports.post_editarPromo = (request, response, next) => {
     console.log(request.body);
 
     Promociones.edit(request.body.id, request.body.nombrePromo, request.body.fechaInicio,
-        request.body.fechaFin, request.body.valor, request.body.estatus)
+        request.body.fechaFin, request.body.compra, request.body.precio)
         .then((rows, fieldData) => {
             request.session.mensaje = 'Promocion actualizada';
             return response.redirect('/promo/promociones');
@@ -84,28 +95,32 @@ exports.post_crear = (request, response, next) => {
         request.body.nombrePromo, 
         request.body.fechaInicio,
         request.body.fechaFin, 
-        request.body.valor, 
-        request.body.estatus
+        request.body.compra, 
+        request.body.precio,
     );
-
-    request.session.mensaje = 'Promoción creada';
 
     promocion.save().then(() => {
 
-        Promociones.fetchIDPROMO(request.body.nombrePromo).then(([promociones, fieldData]) => {
+        Promociones.fetchIDPROMO(request.body.nombrePromo).then(async ([promociones, fieldData]) => {
             const idPromo = promociones[0].IDPromocion;
             
-            const promoRecomps = new PromoRecomp(
-                idPromo,
-                idRecompensa
-            );
+            let promoRecomps = '';
             
-            promoRecomps.save()
-                .then(() => {
-                    return response.redirect('/promo/promociones');
-                }).catch((error) => { 
+            for (let recomp in idRecompensa) {
+                promoRecomps = new PromoRecomp(
+                    idPromo, 
+                    idRecompensa[recomp],  
+                );
+                console.log(promoRecomps);
+                try {
+                    await promoRecomps.save();
+                } catch(error) {
                     console.log(error);
-            });
+                }
+            }
+            
+            request.session.mensaje = 'Promoción creada';
+            return response.redirect('/promo/promociones');
 
         }).catch((error) => { 
             console.log(error);
@@ -174,11 +189,21 @@ exports.get_tarjeta = (request, response, next) => {
 exports.get_editorTarjeta = (request, response, next) => {
     console.log('Ruta /promo/editorTarjeta');
 
-    response.render('editorTarjeta', {
-        username: request.session.NombreUsuario || '', 
-        csrfToken: request.csrfToken(),
-    });  
-}
+    EditorTarjeta.fetchAll().then(([vistaTarjeta, fieldData]) => {
+        return response.render('editorTarjeta', {
+            vistaTarjeta: vistaTarjeta,
+            username: request.session.NombreUsuario || '', 
+            csrfToken: request.csrfToken(),
+        });
+    })
+  
+};
+
+exports.post_editorTarjeta = (request, response, next) => {
+    console.log(request.file);
+
+      
+};
 
 // METHODS GET & POST RECOMPENSAS
 exports.get_editarRecompensa = (request, response, next) => {

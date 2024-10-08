@@ -17,6 +17,7 @@ router.get('/deletePromo/:id', isAuth, promociones_controller.get_deletePromo);
 //rutas editar tarjeta
 router.get('/tarjeta', isAuth, promociones_controller.get_tarjeta);
 router.get('/editorTarjeta', isAuth, promociones_controller.get_editorTarjeta);
+router.post('/editorTarjeta', isAuth, promociones_controller.post_editorTarjeta);
 
 // rutas registrar recompensa
 router.get('/delete/:id', isAuth, promociones_controller.get_deleteRecomp);

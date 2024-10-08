@@ -5,15 +5,15 @@
         <a href="/promo/tarjeta" class="button is-link">Editar tarjeta</a>
     </div>
 
-   
     <div class="columns is-multiline">
+        <% for(tarjeta of vistaTarjeta) { %>
         <div class="column is-narrow">
             <div class="cardDB">
                 <div class="card-innerDB">
                     <div class="frontDB">
                         <img src="/Dupper-brands-logo.png" class="db-img" width="600px">
                         <div class="rowDB">
-                            <p class="text has-text-right has-text-primary"><strong>DUPER REWARDS<strong></p>
+                            <p class="text has-text-right has-text-white">DUPER REWARDS</p>
                         </div>
                         <div class="rowDB sellos">
                             <div id="circle"></div>
@@ -31,12 +31,12 @@
                         </div>
                         <div class="rowFDB">
                             <div class="left has-text-left">
-                            <p class="text has-text-left has-text-primary">@usuario</p>
-                            <p class="text has-text-left has-text-primary">@teléfono</p>
+                            <p class="text has-text-left has-text-white">@usuario</p>
+                            <p class="text has-text-left has-text-white">@teléfono</p>
                             </div>
                             <div class="right has-text-right">
-                                <p class="text has-text-right has-text-primary">@sucursal</p>
-                                <p class="text has-text-right has-text-primary">@teléfono sucursal</p>
+                                <p class="text has-text-right has-text-white">@sucursal</p>
+                                <p class="text has-text-right has-text-white">@teléfono sucursal</p>
                             </div>
                         </div>
                     
@@ -44,19 +44,23 @@
                 </div>
             </div>
         </div>
+        <% } %>
 
         <div class="column ">
-            <div class="file">
-                <label class="file-label">
-                  <input class="file-input" type="file" name="resume" />
-                  <span class="file-cta">
-                    <span class="file-icon">
-                      <i class="fas fa-upload"></i>
-                    </span>
-                    <span class="file-label"> Choose a file… </span>
-                  </span>
-                </label>
+        <form class="box has-text-centered" action="/promo/editorTarjeta" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+            <div class="field">
+                <label class="label" for="background">Logo</label>
+                <div class="control">
+                    <input type="file" name="background" required>
+                </div>
             </div>
+            
+            <div class="control">
+                <input type="submit" class="button is-link" value="Guardar">
+            </div>
+            
+        </form>
         </div>
     </div>
 <%- include('includes/foot.ejs') %>
