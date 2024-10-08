@@ -7,28 +7,33 @@ const { request } = require('http');
 const client = new twilio(process.env.TWILIO_ACCOUNT_SID,process.env.TWILIO_AUTH_TOKEN);
 const UserSucur = require('../models/userSucur.model');
 
-// Controlador para mostrar la página de registro
 exports.get_register = (request, response, next) => {
-
-    UserSucur.fetchAll().then(([sucursales, fieldData]) =>{
-        response.render('registrar',{
-	    sucursales: sucursales,
-            telefono: request.session.telefono ||'',
-            username: request.session.NombreUsuario || '',  
-            usuario: request.session.NombreUsuario || '',
-            csrfToken: request.csrfToken(),
-            editar: false
-
+    Promise.all([UserSucur.fetchAll(), Usuario.fetchAllRoles()])
+        .then(([sucursales, roles]) => {
+            response.render('registrar', {
+                sucursales: sucursales[0], 
+                roles: roles[0],           
+                usuario: {},               
+                username: request.session.NombreUsuario || '',
+                csrfToken: request.csrfToken(),
+                editar: false
+            });
+        })
+        .catch(err => {
+            console.log('Error al cargar las sucursales o roles:', err);
+            response.redirect('/sucur/sucursales');
         });
-    }); 
 };
+
 
 exports.post_register = (request, response, next) => { 
     const nuevo_usuario = new Usuario(
 	request.body.NombreUsuario, request.body.NumTelefono, request.body.FechaNacimiento,
 	request.body.Contrasenia,request.body.Genero, request.body.Direccion, request.body.Ciudad,
-	request.body.Estado, request.body.TipoRol, request.body.NombreSucursal);
+	request.body.Estado, request.body.IDRol, request.body.IDSucursal);
+    console.log('Usuario Registrado:', request.body);
     nuevo_usuario.save().then(() => {
+    
 	return response.redirect('/sucur/sucursales');
     
     }).catch((error) => {
@@ -57,8 +62,8 @@ exports.get_usuariosDeSucursal = (request, response, next) => {
 //editar usuario
 exports.get_editarUsuario = (request, response, next) => {
     const IDUsuario = request.params.IDUsuario;
-
     let usuarioData;
+    let fecha;
 
     // Obtener datos del usuario
     Usuario.fetchOneByID(IDUsuario)
@@ -67,19 +72,21 @@ exports.get_editarUsuario = (request, response, next) => {
                 return response.redirect('/error');
             }
             usuarioData = usuario[0];
-
-            // Obtener todas las sucursales usando el modelo UserSucur
-            return UserSucur.fetchAll();
+            fecha= usuario[0].FechaNacimiento.toISOString();
+            usuario[0].FechaNacimiento= fecha.split('T')[0];
+            return Promise.all([UserSucur.fetchAll(), Usuario.fetchAllRoles()]);
         })
-        .then(([sucursales]) => {
+        .then(([sucursales, roles]) => {
             response.render('registrar', {
                 usuario: usuarioData,
-                sucursales: sucursales,
+                sucursales: sucursales[0],
+                roles: roles[0], 
                 username: request.session.NombreUsuario || '',
                 csrfToken: request.csrfToken(),
                 editar: true
+            
             });
-            console.log('Datos:', usuarioData)
+
         })
         .catch(err => {
             console.log('Error al cargar los datos del usuario o las sucursales:', err);
@@ -87,20 +94,18 @@ exports.get_editarUsuario = (request, response, next) => {
         });
 };
 
-//guardar los cambios
+
 exports.post_editarUsuario = (request, response, next) => {
     const IDUsuario = request.body.IDUsuario;
     const { NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado, IDSucursal, IDRol } = request.body;
 
-    const rol = IDRol || null;
-
-    Usuario.update(IDUsuario, NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado, rol)
+    Usuario.update(IDUsuario, NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado)
+        .then(() => 
+            Usuario.updateSucursal(IDUsuario, IDSucursal))
+        .then(() => 
+            Usuario.updateRol(IDUsuario, IDRol))
         .then(() => {
-        //sucursal en tabla pertenece
-            return Usuario.updateSucursal(IDUsuario, IDSucursal);
-        })
-        .then(() => {
-            request.session.mensaje = 'Usuario modificado exitosamente';
+            request.session.mensaje = 'Usuario, sucursal y rol modificados exitosamente';
             response.redirect('/sucur/sucursales');
         })
         .catch(err => {
@@ -109,17 +114,18 @@ exports.post_editarUsuario = (request, response, next) => {
         });
 };
 
+
 exports.get_deleteUsuario = (req, res, next) => {
     const IDUsuario = req.params.IDUsuario;
 
     Usuario.deleteUsuario(IDUsuario)
         .then(() => {
             req.session.mensaje = "Usuario eliminado exitosamente";
-            return res.redirect('/sucur/sucursales');  // Redirigir a la vista de sucursales
+            return res.redirect('/sucur/sucursales');  
         })
         .catch(err => {
             console.log('Error al eliminar el usuario:', err);
-            return res.redirect('/sucur/sucursales');  // Redirigir en caso de error
+            return res.redirect('/sucur/sucursales');  
         });
 };
 
@@ -137,6 +143,8 @@ exports.get_login = (request, response, next) => {
         mensaje: request.session.mensaje || ''  
     });
 };
+
+
 
 // Controlador para iniciar sesión
 exports.post_login = (request, response, next) => {

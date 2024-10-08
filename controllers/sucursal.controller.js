@@ -21,7 +21,7 @@ exports.post_registrarSucursal = (request, response, next) => {
 	request.body.Estado, request.body.NumSucursal, request.body.NombreSucursal);
      
    sucursal.save()
-        .then(() => {
+   .then(() => {
 	    request.session.mensaje = 'Sucursal creada';
             response.redirect('/registrar');
 	
@@ -31,6 +31,26 @@ exports.post_registrarSucursal = (request, response, next) => {
             reponse.redirect('registrarSucursal')
         });
 };
+
+exports.get_editarSucursales =(request, response, next) => {
+
+}
+
+exports.post_editarSucursales = (request, response, next) => {
+    const sucursal = new Sucursal(request.body.Direccion, request.body.CP, request.body.Ciudad,
+        request.body.Estado, request.body.NumSucursal, request.body.NombreSucursal);
+    
+    sucursal.editarSucursales()
+    .then(() =>{
+        request.session.mensaje = "Sucursal modificada exitosamente";
+            response.redirect('/sucur/sucursales');
+            
+        }).catch((error) =>{ 
+        console.log(error);
+        request.session.mensaje = 'Error al modificar la sucursal';
+            response.redirect ('/sucur/sucursales')
+        });
+}
 
 exports.get_sucursales = (request, response, next) => {
    

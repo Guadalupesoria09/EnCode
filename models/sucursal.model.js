@@ -17,4 +17,10 @@ module.exports = class Sucursal {
 	[this.Direccion, this.CP, this.Ciudad, this.Estado, this.NumSucursal, this.NombreSucursal]);
     }
    
+    editarSucursales(){
+        return db.execute(
+        'UPDATE Sucursal SET Direccion = ?, CP = ?, Ciudad = ?, Estado = ?, NumSucursal = ?, NombreSucursal = ? WHERE IDSucursal = ?',
+        [Direccion, CP, Ciudad, Estado, NumSucursal, NombreSucursal, IDSucursal]
+        );
+    }
 }

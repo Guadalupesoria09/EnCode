@@ -2,21 +2,23 @@ const db = require('../utils/database');
 const bcrypt = require('bcryptjs');
 
 module.exports = class Usuario {
-    constructor(miNombreUsuario, miNumTelefono, miFechaNacimiento, miContrasenia, miGenero, miDireccion, miCiudad, miEstado, miTipoRol, miNombreSucursal) {
+    constructor(miNombreUsuario, miNumTelefono, miFechaNacimiento, miContrasenia, miGenero, miDireccion, miCiudad, miEstado, miIDRol, miNombreSucursal) {
         this.NombreUsuario = miNombreUsuario;
-	this.NumTelefono = miNumTelefono;
-	this.FechaNacimiento = miFechaNacimiento    
-    this.Contrasenia = miContrasenia;
-	this.Genero = miGenero ;
-	this.Direccion = miDireccion ;
-	this.Ciudad = miCiudad ;
-	this.Estado = miEstado;
-	this.TipoRol = miTipoRol || null;
-	this.NombreSucursal = miNombreSucursal || null;
+        this.NumTelefono = miNumTelefono;
+        this.FechaNacimiento = miFechaNacimiento    
+        this.Contrasenia = miContrasenia;
+        this.Genero = miGenero ;
+        this.Direccion = miDireccion ;
+        this.Ciudad = miCiudad ;
+        this.Estado = miEstado;
+        this.IDRol = miIDRol || null;
+        this.NombreSucursal = miNombreSucursal || null;
+
     }
 
     save() {
         let IDUsuario;
+        let IDRol;
         return bcrypt.hash(this.Contrasenia, 12)
             .then((Contrasenia_cifrada) => {
                 return db.execute(
@@ -27,21 +29,21 @@ module.exports = class Usuario {
             })
             .then(([result]) => {
                 IDUsuario = result.insertId;
-                return db.execute('SELECT IDRol FROM Rol WHERE TipoRol = ?', [this.TipoRol]);
+                return db.execute('SELECT IDRol FROM Rol WHERE IDRol = ?', [this.IDRol]);  // Corregido
             })
             .then(([rows]) => {
                 if (rows.length > 0) {
-                    const IDRol = rows[0].IDRol;
+                    IDRol = rows[0].IDRol;
                     return db.execute(
                         'INSERT INTO UsuarioRol(IDUsuario, IDRol) VALUES (?, ?)',
                         [IDUsuario, IDRol]
                     );
                 } else {
-                    throw new Error('El rol especificado no existe');
+                    throw Error('El rol especificado no existe');
                 }
             })
             .then(() => {
-                return db.execute('SELECT IDSucursal FROM Sucursal WHERE NombreSucursal = ?', [this.NombreSucursal]);
+                return db.execute('SELECT IDSucursal FROM Sucursal WHERE IDSucursal = ?', [this.NombreSucursal]);
             })
             .then(([rows]) => {
                 if (rows.length > 0) {
@@ -56,6 +58,7 @@ module.exports = class Usuario {
             })
             .catch(error => console.log(error));
     }
+        
 
     static fetchOneByTelefono(NumTelefono) {
         return db.execute('SELECT IDUsuario, NombreUsuario, Contrasenia FROM usuario WHERE NumTelefono = ?',[NumTelefono]);
@@ -69,7 +72,7 @@ module.exports = class Usuario {
             INNER JOIN Rol r ON ur.IDRol = r.IDRol
             WHERE u.IDUsuario = ?`, [IDUsuario]);
     }
- 
+    
     static getPrivilegios(IDUsuario) {
         return db.execute(`
             SELECT Actividad as Privilegio 
@@ -91,7 +94,7 @@ module.exports = class Usuario {
             .catch(error => console.log(error));
     }
 
-    static update(IDUsuario, NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado, Rol) {
+    static update(IDUsuario, NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado ) {
         return db.execute(`
             UPDATE usuario 
             SET NombreUsuario = ?, NumTelefono = ?, FechaNacimiento = ?, Genero = ?, Direccion = ?, Ciudad = ?, Estado = ?
@@ -109,13 +112,19 @@ module.exports = class Usuario {
     }
     
     static updateRol(IDUsuario, IDRol) {
-    return db.execute(`
-        UPDATE usuarioRol 
-        SET IDRol = ?
-        WHERE IDUsuario = ?`, 
-        [IDRol, IDUsuario]);
+        return db.execute(`
+            UPDATE usuarioRol 
+            
+            SET IDRol = ?
+
+            WHERE IDUsuario = ?`, 
+            [IDRol, IDUsuario]);
     }
 
+    static fetchAllRoles() {
+        return db.execute('SELECT * FROM Rol');
+    }
+    
     
     static fetchUsuariosPorSucursal(IDSucursal) {
         return db.execute(`

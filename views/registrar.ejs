@@ -16,13 +16,13 @@
         </div>
 
         <div class="field">
-            <label class="label" for="NombreSucursal">Sucursal</label>
+            <label class="label" for="IDSucursal">Sucursal</label>
             <div class="control">
                 <div class="control">
                     <div class="select">
                         <select id="IDSucursal" name="IDSucursal" required>
                             <% for (let sucursal of sucursales) { %>
-                                <option value="<%= sucursal.IDSucursal %>" <%= sucursal.NombreSucursal === sucursal.IDSucursal ? 'selected' : '' %>>
+                                <option value="<%= sucursal.IDSucursal %>" <%= sucursal.IDSucursal === sucursal.IDSucursal ? 'selected' : '' %>>
                                     <%= sucursal.NombreSucursal %>
                                 </option>
                             <% } %>
@@ -30,6 +30,7 @@
                     </div>
                 </div>
             </div>
+        </div>
 
         <div class="field">
             <label class="label" for="Teléfono">Telefono</label>
@@ -56,7 +57,7 @@
                 <div class="field">
                     <label class="label" for="FechaNacimiento">Fecha de nacimiento</label>
                     <div class="control has-icons-right">
-                        <input id="FechaNacimiento" name="FechaNacimiento" class="input" type="date" value="<%= usuario.FechaNacimiento %>" required>
+                        <input id="FechaNacimiento" name="FechaNacimiento" class="input" type="date" value="<%= editar ?  usuario.FechaNacimiento : '' %>" required>
                         <span class="icon is-small is-right">
                             <i class="fas fa-calendar"></i>
                         </span>
@@ -117,7 +118,7 @@
             </div>
         </div>
 
-        <div class="field"> </div>
+        <div class="field">
             <label class="label" for="Direccion">Dirección</label>
             <div class="control">
                 <input id="Direccion" name="Direccion" class="input" type="text" value="<%= editar ? usuario.Direccion : '' %>" required>
@@ -128,10 +129,12 @@
             <label class="label" for="Rol">Rol</label>
             <div class="control">
                 <div class="select is-fullwidth">
-                    <select id="TipoRol" name="TipoRol" required>
-                        <option value="Dueño" <%= usuario.TipoRol === 'Dueño' ? 'selected' : '' %>>Dueño</option>
-                        <option value="Empleado" <%= usuario.TipoRol === 'Empleado' ? 'selected' : '' %>>Empleado</option>
-                    </select>
+                    <select name="IDRol" required>
+                        <% roles.forEach(function(rol) { %>
+                          <option value="<%= rol.IDRol %>"><%= rol.TipoRol %></option>
+                        <% }); %>
+                      </select>
+                      
                 </div>
             </div>
         </div>
@@ -146,6 +149,7 @@
         <div class="control has-text-centered">
             <input type="submit" class="button is-link" value="<%= editar ? 'Modificar' : 'Registrar' %>">
         </div>
+
     </div>
 </form>
 <%- include('includes/foot.ejs') %>
