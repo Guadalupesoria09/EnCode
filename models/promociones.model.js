@@ -59,5 +59,9 @@ module.exports = class Promociones {
     static deletePromo(idPromocion){
         return db.execute(`UPDATE promocion SET deleted_at = CURRENT_TIMESTAMP WHERE IDPromocion = ?`, [idPromocion]);
     };
+
+    static updatePromo(estatus, idPromocion){
+        return db.execute(`UPDATE promocion SET Activo = ? WHERE IDPromocion = ?`, [estatus,idPromocion]);
+    };
     
 }

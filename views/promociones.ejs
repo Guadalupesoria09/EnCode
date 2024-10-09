@@ -47,16 +47,34 @@
                       <li><%= recompensa.NombreRecompensa %></li>
                     </ul>
                   <% } %> 
-                  Estatus 
-                  <div class="switches">
-                    <label class="switch">
-                      <input type="checkbox" data-on="1" data-off="0" value="<%= promocion.Activo %>" <% if (promocion.Activo == "1") { %>checked<% } %>>
-                      <span class="slider round">
-                        <span class="on">Activo</span>
-                        <span class="off">Bloqueado</span>
-                      </span>
-                    </label>
-                  </div>
+
+                  <form action="/promo/promociones" name="estatusForm<%= promocion.IDPromocion %>" method="POST">
+                  <input type="hidden" id="id" name="id" value="<%= promocion.IDPromocion %>">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                    <div class="switches">
+                      <label class="switch">
+                        <label class="label" for="estatus">Estatus</label>
+                        <input type="checkbox" id="estatus" name="estatus" data-on="1" data-off="0" <% if (promocion.Activo == "1") { %>checked<% } %>>
+                        <span class="slider round">
+                          <span class="on">Activo</span>
+                          <span class="off">Bloqueado</span>
+                        </span>
+                      </label>
+                    </div>
+                  </form>
+                  <script>
+                    document.querySelectorAll('.switch input[type="checkbox"]').forEach(function(checkbox) {
+                      checkbox.addEventListener('change', function() {
+                        var form = this.closest('form'); 
+                        var data = this.dataset;
+                        this.value = this.checked ? data.on : data.off;
+
+                        form.submit(); 
+                      });
+                    });
+ 
+                  </script>
+                  <br>
                 </div>
               </div>
               <footer class="card-footer">
@@ -66,6 +84,6 @@
             </div>
             <br>
         </div>
-        <% } %>
+      <% } %>
     </div>
 <%- include('includes/foot.ejs') %>

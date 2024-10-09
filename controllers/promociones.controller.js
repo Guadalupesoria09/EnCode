@@ -161,8 +161,21 @@ exports.get_promo = (request, response, next) => {
 
 exports.post_promo = (request, response, next) => {
     console.log(request.body);
-    
-    
+
+    let estatus = request.body.estatus || '';
+
+    if (request.body.estatus) {
+        request.body.estatus = ''
+    } else {
+        estatus = 0;
+    }
+
+    Promociones.updatePromo(estatus, request.body.id).then((rows, fieldData) => {
+        request.session.mensaje = 'Estatus cambiado con exito';
+        return response.redirect('/promo/promociones');
+    }).catch((error) => { 
+        console.log(error); 
+    });   
     
 }; 
 
