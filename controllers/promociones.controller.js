@@ -189,13 +189,10 @@ exports.get_tarjeta = (request, response, next) => {
 exports.get_editorTarjeta = (request, response, next) => {
     console.log('Ruta /promo/editorTarjeta');
 
-    EditorTarjeta.fetchAll().then(([vistaTarjeta, fieldData]) => {
-        return response.render('editorTarjeta', {
-            vistaTarjeta: vistaTarjeta,
+    response.render('editorTarjeta', {
             username: request.session.NombreUsuario || '', 
             csrfToken: request.csrfToken(),
-        });
-    })
+    });
   
 };
 
