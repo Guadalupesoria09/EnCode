@@ -11,24 +11,24 @@ module.exports = class UserSucur{
         return db.execute(`
             SELECT DISTINCT NombreUsuario, NumTelefono, FechaNacimiento, Contrasenia, Genero, Direccion, Ciudad, TipoRol,
             Estado
-            FROM usuario u, pertenece p, rol r, usuariorol ur
+            FROM usuario u, usuarioSucursal p, rol r, usuariorol ur
             WHERE p.IDUsuario = u.IDUsuario AND IDSucursal = ? AND u.IDUsuario = ur.IDUsuario AND ur.IDRol = r.IDRol` ,[IDSucursal]) 
     }
     
 	static fetchDuenos(IDSucursal){
         return db.execute(`
             SELECT  Usuario.NombreUsuario, Rol.TipoRol
-            FROM Pertenece
-            INNER JOIN Usuario ON Pertenece.IDUsuario = Usuario.IDUsuario
+            FROM usuarioSucursal
+            INNER JOIN Usuario ON usuarioSucursal.IDUsuario = Usuario.IDUsuario
             INNER JOIN UsuarioRol ON Usuario.IDUsuario = UsuarioRol.IDUsuario
             INNER JOIN Rol ON UsuarioRol.IDRol = Rol.IDRol
-            WHERE Rol.TipoRol = 'Dueño' AND Usuario.deleted_at IS NULL AND Pertenece.IDSucursal = ?`,[IDSucursal]); 
+            WHERE Rol.TipoRol = 'Dueño' AND Usuario.deleted_at IS NULL AND usuarioSucursal.IDSucursal = ?`,[IDSucursal]); 
 
 	}
  
     save(){
         return db.execute(
-	        'INSERT INTO Pertenece(IDUsuario, IDSucursal VALUES (?,?)', [IDUsuario, IDSucursal]);
+	        'INSERT INTO usuarioSucursal(IDUsuario, IDSucursal VALUES (?,?)', [IDUsuario, IDSucursal]);
 	}
 
 }

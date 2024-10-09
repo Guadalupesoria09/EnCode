@@ -49,7 +49,7 @@ module.exports = class Usuario {
                 if (rows.length > 0) {
                     const IDSucursal = rows[0].IDSucursal;
                     return db.execute(
-                        'INSERT INTO Pertenece(IDUsuario, IDSucursal) VALUES (?, ?)',
+                        'INSERT INTO usuarioSucursal(IDUsuario, IDSucursal) VALUES (?, ?)',
                         [IDUsuario, IDSucursal]
                     );
                 } else {
@@ -79,7 +79,7 @@ module.exports = class Usuario {
             FROM usuario u
             JOIN usuariorol ur ON u.IDUsuario = ur.IDUsuario
             JOIN rol r ON ur.IDRol = r.IDRol
-            JOIN rolprivilegios rp ON rp.IDRol = r.IDRol
+            JOIN rolprivilegio rp ON rp.IDRol = r.IDRol
             JOIN privilegio p ON rp.IDPrivilegio = p.IDPrivilegio
             WHERE u.IDUsuario = ?
         `, [IDUsuario]);
@@ -105,7 +105,7 @@ module.exports = class Usuario {
     
     static updateSucursal(IDUsuario, IDSucursal) {
         return db.execute(`
-            UPDATE pertenece 
+            UPDATE usuarioSucursal 
             SET IDSucursal = ?
             WHERE IDUsuario = ?`, 
             [IDSucursal, IDUsuario]);
@@ -129,11 +129,11 @@ module.exports = class Usuario {
     static fetchUsuariosPorSucursal(IDSucursal) {
         return db.execute(`
             SELECT Usuario.IDUsuario, Usuario.NombreUsuario, Usuario.NumTelefono, Rol.TipoRol
-            FROM Pertenece
-            INNER JOIN Usuario ON Pertenece.IDUsuario = Usuario.IDUsuario
+            FROM usuarioSucursal
+            INNER JOIN Usuario ON usuarioSucursal.IDUsuario = Usuario.IDUsuario
             INNER JOIN UsuarioRol ON Usuario.IDUsuario = UsuarioRol.IDUsuario
             INNER JOIN Rol ON UsuarioRol.IDRol = Rol.IDRol
-            WHERE Pertenece.IDSucursal = ? AND Usuario.deleted_at IS NULL
+            WHERE usuarioSucursal.IDSucursal = ? AND Usuario.deleted_at IS NULL
         `, [IDSucursal]);
     }
     
