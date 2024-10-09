@@ -1,7 +1,7 @@
 const Promociones = require('../models/promociones.model');
 const Recompensas = require('../models/recompensas.model');
 const PromoRecomp = require('../models/promocionRecompensa.model');
-const EditorTarjeta = require('../models/editorTarjeta.model');
+
 
 // METHODS GET & POST DE PROMOCIONES
 exports.get_editarPromo = (request, response, next) => {
