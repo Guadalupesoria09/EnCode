@@ -14,7 +14,7 @@ module.exports = class promoRecomp {
 
     static fetchAll() {
         return db.execute(
-            `SELECT DISTINCT p.IDPromocion, NombrePromocion, FechaInicio, FechaCaducidad, Estatus, Valor, deleted_at
+            `SELECT DISTINCT p.IDPromocion, NombrePromocion, FechaInicio, FechaCaducidad, Compra, Precio, Activo, deleted_at
             FROM promocionrecompensa pr, promocion p
             WHERE pr.IDPromocion = p.IDPromocion  AND deleted_at IS NULL`);
     }
@@ -33,7 +33,7 @@ module.exports = class promoRecomp {
     }
 
     static fetchPromoRecomp(idPromo){
-        return db.execute(`SELECT DISTINCT p.IDPromocion, NombrePromocion, FechaInicio, FechaCaducidad, Estatus, Valor 
+        return db.execute(`SELECT DISTINCT p.IDPromocion, NombrePromocion, FechaInicio, FechaCaducidad, Compra, Precio, Activo
                 FROM promocionrecompensa pr, promocion p WHERE pr.IDPromocion = p.IDPromocion 
                 AND pr.IDPromocion = ?`, [idPromo]);
 

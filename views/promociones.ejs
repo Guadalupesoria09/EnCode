@@ -47,8 +47,16 @@
                       <li><%= recompensa.NombreRecompensa %></li>
                     </ul>
                   <% } %> 
-                  Estatus: <%= promocion.Estatus %> 
-                  <br>
+                  Estatus 
+                  <div class="switches">
+                    <label class="switch">
+                      <input type="checkbox" data-on="1" data-off="0" value="<%= promocion.Activo %>" <% if (promocion.Activo == "1") { %>checked<% } %>>
+                      <span class="slider round">
+                        <span class="on">Activo</span>
+                        <span class="off">Bloqueado</span>
+                      </span>
+                    </label>
+                  </div>
                 </div>
               </div>
               <footer class="card-footer">

@@ -1,0 +1,108 @@
+<%- include('includes/head.ejs') %>
+<h1 class="title has-text-centered">RECOMPENSAS</h1>
+<main>
+    <% if(mensaje != '') { %>
+        <div class="notification is-link">
+            <button class="delete"></button>
+            <%= mensaje %>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                    const $notification = $delete.parentNode;
+    
+                    $delete.addEventListener('click', () => {
+                    $notification.parentNode.removeChild($notification);
+                    });
+                });
+            });
+        </script>
+    <% } %>
+    <br>
+    <div class="control has-text-centered">
+        <a href="/promo/recompensas/agregar" class="button agregar-btn is-link">AGREGAR MÁS</a>
+    </div>
+    <br>
+    <div class="box is-200x200">
+        <div class="columns is-multiline">
+            <% for (recompensa of recompensas) { %>
+            <div id="promocionesA" class="column is-4 is-one-quarter">
+            <div class="card">
+                <header class="card-header">
+                <p class="card-header-title"><%= recompensa.NombreRecompensa %></p>
+                <button class="card-header-icon" aria-label="more options">
+                    <span class="icon">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button>
+                </header>
+                <footer class="card-footer">
+                <a href="/promo/editRecompensas/<%= recompensa.IDRecompensa %>" class="card-footer-item">Editar</a>
+                <a href="/promo/delete/<%= recompensa.IDRecompensa %>" class="card-footer-item">Eliminar</a>
+                </footer>
+            </div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+
+    <ul>
+        <li>
+            <div class="columns is-multiline">
+                <% for (recompensa of recompensas) { %>
+                <div id="promocionesA" class="column is-4 is-one-quarter">
+                <div class="card">
+                    <header class="card-header">
+                    <p class="card-header-title"><%= recompensa.NombreRecompensa %></p>
+                    <button class="card-header-icon" aria-label="more options">
+                        <span class="icon">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                    </header>
+                    <footer class="card-footer">
+                    <a href="/promo/editRecompensas/<%= recompensa.IDRecompensa %>" class="card-footer-item">Editar</a>
+                    <a href="/promo/delete/<%= recompensa.IDRecompensa %>" class="card-footer-item">Eliminar</a>
+                    </footer>
+                </div>
+                </div>
+                <% } %>
+            </div>
+        </li>
+    </ul>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const content = document.querySelector('.content'); 
+            const itemsPerPage = 1;
+            let currentPage = 0;
+            const items = Array.from(content.getElementsByTagName('section')).slice(0);
+
+            function showPage(page) {
+                const startIndex = page * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                items.forEach((item, index) => {
+                    item.classList.toggle('hidden', index < startIndex || index >= endIndex);
+                });
+                updateActiveButtonStates();
+            }
+            
+            function createPageButtons() {
+                const totalPages = Math.ceil(items.length / itemsPerPage);
+                const paginationContainer = document.createElement('div');
+                const paginationDiv = document.body.appendChild(paginationContainer);
+                paginationContainer.classList.add('pagination');}
+
+                for (let i = 0; i < totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i + 1;
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    showPage(currentPage);
+                    updateActiveButtonStates();
+                });
+            }
+        })
+    </script>
+    <br>
+<%- include('includes/foot.ejs') %>
