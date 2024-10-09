@@ -1,50 +1,54 @@
 <%- include('includes/head.ejs') %>
 <h1 class="title has-text-centered">MIS TARJETAS</h1>
 <main>
-    <div class="buttons is-centered">
+    <!-- <div class="buttons is-centered">
         <a href="/promo/tarjeta" class="button is-link">Editar tarjeta</a>
-    </div>
+    </div> -->
 
     <div class="columns is-multiline">
-        <% for(tarjeta of vistaTarjeta) { %>
         <div class="column is-narrow">
-            <div class="cardDB">
-                <div class="card-innerDB">
-                    <div class="frontDB">
-                        <img src="/Dupper-brands-logo.png" class="db-img" width="600px">
-                        <div class="rowDB">
-                            <p class="text has-text-right has-text-white">DUPER REWARDS</p>
-                        </div>
-                        <div class="rowDB sellos">
-                            <div id="circle"></div>
-                            <div id="circle"></div>
-                            <div id="circle"></div>
-                            <div id="circle"></div>
-                            <div id="circle"></div>
-                        </div>
-                        <div class="rowDB sellos">
-                            <div id="circle"></div>
-                            <div id="circle"></div>
-                            <div id="circle"></div>
-                            <div id="circle"></div>
-                            <div id="circle"></div>
-                        </div>
-                        <div class="rowFDB">
-                            <div class="left has-text-left">
-                            <p class="text has-text-left has-text-white">@usuario</p>
-                            <p class="text has-text-left has-text-white">@teléfono</p>
+            <div class="container">
+                <div class="cardDB">
+                    <div class="card-innerDB">
+                        <div class="frontDB">
+                            <img src="/Dupper-brands-logo.png" class="db-img" width="600px">
+                            <div class="rowDB">
+                                <a class="image is-24x24" href="/promo/tarjeta">
+                                    <img src="/settings_tarjeta.png">
+                                </a>
+                                <p class="text has-text-right has-text-white">DUPER REWARDS</p>
                             </div>
-                            <div class="right has-text-right">
-                                <p class="text has-text-right has-text-white">@sucursal</p>
-                                <p class="text has-text-right has-text-white">@teléfono sucursal</p>
+                            <div class="rowDB sellos">
+                                <div id="circle"></div>
+                                <div id="circle"></div>
+                                <div id="circle"></div>
+                                <div id="circle"></div>
+                                <div id="circle"></div>
                             </div>
+                            <div class="rowDB sellos">
+                                <div id="circle"></div>
+                                <div id="circle"></div>
+                                <div id="circle"></div>
+                                <div id="circle"></div>
+                                <div id="circle"></div>
+                            </div>
+                            <div class="rowFDB">
+                                <div class="left has-text-left">
+                                <p class="text has-text-left has-text-white">@usuario</p>
+                                <p class="text has-text-left has-text-white">@teléfono</p>
+                                </div>
+                                <div class="right has-text-right">
+                                    <p class="text has-text-right has-text-white">@sucursal</p>
+                                    <p class="text has-text-right has-text-white">@teléfono sucursal</p>
+                                </div>
+                            </div>
+                        
                         </div>
-                    
                     </div>
                 </div>
-            </div>
+            </div> 
+            <br>
         </div>
-        <% } %>
 
         <div class="column ">
         <form class="box has-text-centered" action="/promo/editorTarjeta" method="POST">
