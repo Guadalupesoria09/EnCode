@@ -30,8 +30,17 @@ module.exports = class Sucursal {
     // Método estático para obtener una sucursal por su ID.
     static fetchSucursalByID(IDSucursal) {
         return db.execute(
-            'SELECT * FROM sucursal WHERE IDSucursal = ?',
+            `SELECT IDSucursal, Direccion, CP, Ciudad, Estado, NumSucursal, NombreSucursal 
+            FROM sucursal 
+            WHERE IDSucursal = ?;`,
             [IDSucursal]
+        );
+    }
+
+    // Método estático para obtener todas las sucursales que no están eliminadas.
+    static fetchActiveSucursales() {
+        return db.execute(
+            `SELECT * FROM sucursal WHERE deleted_at IS NULL;`
         );
     }
 

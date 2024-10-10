@@ -113,29 +113,30 @@ exports.post_editarSucursales = (request, response, next) => {
 
 // Controlador para obtener la lista de todas las sucursales.
 exports.get_sucursales = (request, response, next) => {
-    let mensaje = request.session.mensaje || '';  // Obtenemos cualquier mensaje de la sesión.
+    let mensaje = request.session.mensaje || '';
 
     if (request.session.mensaje) {
-        request.session.mensaje = '';  // Limpiamos el mensaje después de mostrarlo.
+        request.session.mensaje = '';
     }
 
-    // Llamamos al modelo para obtener todas las sucursales.
-    UserSucur.fetchAll()
+    // Llamamos al modelo para obtener solo las sucursales activas (no eliminadas).
+    Sucursal.fetchActiveSucursales()
         .then(async ([sucursales]) => {
-            // Para cada sucursal, obtenemos los usuarios asociados.
+            // Procesamos las sucursales.
             for (let sucursal of sucursales) {
-                let [usuarios] = await UserSucur.fetchDuenos(sucursal.IDSucursal);  // Obtenemos los dueños de la sucursal.
-                sucursal.NombreUsuario = usuarios;  // Asignamos los nombres de usuario a la sucursal.
+                let [usuarios] = await UserSucur.fetchDuenos(sucursal.IDSucursal);
+                sucursal.NombreUsuario = usuarios;
             }
             // Renderizamos la vista de las sucursales.
             return response.render('sucursales', {
                 sucursales: sucursales,
                 mensaje: mensaje,
-                username: request.session.NombreUsuario || '',  // Mostramos el nombre del usuario.
+                username: request.session.NombreUsuario || '',
                 csrfToken: request.csrfToken()
             });
         })
         .catch((error) => {
-            console.log(error);  // En caso de error, lo registramos.
+            console.log(error);
         });
 };
+
