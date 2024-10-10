@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const mysql = require('mysql2');
 
 const favicon = require('serve-favicon');
 
@@ -41,6 +42,12 @@ app.use((request, response, next) => {
     next();
 });
 
+app.use((request, response, next) => {
+    response.locals.username = request.user ? request.user.username : ''; // Para tener username disponible en todas las vistas
+    next();
+});
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 const estadisticasRoutes = require('./routes/estadisticas.routes');
@@ -54,6 +61,28 @@ app.use('/promo', promocionesRoutes);
 
 const usuariosRoutes = require('./routes/usuarios.routes');
 app.use('/',usuariosRoutes);
+
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'Yoongobongo09*',
+    database: 'EnCode' 
+});
+
+// Conectar a la base de datos
+db.connect((err) => {
+    if (err) {
+        console.error('Error conectando a la base de datos:', err);
+    } else {
+        console.log('Conectado a la base de datos encode.sql');
+    }
+});
+
+module.exports = db;
+
+
+
+
 
 // Inicia el servidor
 app.listen(port, () => {

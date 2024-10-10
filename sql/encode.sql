@@ -22,7 +22,7 @@ FechaCaducidad TIMESTAMP,
 Valor INT NOT NULL,
 Estatus VARCHAR(20),
 PRIMARY KEY (IDPromocion)
-)
+);
 
 
 CREATE TABLE Recompensa(
