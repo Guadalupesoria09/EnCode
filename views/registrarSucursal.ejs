@@ -5,7 +5,7 @@
 <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
 <% if (editar) {%>
 
-    <input type="hidden" name="IDSucursal" value="<%=sucursal.IDSucursal %>">
+    <input type="hidden" id="IDSucursal" name="IDSucursal" value="<%=sucursal.IDSucursal %>">
 <% } %>
 
 <% if (mensaje && mensaje.trim() !== '') { %>

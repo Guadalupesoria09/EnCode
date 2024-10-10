@@ -31,7 +31,8 @@ exports.get_registrarSucursal = (request, response, next) => {
         mensaje: mensaje,
         username: request.session.NombreUsuario || '',  // Usamos el nombre del usuario si está disponible.
         csrfToken: request.csrfToken(),  // Incluimos el token CSRF para seguridad.
-        editar: false  // Indicamos que no estamos en modo edición.
+        editar: false,
+          // Indicamos que no estamos en modo edición.
     });
 };
 
@@ -63,12 +64,12 @@ exports.post_registrarSucursal = (request, response, next) => {
 // Controlador para cargar la página de edición de una sucursal.
 exports.get_editarSucursales = (request, response, next) => {
     const IDSucursal = request.params.IDSucursal;  // Obtenemos el ID de la sucursal desde los parámetros.
-    let sucursalData;  // Variable para almacenar los datos de la sucursal.
+    let sucursalData = '';  // Variable para almacenar los datos de la sucursal.
     let mensaje = request.session.mensaje || '';  // Obtenemos cualquier mensaje de la sesión.
 
     // Llamamos al modelo para obtener los datos de la sucursal por su ID.
     Sucursal.fetchSucursalByID(IDSucursal)
-        .then((sucursal) => {
+        .then(([sucursal, fieldData]) => {
             if (!sucursal || sucursal.length === 0) {
                 return response.redirect('/error');  // Redirigimos si no encontramos la sucursal.
             }
@@ -77,6 +78,7 @@ exports.get_editarSucursales = (request, response, next) => {
         })
         .then(() => {
             // Renderizamos la vista de registro, pero en modo edición.
+            console.log(sucursalData);
             response.render('registrarSucursal', {
                 sucursal: sucursalData,
                 mensaje: mensaje,
@@ -97,11 +99,9 @@ exports.post_editarSucursales = (request, response, next) => {
     const {
         Direccion, CP, Ciudad, Estado, NumSucursal, NombreSucursal, IDSucursal
     } = request.body;
-
     // Llamamos al modelo para actualizar los datos de la sucursal.
     Sucursal.editarSucursales(IDSucursal, Direccion, CP, Ciudad, Estado, NumSucursal, NombreSucursal)
         .then(() => {
-            console.log('Datos nuevos de la sucursal', request.body);  // Registramos los nuevos datos en la consola.
             request.session.mensaje = 'Sucursal modificada con éxito';  // Mensaje de éxito.
             response.redirect('/sucur/sucursales');  // Redirigimos a la lista de sucursales.
         })
