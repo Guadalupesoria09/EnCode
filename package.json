@@ -23,7 +23,7 @@
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "csrf": "^3.1.0",
-    "csurf": "^1.11.0",
+    "csurf": "^1.2.2",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^5.0.0",

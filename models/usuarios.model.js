@@ -1,26 +1,28 @@
-const db = require('../utils/database');
-const bcrypt = require('bcryptjs');
+const db = require('../utils/database');  // Importamos la conexión a la base de datos.
+const bcrypt = require('bcryptjs');  // Importamos bcrypt para encriptar las contraseñas.
 
 module.exports = class Usuario {
     constructor(miNombreUsuario, miNumTelefono, miFechaNacimiento, miContrasenia, miGenero, miDireccion, miCiudad, miEstado, miIDRol, miNombreSucursal) {
+        // Inicializamos las propiedades del usuario.
         this.NombreUsuario = miNombreUsuario;
         this.NumTelefono = miNumTelefono;
-        this.FechaNacimiento = miFechaNacimiento    
+        this.FechaNacimiento = miFechaNacimiento;
         this.Contrasenia = miContrasenia;
-        this.Genero = miGenero ;
-        this.Direccion = miDireccion ;
-        this.Ciudad = miCiudad ;
+        this.Genero = miGenero;
+        this.Direccion = miDireccion;
+        this.Ciudad = miCiudad;
         this.Estado = miEstado;
         this.IDRol = miIDRol || null;
         this.NombreSucursal = miNombreSucursal || null;
-
     }
 
-save() {
+    // Método para guardar un nuevo usuario en la base de datos, incluyendo la encriptación de la contraseña.
+    save() {
         let IDUsuario;
         let IDRol;
         return bcrypt.hash(this.Contrasenia, 12)
             .then((Contrasenia_cifrada) => {
+                // Insertamos el usuario en la base de datos.
                 return db.execute(
                     'INSERT INTO Usuario(NombreUsuario, NumTelefono, FechaNacimiento, Contrasenia, Genero, Direccion, Ciudad, Estado) VALUES (?,?,?,?,?,?,?,?)',
                     [this.NombreUsuario, this.NumTelefono, this.FechaNacimiento, Contrasenia_cifrada,
@@ -28,10 +30,12 @@ save() {
                 );
             })
             .then(([result]) => {
+                // Obtenemos el ID del usuario recién creado.
                 IDUsuario = result.insertId;
-                return db.execute('SELECT IDRol FROM Rol WHERE IDRol = ?', [this.IDRol]);  // Corregido
+                return db.execute('SELECT IDRol FROM Rol WHERE IDRol = ?', [this.IDRol]);
             })
             .then(([rows]) => {
+                // Verificamos si el rol especificado existe.
                 if (rows.length > 0) {
                     IDRol = rows[0].IDRol;
                     return db.execute(
@@ -43,6 +47,7 @@ save() {
                 }
             })
             .then(() => {
+                // Verificamos si la sucursal especificada existe.
                 return db.execute('SELECT IDSucursal FROM Sucursal WHERE IDSucursal = ?', [this.NombreSucursal]);
             })
             .then(([rows]) => {
@@ -59,19 +64,23 @@ save() {
             .catch(error => console.log(error));
     }
 
+    // Método para buscar un usuario por número de teléfono.
     static fetchOneByTelefono(NumTelefono) {
-        return db.execute('SELECT IDUsuario, NombreUsuario, Contrasenia FROM usuario WHERE NumTelefono = ?',[NumTelefono]);
+        return db.execute('SELECT IDUsuario, NombreUsuario, Contrasenia FROM usuario WHERE NumTelefono = ?', [NumTelefono]);
     }
-    
+
+    // Método para buscar un usuario por ID.
     static fetchOneByID(IDUsuario) {
         return db.execute(`
             SELECT u.IDUsuario, u.NombreUsuario, u.NumTelefono, u.FechaNacimiento, u.Genero, u.Direccion, u.Ciudad, u.Estado, r.TipoRol
             FROM usuario u
             INNER JOIN UsuarioRol ur ON u.IDUsuario = ur.IDUsuario
             INNER JOIN Rol r ON ur.IDRol = r.IDRol
-            WHERE u.IDUsuario = ?`, [IDUsuario]);
+            WHERE u.IDUsuario = ?
+        `, [IDUsuario]);
     }
-    
+
+    // Método para obtener los privilegios de un usuario basados en su rol.
     static getPrivilegios(IDUsuario) {
         return db.execute(`
             SELECT Actividad as Privilegio 
@@ -84,7 +93,7 @@ save() {
         `, [IDUsuario]);
     }
 
-    //actualizar la contraseña de un usuario
+    // Método para actualizar la contraseña de un usuario.
     static actualizarContrasena(IDUsuario, nuevaContrasenia) {
         return bcrypt.hash(nuevaContrasenia, 12)
             .then((Contrasenia_cifrada) => {
@@ -93,38 +102,39 @@ save() {
             .catch(error => console.log(error));
     }
 
-    static update(IDUsuario, NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado ) {
+    // Método para actualizar los datos de un usuario.
+    static update(IDUsuario, NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado) {
         return db.execute(`
             UPDATE usuario 
             SET NombreUsuario = ?, NumTelefono = ?, FechaNacimiento = ?, Genero = ?, Direccion = ?, Ciudad = ?, Estado = ?
-            WHERE IDUsuario = ?`, 
-            [NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado, IDUsuario]);
+            WHERE IDUsuario = ?
+        `, [NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado, IDUsuario]);
     }
-    
-    
+
+    // Método para actualizar la sucursal de un usuario.
     static updateSucursal(IDUsuario, IDSucursal) {
         return db.execute(`
             UPDATE usuarioSucursal 
             SET IDSucursal = ?
-            WHERE IDUsuario = ?`, 
-            [IDSucursal, IDUsuario]);
+            WHERE IDUsuario = ?
+        `, [IDSucursal, IDUsuario]);
     }
-    
+
+    // Método para actualizar el rol de un usuario.
     static updateRol(IDUsuario, IDRol) {
         return db.execute(`
             UPDATE usuarioRol 
-            
             SET IDRol = ?
-
-            WHERE IDUsuario = ?`, 
-            [IDRol, IDUsuario]);
+            WHERE IDUsuario = ?
+        `, [IDRol, IDUsuario]);
     }
 
+    // Método para obtener todos los roles disponibles.
     static fetchAllRoles() {
         return db.execute('SELECT * FROM Rol');
     }
-    
-    
+
+    // Método para obtener todos los usuarios de una sucursal específica.
     static fetchUsuariosPorSucursal(IDSucursal) {
         return db.execute(`
             SELECT Usuario.IDUsuario, Usuario.NombreUsuario, Usuario.NumTelefono, Rol.TipoRol
@@ -135,11 +145,9 @@ save() {
             WHERE usuarioSucursal.IDSucursal = ? AND Usuario.deleted_at IS NULL
         `, [IDSucursal]);
     }
-    
-    
-    static deleteUsuario(IDUsuario) {
-        return db.execute(`UPDATE usuario SET deleted_at = CURRENT_TIMESTAMP WHERE IDUsuario = ?`, [IDUsuario]);
-    }
-    
 
-}
+    // Método para eliminar (de manera lógica) un usuario.
+    static deleteUsuario(IDUsuario) {
+        return db.execute('UPDATE usuario SET deleted_at = CURRENT_TIMESTAMP WHERE IDUsuario = ?', [IDUsuario]);
+    }
+};
