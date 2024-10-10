@@ -16,7 +16,7 @@ module.exports = class Usuario {
 
     }
 
-    save() {
+save() {
         let IDUsuario;
         let IDRol;
         return bcrypt.hash(this.Contrasenia, 12)
@@ -58,7 +58,6 @@ module.exports = class Usuario {
             })
             .catch(error => console.log(error));
     }
-        
 
     static fetchOneByTelefono(NumTelefono) {
         return db.execute('SELECT IDUsuario, NombreUsuario, Contrasenia FROM usuario WHERE NumTelefono = ?',[NumTelefono]);

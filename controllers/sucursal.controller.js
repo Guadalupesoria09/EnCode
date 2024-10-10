@@ -1,34 +1,46 @@
 const Sucursal = require('../models/sucursal.model');
 const UserSucur = require('../models/userSucur.model');
 
-exports.get_registrarSucursal = (request, response, next) => { 
-
+/**
+ * Renderiza la página para registrar una nueva sucursal.
+ */
+exports.get_registrarSucursal = (request, response, next) => {
     let mensaje = request.session.mensaje || '';
 
     if (request.session.mensaje) {
         request.session.mensaje = '';
-    }	
+    }
 
     response.render('registrarSucursal', {
-        mensaje:mensaje,
-        username: request.session.NombreUsuario ||'',
+        mensaje: mensaje,
+        username: request.session.NombreUsuario || '',
         csrfToken: request.csrfToken(),
     });
 };
 
+/**
+ * Registra una nueva sucursal en la base de datos.
+ */
 exports.post_registrarSucursal = (request, response, next) => {
-    const sucursal = new Sucursal(request.body.Direccion, request.body.CP, request.body.Ciudad,
-	request.body.Estado, request.body.NumSucursal, request.body.NombreSucursal);
-     
-   sucursal.save()
-   .then(() => {
-	    request.session.mensaje = 'Sucursal creada';
+    const sucursal = new Sucursal(
+        request.body.Direccion,
+        request.body.CP,
+        request.body.Ciudad,
+        request.body.Estado,
+        request.body.NumSucursal,
+        request.body.NombreSucursal
+    );
+
+    sucursal
+        .save()
+        .then(() => {
+            request.session.mensaje = 'Sucursal creada';
             response.redirect('/registrar');
-	
-	}).catch((error) => {
-	    console.log(error);	
-	    request.session.mensaje = 'El nombre de la sucursal que intenta registrar ya existe';	
-            reponse.redirect('registrarSucursal')
+        })
+        .catch((error) => {
+            console.error('Error al registrar la sucursal:', error);
+            request.session.mensaje = 'El nombre de la sucursal que intenta registrar ya existe';
+            response.redirect('registrarSucursal');
         });
 };
 
