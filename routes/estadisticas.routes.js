@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const estadisticasController = require('../controllers/estadisticas.controller');
 
-// Ruta para la página que muestra las opciones de estadísticas
+// Ruta para opciones de estadísticas
 router.get('/', estadisticasController.mostrarOpciones);
 
 // Ruta para estadísticas generales
