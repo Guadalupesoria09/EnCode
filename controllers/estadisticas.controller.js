@@ -7,11 +7,11 @@ exports.mostrarOpciones = (request, response) => {
 };
 
 exports.estadisticasGenerales = (request, response) => {
-    request.send('Estadísticas Generales');
+    response.send('estadisticasGenerales');
 };
 
 exports.estadisticasRewards = (request, response) => {
-    response.send('Estadísticas Rewards');
+    response.send('estadisticasRewards');
 };
 
 
