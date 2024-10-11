@@ -8,9 +8,9 @@ exports.mostrarOpciones = (request, response) => {
 };
 
 exports.estadisticasGenerales = (request, response) => {
-    response.send('Estadísticas Generales');
+    response.send('estadisticasGenerales');
 };
 
 exports.estadisticasRewards = (request, response) => {
-    response.send('Estadísticas Rewards');
+    response.send('estadisticasRewards');
 };
