@@ -1,17 +1,30 @@
 <%- include('includes/head.ejs') %>
-<body>
-    <section class="section">
-        <div class="container">
-            <h1 class="title">Estadísticas</h1>
-            <p>Bienvenido, <%= username %>!</p>
+<h1 class="title has-text-centered">ESTADÍSTICAS</h1>
+<form action="/estadisticas/opciones" method="POST"></form>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    
+    <div class="control has-text-centered">
+        <button type="submit" class="button agregar-btn is-link">
+            <figure class="image is-128x128">
+                <img src="estadisticas_generales.png" alt="Estadísticas Generales" />
+            </figure>
+            <p>Estadísticas Generales</p>
+        </button>
+    </div>
+</form>
 
-            <div class="buttons">
-                <a href="/estadisticasGenerales" class="button is-primary">Estadísticas Generales</a>
-                <a href="/estadisticasRewards" class="button is-primary">Estadísticas Rewards</a>
-            </div>
-        </div>
-    </section>
-</body>      
+<form action="/estadisticasRewards" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    
+    <div class="control has-text-centered">
+        <button type="submit" class="button agregar-btn is-link">
+            <figure class="image is-128x128">
+                <img src="estadisticas_rewards.png" alt="Estadísticas Rewards" />
+            </figure>
+            <p>Estadísticas Rewards</p>
+        </button>
+    </div>
+</form>
 <%- include('includes/foot.ejs') %>
 
 

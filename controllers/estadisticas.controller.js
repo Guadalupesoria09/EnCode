@@ -3,7 +3,8 @@ const Estadisticas = require('../models/estadisticas.model');
 
 exports.mostrarOpciones = (request, response) => {
     const username = request.user ? request.user.username : ''; 
-    response.render('estadisticas', { username }); 
+    const csrfToken = request.csrfToken(); // Obtén el token CSRF
+    response.render('estadisticas', { username, csrfToken }); // Pasa el token a la vista
 };
 
 exports.estadisticasGenerales = (request, response) => {
