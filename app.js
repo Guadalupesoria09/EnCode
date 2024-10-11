@@ -70,7 +70,7 @@ const configuracionRoutes = require('./routes/configuracion.routes');
 app.use('/config', configuracionRoutes);
 
 const estadisticasRoutes = require('./routes/estadisticas.routes');
-app.use('/estad', estadisticasRoutes);
+app.use('/estadisticas', estadisticasRoutes);
 
 const sucursalesRoutes = require('./routes/sucursales.routes');
 app.use('/sucur', sucursalesRoutes);
