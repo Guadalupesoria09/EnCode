@@ -1,25 +1,32 @@
-<%- include('includes/head.ejs') %>
-<section class="section">
-</section>
-    <div class="container">
-        <h1 class="title has-text-centered">Seleccione una opción de estadísticas</h1>
-        <div class="option-container">
-            <div class="option">
-                <a href="/estad/estadisticas">
-                    <figure class="image is-20x20">
-                        <img src="https://static.vecteezy.com/system/resources/previews/020/364/046/non_2x/growth-bar-graph-cartoon-icon-illustration-vector.jpg" alt="Estadísticas Generales">
-                    </figure>
-                    <div class="option-title">Estadísticas Generales</div>
-                </a>
-            </div>
-            <div class="option">
-                <a href="/estad/estadisticasRewards">
-                    <figure class="image is-20x20"></figure>
-                    <img src="https://w7.pngwing.com/pngs/755/553/png-transparent-money-line-graph-illustration.png" alt="Estadísticas Rewards">
-                    </figure>
-                    <div class="option-title">Estadísticas Rewards</div>
-                </a>
-            </div>
+        <%- include('includes/head.ejs') %>
+        <h1 class="title has-text-centered">ESTADÍSTICAS</h1>
+        <br>
+        <div class="control has-text-centered">
+            <a href="/estad/estadisticasRewards" class="button agregar-btn is-link">ESTADÍSTICAS REWARDS</a>
+        </div>
+        <br>
+        <div class="box">
+            <h2 class="subtitle">Ventas Totales</h2>
+            <p>Total de ventas: <%= ventasTotales %> MXN</p>
+            <figure class="image is-200x200">
+                <img src="https://www.forcemanager.com/wp-content/uploads/blog_Como_hacer_un_reporte_de_ventas6.png" />
+              </figure>
+        </div>
+
+        <div class="box chart-container">
+            <h2 class="subtitle">Productos Populares</h2>
+            <canvas id="productosPopularesChart"></canvas>
+            <figure class="image is-300x300">
+                <img src="https://static.vecteezy.com/system/resources/previews/013/722/219/original/bar-graph-growth-and-up-arrow-png.png" />
+              </figure>
+        </div>
+
+        <div class="box chart-container">
+            <h2 class="subtitle">Ingresos por Mes</h2>
+            <canvas id="ingresosPorMesChart"></canvas>
+            <figure class="image is-300x300">
+                <img src="https://static.vecteezy.com/system/resources/previews/015/742/223/original/trend-up-line-graph-growth-progress-detail-infographic-chart-diagram-suitable-for-business-data-and-market-analysis-line-graph-rising-up-and-grow-business-day-by-day-concept-free-vector.jpg" />
+              </figure>
         </div>
     </div>
 </section>

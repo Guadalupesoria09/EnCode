@@ -1,8 +1,12 @@
 <%- include('includes/head.ejs') %>
-<h1 class="title has-text-centered">AGREGAR SUCURSALES</h1>
-<form action="/sucur/registrarSucursal" method="POST">
-<input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+<h1 class="title has-text-centered"><%= editar ? 'EDITAR SUCURSAL' : 'AGREGAR SUCURSALES'%></h1>
+<form action="<%=editar ? '/sucur/editarSucursal' : '/sucur/registrarSucursal' %>" method="POST">
 
+<input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+<% if (editar) {%>
+
+    <input type="hidden" id="IDSucursal" name="IDSucursal" value="<%=sucursal.IDSucursal %>">
+<% } %>
 
 <% if (mensaje && mensaje.trim() !== '') { %>
     <div class="notification is-link">
@@ -27,14 +31,14 @@
         <div class="field">
             <label class="label" for="Nombre">Nombre</label>
             <div class="control">
-                <input id="NombreSucursal" name="NombreSucursal" class="input" type="text" placeholder="Chilako" required>
+                <input id="NombreSucursal" name="NombreSucursal" class="input" type="text" placeholder="Chilako" value="<%= editar ? sucursal.NombreSucursal : '' %>" required>
             </div>
         </div>
 
         <div class="field">
             <label class="label" for="Direccion">Dirección</label>
             <div class="control">
-                <input id="Direccion" name="Direccion" class="input" type="text" placeholder="Calle Benito Juárez Nte. 127, Centro" required> 
+                <input id="Direccion" name="Direccion" class="input" type="text" placeholder="Calle Benito Juárez Nte. 127, Centro" value="<%= editar ? sucursal.Direccion : '' %>" required> 
             </div>
         </div>
 
@@ -43,14 +47,14 @@
                 <div class="field">
                     <label class="label" for="CP">CP</label>
                     <div class="control">
-                        <input id="CP" name="CP" class="input" type="text" placeholder="27105" required>
+                        <input id="CP" name="CP" class="input" type="text" placeholder="27105" value="<%= editar ? sucursal.CP : '' %>" required>
                     </div>
                 </div>
 
                 <div class="field">
                     <label class="label" for="Ciudad">Ciudad</label>
                     <div class="control">
-                        <input id="Ciudad" name="Ciudad" class="input" type="text" placeholder="Querétaro" required>
+                        <input id="Ciudad" name="Ciudad" class="input" type="text" placeholder="Querétaro" value="<%= editar ? sucursal.Ciudad : '' %>" required>
                     </div>
                 </div>
 
@@ -58,39 +62,38 @@
                     <label class="label" for"Estado">Estado</label>
                     <div class="control">
                         <div class="select is-fullwidth">
-                            <select id="Estado" name="Estado"> 
-		                <option>Aguascalientes</option>
-                                <option>Baja California</option>
-                                <option>Baja California Sur</option>
-                                <option>Campeche</option>
-                                <option>Chiapas</option>
-                                <option>Chihuahua</option>
-                                <option>Ciudad de México</option>
-                                <option>Coahuila</option>
-                                <option>Colima</option>
-                                <option>Durango</option>
-                                <option>Estado de México</option>
-                                <option>Guanajuato</option>
-                                <option>Guerrero</option>
-                                <option>Hidalgo</option>
-                                <option>Jalisco</option>
-                                <option>Michoacán</option>
-                                <option>Morelos</option>
-                                <option>Nayarit</option>
-                                <option>Nuevo León</option>
-                                <option>Oaxaca</option>
-                                <option>Puebla</option>
-                                <option>Querétaro</option>
-                                <option>Quintana Roo</option>
-                                <option>San Luis Potosí</option>
-                                <option>Sinaloa</option>
-                                <option>Sonora</option>
-                                <option>Tabasco</option>
-                                <option>Tamaulipas</option>
-                                <option>Tlaxcala</option>
-                                <option>Veracruz</option>
-                                <option>Yucatán</option>
-                                <option>Zacatecas</option> 
+                            <select id="Estado" name="Estado">
+                                <option value="Aguascalientes" <%= sucursal.Estado === 'Aguascalientes' ? 'selected' : '' %>>Aguascalientes</option>
+                                <option value="Baja California" <%= sucursal.Estado === 'Baja California' ? 'selected' : '' %>>Baja California</option>
+                                <option value="Baja California Sur" <%= sucursal.Estado === 'Baja California Sur' ? 'selected' : '' %>>Baja California Sur</option>
+                                <option value="Campeche" <%= sucursal.Estado === 'Campeche' ? 'selected' : '' %>>Campeche</option>
+                                <option value="Chiapas" <%= sucursal.Estado === 'Chiapas' ? 'selected' : '' %>>Chiapas</option>
+                                <option value="Chihuahua" <%= sucursal.Estado === 'Chihuahua' ? 'selected' : '' %>>Chihuahua</option>
+                                <option value="Coahuila" <%= sucursal.Estado === 'Coahuila' ? 'selected' : '' %>>Coahuila</option>
+                                <option value="Colima" <%= sucursal.Estado === 'Colima' ? 'selected' : '' %>>Colima</option>
+                                <option value="Durango" <%= sucursal.Estado === 'Durango' ? 'selected' : '' %>>Durango</option>
+                                <option value="Guanajuato" <%= sucursal.Estado === 'Guanajuato' ? 'selected' : '' %>>Guanajuato</option>
+                                <option value="Guerrero" <%= sucursal.Estado === 'Guerrero' ? 'selected' : '' %>>Guerrero</option>
+                                <option value="Hidalgo" <%= sucursal.Estado === 'Hidalgo' ? 'selected' : '' %>>Hidalgo</option>
+                                <option value="Jalisco" <%= sucursal.Estado === 'Jalisco' ? 'selected' : '' %>>Jalisco</option>
+                                <option value="Estado de México" <%= sucursal.Estado === 'Estado de México' ? 'selected' : '' %>>Estado de México</option>
+                                <option value="Michoacán" <%= sucursal.Estado === 'Michoacán' ? 'selected' : '' %>>Michoacán</option>
+                                <option value="Morelos" <%= sucursal.Estado === 'Morelos' ? 'selected' : '' %>>Morelos</option>
+                                <option value="Nayarit" <%= sucursal.Estado === 'Nayarit' ? 'selected' : '' %>>Nayarit</option>
+                                <option value="Nuevo León" <%= sucursal.Estado === 'Nuevo León' ? 'selected' : '' %>>Nuevo León</option>
+                                <option value="Oaxaca" <%= sucursal.Estado === 'Oaxaca' ? 'selected' : '' %>>Oaxaca</option>
+                                <option value="Puebla" <%= sucursal.Estado === 'Puebla' ? 'selected' : '' %>>Puebla</option>
+                                <option value="Querétaro" <%= sucursal.Estado === 'Querétaro' ? 'selected' : '' %>>Querétaro</option>
+                                <option value="Quintana Roo" <%= sucursal.Estado === 'Quintana Roo' ? 'selected' : '' %>>Quintana Roo</option>
+                                <option value="San Luis Potosí" <%= sucursal.Estado === 'San Luis Potosí' ? 'selected' : '' %>>San Luis Potosí</option>
+                                <option value="Sinaloa" <%= sucursal.Estado === 'Sinaloa' ? 'selected' : '' %>>Sinaloa</option>
+                                <option value="Sonora" <%= sucursal.Estado === 'Sonora' ? 'selected' : '' %>>Sonora</option>
+                                <option value="Tabasco" <%= sucursal.Estado === 'Tabasco' ? 'selected' : '' %>>Tabasco</option>
+                                <option value="Tamaulipas" <%= sucursal.Estado === 'Tamaulipas' ? 'selected' : '' %>>Tamaulipas</option>
+                                <option value="Tlaxcala" <%= sucursal.Estado === 'Tlaxcala' ? 'selected' : '' %>>Tlaxcala</option>
+                                <option value="Veracruz" <%= sucursal.Estado === 'Veracruz' ? 'selected' : '' %>>Veracruz</option>
+                                <option value="Yucatán" <%= sucursal.Estado === 'Yucatán' ? 'selected' : '' %>>Yucatán</option>
+                                <option value="Zacatecas" <%= sucursal.Estado === 'Zacatecas' ? 'selected' : '' %>>Zacatecas</option>
                             </select>
                         </div>
                     </div>
@@ -101,12 +104,12 @@
         <div class="field">
             <label class="label" for="Numero">Número</label>
             <div class="control">
-                <input id="NumSucursal" name="NumSucursal" class="input" type="text" placeholder="(xxx) xxx-xxxx" required>
+                <input id="NumSucursal" name="NumSucursal" class="input" type="text" placeholder="(xxx) xxx-xxxx" value="<%= editar ? sucursal.NumSucursal : '' %>" required>
             </div>
         </div>
             
         <div class="control has-text-centered">
-           <input type="submit" class="button is-link" value="REGISTRAR">
+           <input type="submit" class="button is-link" value="<%= editar ? 'Editar' : 'Registrar' %>">
         </div>
     </div>
 </form>
