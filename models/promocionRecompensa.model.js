@@ -53,7 +53,23 @@ module.exports = class promoRecomp {
         } else {
             return this.fetchAll();
         }
-    }   
+    }
+    
+    static edit(idPromocion, idRecompensa) {
+        return db.execute(`
+            UPDATE promocionrecompensa SET IDRecompensa = ?
+            WHERE IDPromocion = ?`, 
+            [idRecompensa, idPromocion]);
+    }
+
+    static editSingleRelation(idPromocionRecompensa, nuevaIDRecompensa) {
+        return db.execute(
+            `UPDATE promocionrecompensa 
+             SET IDRecompensa = ? 
+             WHERE IDPromocionRecompensa = ?`, 
+            [nuevaIDRecompensa, idPromocionRecompensa] // Asegúrate de que ambos valores no sean undefined
+        );
+    }
 
     
 }

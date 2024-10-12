@@ -23,86 +23,58 @@
         <a href="/promo/recompensas/agregar" class="button agregar-btn is-link">AGREGAR MÁS</a>
     </div>
     <br>
+
     <div class="box is-200x200">
         <div class="columns is-multiline">
-            <% for (recompensa of recompensas) { %>
-            <div id="promocionesA" class="column is-4 is-one-quarter">
-            <div class="card">
-                <header class="card-header">
-                <p class="card-header-title"><%= recompensa.NombreRecompensa %></p>
-                <button class="card-header-icon" aria-label="more options">
-                    <span class="icon">
-                    <i class="fas fa-angle-down" aria-hidden="true"></i>
-                    </span>
-                </button>
-                </header>
-                <footer class="card-footer">
-                <a href="/promo/editRecompensas/<%= recompensa.IDRecompensa %>" class="card-footer-item">Editar</a>
-                <a href="/promo/delete/<%= recompensa.IDRecompensa %>" class="card-footer-item">Eliminar</a>
-                </footer>
-            </div>
-            </div>
+            <% for (let recompensa of recompensas) { %>
+                <div id="promocionesA" class="column is-4 is-one-quarter">
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title"><%= recompensa.NombreRecompensa %></p>
+                            <button class="card-header-icon" aria-label="more options">
+                                <span class="icon">
+                                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                            </button>
+                        </header>
+                        <footer class="card-footer">
+                            <a href="/promo/editRecompensas/<%= recompensa.IDRecompensa %>" class="card-footer-item">Editar</a>
+                            <a href="/promo/delete/<%= recompensa.IDRecompensa %>" class="card-footer-item">Eliminar</a>
+                        </footer>
+                    </div>
+                </div>
             <% } %>
         </div>
     </div>
 
-    <ul>
-        <li>
-            <div class="columns is-multiline">
-                <% for (recompensa of recompensas) { %>
-                <div id="promocionesA" class="column is-4 is-one-quarter">
-                <div class="card">
-                    <header class="card-header">
-                    <p class="card-header-title"><%= recompensa.NombreRecompensa %></p>
-                    <button class="card-header-icon" aria-label="more options">
-                        <span class="icon">
-                        <i class="fas fa-angle-down" aria-hidden="true"></i>
-                        </span>
-                    </button>
-                    </header>
-                    <footer class="card-footer">
-                    <a href="/promo/editRecompensas/<%= recompensa.IDRecompensa %>" class="card-footer-item">Editar</a>
-                    <a href="/promo/delete/<%= recompensa.IDRecompensa %>" class="card-footer-item">Eliminar</a>
-                    </footer>
-                </div>
-                </div>
-                <% } %>
-            </div>
-        </li>
-    </ul>
+    <!-- Paginación -->
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        <!-- Botón para página anterior -->
+        <% if (currentPage > 1) { %>
+            <a class="pagination-previous" href="/promo/recompensas?page=<%= currentPage - 1 %>">Anterior</a>
+        <% } else { %>
+            <a class="pagination-previous" disabled>Anterior</a>
+        <% } %>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const content = document.querySelector('.content'); 
-            const itemsPerPage = 1;
-            let currentPage = 0;
-            const items = Array.from(content.getElementsByTagName('section')).slice(0);
+        <!-- Botón para página siguiente -->
+        <% if (currentPage < totalPages) { %>
+            <a class="pagination-next" href="/promo/recompensas?page=<%= currentPage + 1 %>">Siguiente</a>
+        <% } else { %>
+            <a class="pagination-next" disabled>Siguiente</a>
+        <% } %>
 
-            function showPage(page) {
-                const startIndex = page * itemsPerPage;
-                const endIndex = startIndex + itemsPerPage;
-                items.forEach((item, index) => {
-                    item.classList.toggle('hidden', index < startIndex || index >= endIndex);
-                });
-                updateActiveButtonStates();
-            }
-            
-            function createPageButtons() {
-                const totalPages = Math.ceil(items.length / itemsPerPage);
-                const paginationContainer = document.createElement('div');
-                const paginationDiv = document.body.appendChild(paginationContainer);
-                paginationContainer.classList.add('pagination');}
+        <!-- Números de página -->
+        <ul class="pagination-list">
+            <% for (let i = 1; i <= totalPages; i++) { %>
+                <li>
+                    <a href="/promo/recompensas?page=<%= i %>" class="pagination-link <%= currentPage === i ? 'is-current' : '' %>">
+                        <%= i %>
+                    </a>
+                </li>
+            <% } %>
+        </ul>
+    </nav>
 
-                for (let i = 0; i < totalPages; i++) {
-                const pageButton = document.createElement('button');
-                pageButton.textContent = i + 1;
-                pageButton.addEventListener('click', () => {
-                    currentPage = i;
-                    showPage(currentPage);
-                    updateActiveButtonStates();
-                });
-            }
-        })
-    </script>
+
     <br>
 <%- include('includes/foot.ejs') %>

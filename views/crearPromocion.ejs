@@ -1,5 +1,4 @@
 <%- include('includes/head.ejs') %>
-<h1 class="title has-text-centered">PROMOCIONES</h1>
 <main>
   <% if(mensaje != '') { %>
     <div class="notification is-link">
@@ -19,11 +18,13 @@
     </script>
   <% } %>
   <% if (editar) { %>
+    <h1 class="title has-text-centered">EDITAR PROMOCIÓN</h1>
     <div class="columns">
       <div class="column">
       <form class="box has-text-centered" action="/promo/editarPromo" method="POST">
       <input type="hidden" id="id" name="id" value="<%= promociones.IDPromocion %>">
   <% } else { %>
+    <h1 class="title has-text-centered">CREAR PROMOCIÓN</h1>
     <div class="columns">
       <div class="column">
       <form class="box has-text-centered" action="/promo/crearPromociones" method="POST">
@@ -73,7 +74,8 @@
                 <% for (recompensa of recompensas) { %>
                     <label class="checkbox">
                         <input type="checkbox" id="recompensa" name="recompensa" value="<%= recompensa.IDRecompensa %>" 
-                        <% if (editar) { %> <% if (promociones.recompensas[0].NombreRecompensa == recompensa.NombreRecompensa) { %>checked<% } %><% } %> >
+                        <% if (editar) { %> <% for (recomp in promociones.recompensas) { %> <% if (promociones.recompensas[recomp].NombreRecompensa == recompensa.NombreRecompensa) { %>checked<% } %><% } %> <% } %>>
+
                         <%= recompensa.NombreRecompensa %>
                     </label>
                     <br> 
