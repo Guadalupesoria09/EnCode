@@ -1,32 +1,42 @@
 <%- include('includes/head.ejs') %>
+
 <h1 class="title has-text-centered">ESTADÍSTICAS</h1>
-<form action="/estadisticas/opciones" method="POST"></form>
-    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-    
-    <div class="control has-text-centered">
-        <button type="submit" class="button agregar-btn is-link">
-            <figure class="image is-128x128">
-                <img src="estadisticas_generales.png" alt="Estadísticas Generales" />
-            </figure>
-            <p>Estadísticas Generales</p>
-        </button>
-    </div>
-</form>
 
-<form action="/estadisticasRewards" method="POST">
-    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-    
-    <div class="control has-text-centered">
-        <button type="submit" class="button agregar-btn is-link">
-            <figure class="image is-128x128">
-                <img src="estadisticas_rewards.png" alt="Estadísticas Rewards" />
-            </figure>
-            <p>Estadísticas Rewards</p>
-        </button>
+<div class="columns is-centered">
+
+
+    <div class="column is-narrow">
+        <form action="/estadisticas/opciones" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="option" value="generales">
+
+            <div class="control has-text-centered">
+                <button type="submit" class="button agregar-btn is-link">
+                    <figure class="image is-128x128">
+                        <img src="estadisticas_generales.png" alt="Estadísticas Generales" />
+                    </figure>
+                    <p>Estadísticas Generales</p>
+                </button>
+            </div>
+        </form>
     </div>
-</form>
+
+
+    <div class="column is-narrow">
+        <form action="/estadisticas/opciones" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="option" value="rewards">
+
+            <div class="control has-text-centered">
+                <button type="submit" class="button agregar-btn is-link">
+                    <figure class="image is-128x128">
+                        <img src="estadisticas_rewards.png" alt="Estadísticas Rewards" />
+                    </figure>
+                    <p>Estadísticas Rewards</p>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <%- include('includes/foot.ejs') %>
-
-
-
-

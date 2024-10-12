@@ -84,7 +84,7 @@ app.use('/',usuariosRoutes);
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    database: 'EnCode',
+    database: 'encode_prueba',
     password: '', 
 });
 

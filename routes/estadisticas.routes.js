@@ -1,14 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const estadisticasController = require('../controllers/estadisticas.controller');
+const isAuth = require('../utils/is-auth');  
 
-// Ruta para la página de estadísticas
-router.get('/opciones', estadisticasController.mostrarOpciones);
+// Ruta para la página de opciones de estadísticas
+router.get('/', isAuth, estadisticasController.mostrarOpciones);
 
 // Ruta para estadísticas generales
-router.get('/estadisticasGenerales', estadisticasController.estadisticasGenerales);
+router.get('/generales',isAuth, estadisticasController.get_estadisticasGenerales);
 
 // Ruta para estadísticas rewards
-router.get('/estadisticasRewards', estadisticasController.estadisticasRewards);
+router.get('/rewards',isAuth, estadisticasController.get_estadisticasRewards);
+
 
 module.exports = router;

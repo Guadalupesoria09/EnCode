@@ -1,16 +1,38 @@
-const { response } = require('express');
 const Estadisticas = require('../models/estadisticas.model');
 
-exports.mostrarOpciones = (request, response) => {
-    const username = request.user ? request.user.username : ''; 
-    const csrfToken = request.csrfToken(); // Obtén el token CSRF
-    response.render('estadisticas', { username, csrfToken }); // Pasa el token a la vista
+ // METHODS GET & POST DE PROMOCIONES
+
+ exports.mostrarOpciones = (request, response) => {
+    response.render('estadisticas', {
+        title: 'Opciones de Estadísticas',
+        csrfToken: request.csrfToken()
+    });
 };
 
-exports.estadisticasGenerales = (request, response) => {
-    response.send('estadisticasGenerales');
+exports.get_estadisticasGenerales = async (request, response) => {
+    try {
+        const data = await Estadisticas.obtenerEstadisticasGenerales();
+        response.render('estadisticasGenerales', {
+            title: 'Estadísticas Generales',
+            csrfToken: request.csrfToken(), 
+            data: data 
+        });
+    } catch (error) {
+        console.error('Error al obtener estadísticas generales:', error);
+        response.status(500).render('error', { message: 'Error al obtener estadísticas generales' });
+    }
 };
 
-exports.estadisticasRewards = (request, response) => {
-    response.send('estadisticasRewards');
+exports.get_estadisticasRewards = async (request, response) => {
+    try {
+        const rewardsData = await Estadisticas.obtenerEstadisticasRewards();
+        response.render('estadisticasRewards', {
+            title: 'Estadísticas Rewards',
+            csrfToken: request.csrfToken(),
+            rewardsData: rewardsData 
+        });
+    } catch (error) {
+        console.error('Error al obtener estadísticas de recompensas:', error);
+        response.status(500).render('error', { message: 'Error al obtener estadísticas de recompensas' });
+    }
 };
