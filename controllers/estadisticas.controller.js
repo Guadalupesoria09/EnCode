@@ -9,6 +9,8 @@ const Estadisticas = require('../models/estadisticas.model');
     });
 };
 
+
+
 exports.get_estadisticasGenerales = async (request, response) => {
     try {
         const data = await Estadisticas.obtenerEstadisticasGenerales();
@@ -22,6 +24,8 @@ exports.get_estadisticasGenerales = async (request, response) => {
         response.status(500).render('error', { message: 'Error al obtener estadísticas generales' });
     }
 };
+
+
 
 exports.get_estadisticasRewards = async (request, response) => {
     try {
