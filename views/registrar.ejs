@@ -18,16 +18,14 @@
         <div class="field">
             <label class="label" for="IDSucursal">Sucursal</label>
             <div class="control">
-                <div class="control">
-                    <div class="select">
-                        <select id="IDSucursal" name="IDSucursal" required>
-                            <% for (let sucursal of sucursales) { %>
-                                <option value="<%= sucursal.IDSucursal %>" <%= sucursal.IDSucursal === sucursal.IDSucursal ? 'selected' : '' %>>
-                                    <%= sucursal.NombreSucursal %>
-                                </option>
-                            <% } %>
-                        </select>
-                    </div>
+                <div class="select">
+                    <select id="IDSucursal" name="IDSucursal" required>
+                        <% for (let sucursal of sucursales) { %>
+                            <option value="<%= sucursal.IDSucursal %>" <%= sucursal.IDSucursal === sucursal.IDSucursal ? 'selected' : '' %>>
+                                <%= sucursal.NombreSucursal %>
+                            </option>
+                                <% } %>
+                    </select>
                 </div>
             </div>
         </div>

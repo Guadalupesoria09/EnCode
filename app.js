@@ -66,6 +66,9 @@ const fileStorage = multer.diskStorage({
 
 app.use(multer({ storage: fileStorage }).single('background')); 
 
+const tarjetaRoutes = require('./routes/tarjeta.routes');
+app.use('/tarjeta', tarjetaRoutes);
+
 const configuracionRoutes = require('./routes/configuracion.routes');
 app.use('/config', configuracionRoutes);
 
