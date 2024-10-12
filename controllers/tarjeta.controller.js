@@ -1,5 +1,5 @@
 const Tarjeta = require('../models/tarjeta.model.js')
-const Promocion = require('../models/promocionRecompensa.model.js')
+const PromoRecomp = require('../models/promocionRecompensa.model.js')
 
 //Controlador para cargar la página de editar el formato de la tarjeta 
 exports.get_editorTarjeta = (request, response, next) => {
