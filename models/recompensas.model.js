@@ -46,4 +46,14 @@ module.exports = class Recompensas {
     static delete(idRecompensa){
         return db.execute(`UPDATE recompensa SET deleted_at = CURRENT_TIMESTAMP WHERE IDRecompensa = ?`, [idRecompensa]);
     }
+
+    static fetchPaginated(limit, offset) {
+        return db.execute(
+            'SELECT * FROM recompensa LIMIT ? OFFSET ?',
+            [limit, offset]
+        ).then(([rows, fieldData]) => {
+            return db.execute('SELECT COUNT(*) as count FROM recompensa') // Para obtener el total de recompensas
+                .then(([countResult]) => [rows, countResult[0].count]);
+        });
+    }
 }
