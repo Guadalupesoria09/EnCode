@@ -1,48 +1,51 @@
 <%- include('includes/head.ejs') %>
+<h1 class="title has-text-centered">EDITAR TARJETA</h1>
+<form action="promo/tarjeta" method="POST">
+<input type="hidden" name="_csrf" value="<%= csrfToken %>" >
 
 <section class="section">
-  <div class="container">
-    <h1 class="title has-text-centered">CONFIGURACIÓN LOYALTY CARD</h1>
+<div class="container">
     <div class="columns">
-
-      <div class="column is-half">
-        <form>
-          <div class="field-container">
-            <div class="box">
-              <div class="field">
-                <label class="label">Sellos</label>
-                <div class="control">
-                  <input class="input" type="range" min="1" max="10" value="5" style="height: 20px;">
+        <div class="column is-half">
+            <div class="field-container">
+                <div class="box">
+                    
+                    <div class="field">
+                        <label class="label">Sellos</label>
+                        <div class="control">
+                            <input id="Limite" name="Limite" class="input" type="number" required>
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label" for="NombrePromocion">Promociones</label>
+                        <div class="control">
+                            <% for (let promocion of promociones) { %>
+                                <label class="checkbox">
+                                    <input type="checkbox" id="NombrePromocion" name="NombrePromocion" required
+                                        <% if (promocion.NombrePromocion == promocion.NombrePromocion) %> >
+                                    <%= promocion.NombrePromocion %>
+                                </label>
+                                <br>
+                            <% } %>
+                        </div>
+                    </div>
+                            
+                    <div class="field">
+                        <label class="label">Vigencia</label>
+                        <div class="control">
+                            <input id="Vigencia" name="Vigencia" class="input" type="date" required>
+                        </div>
+                    </div>
                 </div>
-              </div>
-
-              <div class="field">
-                <label class="label">Promoción</label>
-                <div class="control">
-                  <div class="select">
-                    <select>
-                      <option value="promo1">Promoción 1</option>
-                      <option value="promo2">Promoción 2</option>
-                      <option value="promo3">Promoción 3</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <div class="field">
-                <label class="label">Vigencia</label>
-                <div class="control">
-                  <input class="input" type="date">
-                </div>
-              </div>
             </div>
-          </div>
-        </form>
-        <br></br>
-        <div class="control has-text-centered">
-            <a href="/promo/promociones" class="button is-link">EDITAR PROMOCIONES</a>
+            </form>
+            <br>
+            <div class="control has-text-centered">
+                <a href="/promo/promociones" class="button is-link">EDITAR PROMOCIONES</a>
+            </div>
         </div>
-      </div>
+
       <div class="column is-half">
         <!-- <figure class="image">
           <img src="/Tarjeta-Lealtad.png" alt="Loyalty Card">

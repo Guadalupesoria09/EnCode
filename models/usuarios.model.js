@@ -56,13 +56,28 @@ module.exports = class Usuario {
                     return db.execute(
                         'INSERT INTO usuarioSucursal(IDUsuario, IDSucursal) VALUES (?, ?)',
                         [IDUsuario, IDSucursal]
-                    );
-                } else {
-                    throw new Error('La sucursal especificada no existe');
-                }
-            })
-            .catch(error => console.log(error));
-    }
+                   ).then(() => {
+                    // Si el IDRol es igual a 2, insertar en Tarjeta y TarjetaSucursal
+                    if (IDRol === 2) {
+                        return db.execute(
+                            'INSERT INTO Tarjeta(IDUsuario) VALUES (?)',
+                            [IDUsuario]
+                        )
+                        .then(([result]) => {
+                            const IDTarjeta = result.insertId;
+                            return db.execute(
+                                'INSERT INTO TarjetaSucursal(IDTarjeta, IDSucursal) VALUES (?, ?)',
+                                [IDTarjeta, IDSucursal]
+                            );
+                        });
+                    }
+                });
+            } else {
+                throw new Error('La sucursal especificada no existe');
+            }
+        })
+        .catch(error => console.log(error));
+} 
 
     // Método para buscar un usuario por número de teléfono.
     static fetchOneByTelefono(NumTelefono) {
