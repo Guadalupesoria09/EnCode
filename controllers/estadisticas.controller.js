@@ -88,4 +88,3 @@ exports.get_estadisticasRewards = async (request, response) => {
         response.status(500).render('error', { message: 'Error al obtener estadísticas de recompensas' });
     }
 };
->>>>>>> daniEditarTarjeta2

@@ -140,15 +140,6 @@ module.exports = class Usuario {
         `, [NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado, IDUsuario]);
     }
 
-    // Método para actualizar la sucursal de un usuario.
-    static updateSucursal(IDUsuario, IDSucursal) {
-        return db.execute(`
-            UPDATE usuarioSucursal 
-            SET IDSucursal = ?
-            WHERE IDUsuario = ?
-        `, [IDSucursal, IDUsuario]);
-    }
-
     // Método para actualizar el rol de un usuario.
     static updateRol(IDUsuario, IDRol) {
         return db.execute(`
@@ -162,19 +153,7 @@ module.exports = class Usuario {
     static fetchAllRoles() {
         return db.execute('SELECT * FROM Rol');
     }
-
-    // Método para obtener todos los usuarios de una sucursal específica.
-    static fetchUsuariosPorSucursal(IDSucursal) {
-        return db.execute(`
-            SELECT Usuario.IDUsuario, Usuario.NombreUsuario, Usuario.NumTelefono, Rol.TipoRol
-            FROM usuarioSucursal
-            INNER JOIN Usuario ON usuarioSucursal.IDUsuario = Usuario.IDUsuario
-            INNER JOIN UsuarioRol ON Usuario.IDUsuario = UsuarioRol.IDUsuario
-            INNER JOIN Rol ON UsuarioRol.IDRol = Rol.IDRol
-            WHERE usuarioSucursal.IDSucursal = ? AND Usuario.deleted_at IS NULL
-        `, [IDSucursal]);
-    }
-
+ 
     // Método para eliminar (de manera lógica) un usuario.
     static deleteUsuario(IDUsuario) {
         return db.execute('UPDATE usuario SET deleted_at = CURRENT_TIMESTAMP WHERE IDUsuario = ?', [IDUsuario]);
