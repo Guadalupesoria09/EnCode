@@ -1,17 +1,17 @@
+
 module.exports = (request, response, next) => {
+    let canVerestadisticas = false;
 
-    let canVerestadísticas = false;
-
-    for (let privilegio of request.session.permisos) {
-        if (privilegio.Actividad == 'ver estadísticas') {
-            canVerestadísticas = true;
+    for (let privilegio of request.session.privilegios) {
+        if (privilegio.Privilegio === 'ver estadísticas') {
+            canVerestadisticas = true;
+            break;
         }
     }
 
-    if (canVerestadísticas) {
+    if (canVerestadisticas) {
         next();
     } else {
         return response.render('404');
     }
-
-}
+};

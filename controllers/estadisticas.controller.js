@@ -5,10 +5,10 @@ const Estadisticas = require('../models/estadisticas.model');
  exports.mostrarOpciones = (request, response) => {
     response.render('estadisticas', {
         title: 'Opciones de Estadísticas',
+	privilegios: request.session.privilegios,
         csrfToken: request.csrfToken()
     });
 };
-
 
 exports.get_estadisticasGenerales = (request, response) => {
     response.render('estadisticasGenerales', {
@@ -50,7 +50,6 @@ exports.getReclamosPorPromocion = async (request, response) => {
     }
 };
 
-
     // Método para obtener recompensas reclamadas por promoción
     exports.getRecompensaReclamadaPorPromocion = async (request, response) => {
     try {
@@ -61,10 +60,6 @@ exports.getReclamosPorPromocion = async (request, response) => {
         response.status(500).json({ message: 'Error al obtener las recompensas reclamadas por promoción' });
     }
 };
-
-
-
-
 
 exports.get_estadisticasRewards = async (request, response) => {
     try {
@@ -80,3 +75,17 @@ exports.get_estadisticasRewards = async (request, response) => {
     }
 };
 
+exports.get_estadisticasRewards = async (request, response) => {
+    try {
+        const rewardsData = await Estadisticas.obtenerEstadisticasRewards();
+        response.render('estadisticasRewards', {
+            title: 'Estadísticas Rewards',
+            csrfToken: request.csrfToken(),
+            rewardsData: rewardsData 
+        });
+    } catch (error) {
+        console.error('Error al obtener estadísticas de recompensas:', error);
+        response.status(500).render('error', { message: 'Error al obtener estadísticas de recompensas' });
+    }
+};
+>>>>>>> daniEditarTarjeta2

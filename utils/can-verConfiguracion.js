@@ -1,17 +1,17 @@
-
 module.exports = (request, response, next) => {
-    let canModificarusuario = false;
+    let canVerconfiguracion = false;
 
     for (let privilegio of request.session.privilegios) {
-        if (privilegio.Privilegio === 'modificar usuario') {
-            canModificarusuario = true;
+        if (privilegio.Privilegio === 'ver configuración') {
+            canVerconfiguracion = true;
             break;
         }
     }
 
-    if (canModificarusuario) {
+    if (canVerconfiguracion) {
         next();
     } else {
         return response.render('404');
     }
 };
+

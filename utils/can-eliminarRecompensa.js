@@ -1,10 +1,11 @@
-module.exports = (request, response, next) => {
 
+module.exports = (request, response, next) => {
     let canEliminarrecompensa = false;
 
-    for (let privilegio of request.session.permisos) {
-        if (privilegio.Actividad == 'eliminar recompensa') {
+    for (let privilegio of request.session.privilegios) {
+        if (privilegio.Privilegio === 'eliminar recompensa') {
             canEliminarrecompensa = true;
+            break;
         }
     }
 
@@ -13,5 +14,4 @@ module.exports = (request, response, next) => {
     } else {
         return response.render('404');
     }
-
-}
+};
