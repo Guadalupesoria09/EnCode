@@ -2,11 +2,11 @@ const express = require('express');  // Importamos express para manejar las ruta
 const router = express.Router();  // Creamos un enrutador con express.
 
 const isAuth = require('../utils/is-auth');  // Middleware para verificar si el usuario está autenticado.
-const canVerSucursal = require('../utils/can-verSucursal');  // Middleware para verificar si el usuario está autenticado.
-const canVerSucursales = require('../utils/can-verSucursales');  // Middleware para verificar si el usuario está autenticado.
-const canRegistrarSucursal = require('../utils/can-registrarSucursal');  // Middleware para verificar si el usuario está autenticado.
-const canModificarSucursal = require('../utils/can-modificarSucursal');  // Middleware para verificar si el usuario está autenticado.
-const canEliminarSucursal = require('../utils/can-eliminarSucursal');  // Middleware para verificar si el usuario está autenticado.
+const canVerSucursal = require('../utils/can-verSucursal');  // Middleware para verificar si el usuario puede ver su sucursal.
+const canVerSucursales = require('../utils/can-verSucursales');  // Middleware para verificar si el usuario puede ver todas las sucursales.
+const canRegistrarSucursal = require('../utils/can-registrarSucursal');  // Middleware para verificar si el usuario puede registrar una sucursal.
+const canModificarSucursal = require('../utils/can-modificarSucursal');  // Middleware para verificar si el usuario puede modificar una sucursal.
+const canEliminarSucursal = require('../utils/can-eliminarSucursal');  // Middleware para verificar si el usuario puede eliminar una sucursal.
 
 const sucursalController = require('../controllers/sucursal.controller');  // Importamos el controlador de sucursales.
 

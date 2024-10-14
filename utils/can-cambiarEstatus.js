@@ -12,6 +12,6 @@ module.exports = (request, response, next) => {
     if (canCambiarestatus) {
         next();
     } else {
-        return response.render('404');
+        return response.render('/promo/promociones');
     }
 };
