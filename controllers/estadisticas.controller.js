@@ -28,6 +28,23 @@ exports.getComprasPorUsuario = async (request, response) => {
     }
 };
 
+// Método para obtener el nombre de las promociones activas y las compras generadas
+exports.getPromocionesActivas = async (request, response) => {
+    try {
+        const [promocionesActivas] = await Estadisticas.fetchPromocionesActivas();
+        response.json(promocionesActivas);
+    } catch (error) {
+        console.error('Error al obtener las promociones activas:', error);
+        response.status(500).json({ message: 'Error al obtener las promociones activas' });
+    }
+};
+
+
+
+
+
+
+
 
 
 exports.get_estadisticasRewards = async (request, response) => {

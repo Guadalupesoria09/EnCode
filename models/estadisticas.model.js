@@ -12,4 +12,14 @@ module.exports = class Estadisticas {
              GROUP BY IDUsuario`
         );
     }
+
+
+    // Método para obtener las estadisticas de las promociones activas y las compras generadas
+    static fetchPromocionesActivas() {
+        return db.execute(
+           `SELECT NombrePromocion, Compra
+            FROM promocion
+            WHERE Activo = 1`
+        );
+    }
 };
