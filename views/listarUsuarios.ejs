@@ -11,8 +11,8 @@
                         <strong>Nombre:</strong> <%= usuario.NombreUsuario %><br>
                         <strong>Rol:</strong> <%= usuario.TipoRol %><br><br>
 
-                        <a href="/editarUsuario/<%=usuario.IDUsuario %>" class="button is-link">Editar</a><br><br>
-                        <a href="/eliminarUsuario/<%= usuario.IDUsuario %>" class="button is-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?')">Eliminar</a>
+                        <a href="<%= process.env.PATH_ENV %>editarUsuario/<%=usuario.IDUsuario %>" class="button is-link">Editar</a><br><br>
+                        <a href="<%= process.env.PATH_ENV %>eliminarUsuario/<%= usuario.IDUsuario %>" class="button is-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?')">Eliminar</a>
                     </li>
                 <br>
                 </div>
@@ -22,8 +22,8 @@
         
     </ul>
     <br><br>
-    <a href="/sucur/sucursales" class="button is-warning">Regresar a Sucursales</a>
-    <a href="/registrar" class="button is-link">Crear usuario</a>
+    <a href="<%= process.env.PATH_ENV %>sucur/sucursales" class="button is-warning">Regresar a Sucursales</a>
+    <a href="<%= process.env.PATH_ENV %>registrar" class="button is-link">Crear usuario</a>
 
 </body>
 <%- include('includes/foot.ejs') %>

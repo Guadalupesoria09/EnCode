@@ -278,31 +278,6 @@ exports.get_deletePromo = (request, response, next) => {
     });
 }
 
-// METHODS GET & POST DE TARJETA
-exports.get_tarjeta = (request, response, next) => {
-    console.log('Ruta /promo/tarjeta');
-    response.render('editarTarjeta', {
-        username: request.session.NombreUsuario || '', 
-        csrfToken: request.csrfToken(),
-    });  
-};
-
-exports.get_editorTarjeta = (request, response, next) => {
-    console.log('Ruta /promo/editorTarjeta');
-
-    response.render('editorTarjeta', {
-            username: request.session.NombreUsuario || '', 
-            csrfToken: request.csrfToken(),
-    });
-  
-};
-
-exports.post_editorTarjeta = (request, response, next) => {
-    console.log(request.file);
-
-      
-};
-
 // METHODS GET & POST RECOMPENSAS
 exports.get_editarRecompensa = (request, response, next) => {
     console.log('Ruta /editRecompensas');

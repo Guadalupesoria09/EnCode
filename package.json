@@ -4,7 +4,8 @@
   "description": "\"Proyecto EnCode\"",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "cross-env PATH_ENV='/encode/' node app.js",
+    "start:dev": "cross-env PATH_ENV='/' node --watch app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,6 +23,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
+    "cross-env": "^7.0.3",
     "csrf": "^3.1.0",
     "csurf": "^1.2.2",
     "dotenv": "^16.4.5",

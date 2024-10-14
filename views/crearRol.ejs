@@ -1,6 +1,6 @@
 <%- include('includes/head.ejs') %>
 <h1 class="title has-text-centered">CREAR ROL</h1>
-<form action="/config/crearRol" method="POST">
+<form action="<%= process.env.PATH_ENV %>config/crearRol" method="POST">
 <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
 
 <% if (mensaje && mensaje.trim() !== '') { %>
