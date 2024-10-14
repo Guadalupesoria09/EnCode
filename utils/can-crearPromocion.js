@@ -1,17 +1,17 @@
+
 module.exports = (request, response, next) => {
+    let canCrearpromocion = false;
 
-    let canCrearpromoción = false;
-
-    for (let privilegio of request.session.permisos) {
-        if (privilegio.Actividad == 'crear promoción') {
-            canCrearpromoción = true;
+    for (let privilegio of request.session.privilegios) {
+        if (privilegio.Privilegio === 'crear promoción') {
+            canCrearpromocion = true;
+            break;
         }
     }
 
-    if (canCrearpromoción) {
+    if (canCrearpromocion) {
         next();
     } else {
         return response.render('404');
     }
-
-}
+};

@@ -1,10 +1,11 @@
-module.exports = (request, response, next) => {
 
+module.exports = (request, response, next) => {
     let canRegistrarsucursal = false;
 
-    for (let privilegio of request.session.permisos) {
-        if (privilegio.Actividad == 'registrar sucursal') {
+    for (let privilegio of request.session.privilegios) {
+        if (privilegio.Privilegio === 'registrar sucursal') {
             canRegistrarsucursal = true;
+            break;
         }
     }
 
@@ -13,5 +14,4 @@ module.exports = (request, response, next) => {
     } else {
         return response.render('404');
     }
-
-}
+};

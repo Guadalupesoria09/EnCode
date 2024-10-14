@@ -234,12 +234,22 @@ exports.get_logout = (request, response, next) => {
  * Renderiza la página de inicio.
  */
 exports.get_home = (request, response, next) => {
-    response.render('home', {
-        username: request.session.NombreUsuario || '',
-        csrfToken: request.csrfToken(),
-        mensaje: request.session.mensaje || '',
-    });
+    Usuario.fetch(request.params.IDUsuario)
+        .then(([usuarios, fieldData]) => {
+            response.render('home', {
+                usuarios: usuarios,
+                username: request.session.NombreUsuario || '',
+                csrfToken: request.csrfToken(),
+                mensaje: request.session.mensaje || '',
+                privilegios: request.session.privilegios || [],
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            next(err);
+        });
 };
+
 
 /**
  * Renderiza la página de recuperación de contraseña.

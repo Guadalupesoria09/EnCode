@@ -77,7 +77,12 @@ module.exports = class Usuario {
             }
         })
         .catch(error => console.log(error));
-} 
+    } 
+
+    //Este método servirá para devolver los objetos del almacenamiento persistente.
+    static fetchAll() {
+        return db.execute('SELECT * FROM usuario');
+    }
 
     // Método para buscar un usuario por número de teléfono.
     static fetchOneByTelefono(NumTelefono) {
@@ -94,6 +99,15 @@ module.exports = class Usuario {
             WHERE u.IDUsuario = ?
         `, [IDUsuario]);
     }
+
+    static fetch(IDUsuario) {
+        if (IDUsuario) {
+            return this.fetchOneByID(IDUsuario);
+        } else {
+            return this.fetchAll();
+        }
+    }
+
 
     // Método para obtener los privilegios de un usuario basados en su rol.
     static getPrivilegios(IDUsuario) {

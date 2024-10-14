@@ -132,7 +132,8 @@ exports.get_sucursales = (request, response, next) => {
                 sucursales: sucursales,
                 mensaje: mensaje,
                 username: request.session.NombreUsuario || '',
-                csrfToken: request.csrfToken()
+                csrfToken: request.csrfToken(),
+                privilegios: request.session.privilegios || [],
             });
         })
         .catch((error) => {

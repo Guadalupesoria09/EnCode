@@ -1,15 +1,15 @@
 
 module.exports = (request, response, next) => {
-    let canModificarusuario = false;
+    let canEditortarjeta = false;
 
     for (let privilegio of request.session.privilegios) {
-        if (privilegio.Privilegio === 'modificar usuario') {
-            canModificarusuario = true;
+        if (privilegio.Privilegio === 'editor tarjeta') {
+            canEditortarjeta = true;
             break;
         }
     }
 
-    if (canModificarusuario) {
+    if (canEditortarjeta) {
         next();
     } else {
         return response.render('404');

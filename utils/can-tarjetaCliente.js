@@ -1,10 +1,11 @@
-module.exports = (request, response, next) => {
 
+module.exports = (request, response, next) => {
     let canTarjetacliente = false;
 
-    for (let privilegio of request.session.permisos) {
-        if (privilegio.Actividad == 'tarjeta cliente') {
+    for (let privilegio of request.session.privilegios) {
+        if (privilegio.Privilegio === 'tarjeta cliente') {
             canTarjetacliente = true;
+            break;
         }
     }
 
@@ -13,5 +14,4 @@ module.exports = (request, response, next) => {
     } else {
         return response.render('404');
     }
-
-}
+};

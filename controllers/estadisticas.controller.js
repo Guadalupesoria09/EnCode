@@ -5,6 +5,7 @@ const Estadisticas = require('../models/estadisticas.model');
  exports.mostrarOpciones = (request, response) => {
     response.render('estadisticas', {
         title: 'Opciones de Estadísticas',
+	privilegios: request.session.privilegios,
         csrfToken: request.csrfToken()
     });
 };
