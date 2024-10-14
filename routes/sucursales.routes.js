@@ -25,6 +25,9 @@ router.get('/eliminarSucursal/:IDSucursal', canEliminarSucursal, sucursalControl
 // Ruta GET para mostrar el formulario de registro de una sucursal. Solo accesible para usuarios autenticados.
 router.get('/registrarSucursal', isAuth, canRegistrarSucursal, sucursalController.get_registrarSucursal);
 
+// Ruta GET para obtener los usuarios asociados a una sucursal específica. Solo accesible para usuarios autenticados.
+router.get('/:IDSucursal/usuarios', isAuth, canVerSucursal, sucursalController.get_usuariosDeSucursal);
+
 // Ruta GET para ver el menú/listado de sucursales. Solo accesible para usuarios autenticados.
 router.get('/sucursales', isAuth, canVerSucursales, sucursalController.get_sucursales);
 

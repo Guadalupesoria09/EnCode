@@ -2,6 +2,26 @@ const { SsmlBreak } = require('twilio/lib/twiml/VoiceResponse'); // Importamos u
 const Sucursal = require('../models/sucursal.model');  // Importamos el modelo de Sucursal.
 const UserSucur = require('../models/userSucur.model');  // Importamos el modelo de UsuarioSucursal.
 
+exports.get_usuariosDeSucursal = (request, response, next) => {
+    const IDSucursal = request.params.IDSucursal;
+    
+    Sucursal.fetchSucursalByID(IDSucursal).then(([sucursal,fieldData]) => {
+        return UserSucur.fetchUsuariosPorSucursal(IDSucursal)
+        .then(([usuarios]) => {
+            response.render('listarUsuarios', {
+		sucursal: sucursal[0],
+                usuarios: usuarios,
+                username: request.session.NombreUsuario || '',
+                csrfToken: request.csrfToken(),
+            });
+	})
+    })
+    .catch((err) => {
+        console.error('Error al obtener usuarios de la sucursal:', err);
+        response.redirect('/sucur/sucursales');
+    });
+};
+
 // Controlador para eliminar una sucursal.
 exports.get_deleteSucursal = (request, response, next) => {
     const IDSucursal = request.params.IDSucursal;  // Obtenemos el ID de la sucursal desde los parámetros de la solicitud.

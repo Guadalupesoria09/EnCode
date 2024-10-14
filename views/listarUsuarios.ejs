@@ -1,6 +1,12 @@
 <%- include('includes/head.ejs') %>
 <body>
-    <h2>Usuarios en la Sucursal</h2>
+    <h1> <%=sucursal.NombreSucursal %> </h1>
+
+    <strong>Número:</strong> <%= sucursal.NumSucursal %><br>
+    <strong>Ciudad:</strong> <%= sucursal.Ciudad %><br>
+    <strong>Estado:</strong> <%= sucursal.Estado %><br>
+    <strong>Dirección:</strong> <%= sucursal.Direccion %><br>
+    <strong>CP:</strong> <%= sucursal.CP %><br>
 
     <ul>
         <div class="columns is-multiline">
@@ -27,4 +33,3 @@
 
 </body>
 <%- include('includes/foot.ejs') %>
-

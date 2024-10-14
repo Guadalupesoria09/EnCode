@@ -54,26 +54,6 @@ exports.post_register = (request, response, next) => {
 };
 
 /**
- * Muestra los usuarios de una sucursal específica.
- */
-exports.get_usuariosDeSucursal = (request, response, next) => {
-    const IDSucursal = request.params.IDSucursal;
-
-    Usuario.fetchUsuariosPorSucursal(IDSucursal)
-        .then(([usuarios]) => {
-            response.render('listarUsuarios', {
-                usuarios: usuarios,
-                username: request.session.NombreUsuario || '',
-                csrfToken: request.csrfToken(),
-            });
-        })
-        .catch((err) => {
-            console.error('Error al obtener usuarios de la sucursal:', err);
-            response.redirect('/sucur/sucursales');
-        });
-};
-
-/**
  * Renderiza la página para editar un usuario existente.
  */
 exports.get_editarUsuario = (request, response, next) => {
@@ -116,7 +96,7 @@ exports.post_editarUsuario = (request, response, next) => {
         request.body;
 
     Usuario.update(IDUsuario, NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado)
-        .then(() => Usuario.updateSucursal(IDUsuario, IDSucursal))
+        .then(() => UserSucur.updateSucursal(IDUsuario, IDSucursal))
         .then(() => Usuario.updateRol(IDUsuario, IDRol))
         .then(() => {
             request.session.mensaje = 'Usuario, sucursal y rol modificados exitosamente';
@@ -332,4 +312,3 @@ exports.get_verificar_codigo = (request, response, next) => {
             response.redirect('/verificar-codigo');
         });
 };
-
