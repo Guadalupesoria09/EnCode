@@ -12,6 +12,6 @@ module.exports = (request, response, next) => {
     if (canEditartarjeta) {
         next();
     } else {
-        return response.render('404');
+        return response.render('tarjeta/tarjeta');
     }
 };
