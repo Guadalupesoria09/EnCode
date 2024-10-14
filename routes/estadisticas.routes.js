@@ -18,4 +18,7 @@ router.get('/comprasPorUsuario', estadisticasController.getComprasPorUsuario);
 // Ruta para obtener promociones activas con sus compras
 router.get('/promocionesActivas', estadisticasController.getPromocionesActivas);
 
+// Ruta para obtener reclamos por promoción 
+router.get('/reclamosPorPromocion', estadisticasController.getReclamosPorPromocion);
+
 module.exports = router;

@@ -39,11 +39,16 @@ exports.getPromocionesActivas = async (request, response) => {
     }
 };
 
-
-
-
-
-
+// Método para obtener reclamos por promoción
+exports.getReclamosPorPromocion = async (request, response) => {
+    try {
+        const [reclamosPorPromocion] = await Estadisticas.fetchReclamosPorPromocion();
+        response.json(reclamosPorPromocion);
+    } catch (error) {
+        console.error('Error al obtener los reclamos por promoción:', error);
+        response.status(500).json({ message: 'Error al obtener los reclamos por promoción' });
+    }
+};
 
 
 

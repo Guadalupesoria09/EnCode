@@ -22,4 +22,14 @@ module.exports = class Estadisticas {
             WHERE Activo = 1`
         );
     }
+
+
+    // Método para obtener el conteo de reclamos por promoción
+    static fetchReclamosPorPromocion() {
+        return db.execute(
+            `SELECT IDPromocion, COUNT(IDReclamo) AS totalReclamos
+             FROM reclama
+             GROUP BY IDPromocion`
+        );
+    }
 };

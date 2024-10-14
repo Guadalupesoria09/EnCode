@@ -5,8 +5,12 @@
 
 <h1 class="title has-text-centered">ESTADÍSTICAS GENERALES</h1>
 
-<canvas id="comprasChart"></canvas>
-<canvas id="promocionesChart"></canvas>
+<div class="charts-container" style="display: flex; flex-direction: column; align-items: center;">
+    <canvas id="comprasChart" style="width: 300px; height: 200px;"></canvas>
+    <canvas id="promocionesChart" style="width: 300px; height: 200px;"></canvas>
+    <canvas id="reclamosChart" style="width: 300px; height: 200px;"></canvas>
+
+</div>
 
 <script>
 // Función para cargar los datos de compras por usuario
@@ -71,9 +75,18 @@ function loadPromocionesActivas() {
                     datasets: [{
                         label: 'Total Compras por Promoción Activa',
                         data: dataCompras,
-                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        backgroundColor:[
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)',
+                            'rgba(255, 159, 64, 0.6)',
+                            'rgba(144, 238, 144, 0.6)',
+
+                        ],
                         borderColor: 'rgba(153, 102, 255, 1)',
-                        borderWidth: 1
+                        borderWidth: 0
                     }]
                 },
                 options: {
@@ -91,11 +104,55 @@ function loadPromocionesActivas() {
     });
 }
 
+// Función para cargar los datos de reclamos por promoción
+function loadReclamosPorPromocion() {
+    $.ajax({
+        url: '/estadisticas/reclamosPorPromocion',
+        method: 'GET',
+        success: function(reclamosPorPromocion) {
+            console.log('Datos recibidos:', reclamosPorPromocion);
+
+            // Extraer los IDs de promoción y el total de reclamos
+            const labels = reclamosPorPromocion.map(item => item.IDPromocion);
+            const dataReclamos = reclamosPorPromocion.map(item => item.totalReclamos);
+
+            console.log('Labels:', labels);
+            console.log('Data Reclamos:', dataReclamos);
+
+            const ctx = document.getElementById('reclamosChart').getContext('2d');
+            const reclamosChart = new Chart(ctx, {
+                type: 'line', 
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Reclamos por Promoción',
+                        data: dataReclamos,
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        },
+        error: function(error) {
+            console.error('Error al cargar los reclamos por promoción:', error);
+        }
+    });
+}
+
 
 // Llamar a la función al cargar la página
 $(document).ready(function() {
     loadComprasPorUsuario();
     loadPromocionesActivas();
+    loadReclamosPorPromocion();
 });
 </script>
 
