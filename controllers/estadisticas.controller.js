@@ -1,6 +1,6 @@
 const Estadisticas = require('../models/estadisticas.model');
 
- // METHODS GET & POST DE PROMOCIONES
+ // METHODS GET & POST DE Estadisticas
 
  exports.mostrarOpciones = (request, response) => {
     response.render('estadisticas', {
@@ -10,18 +10,21 @@ const Estadisticas = require('../models/estadisticas.model');
 };
 
 
+exports.get_estadisticasGenerales = (request, response) => {
+    response.render('estadisticasGenerales', {
+        title: 'Estadísticas Generales',
+        csrfToken: request.csrfToken()
+    });
+};
 
-exports.get_estadisticasGenerales = async (request, response) => {
+// Método para obtener las compras por usuario
+exports.getComprasPorUsuario = async (request, response) => {
     try {
-        const data = await Estadisticas.obtenerEstadisticasGenerales();
-        response.render('estadisticasGenerales', {
-            title: 'Estadísticas Generales',
-            csrfToken: request.csrfToken(), 
-            data: data 
-        });
+        const [comprasPorUsuario] = await Estadisticas.fetchComprasPorUsuario();
+        response.json(comprasPorUsuario); 
     } catch (error) {
-        console.error('Error al obtener estadísticas generales:', error);
-        response.status(500).render('error', { message: 'Error al obtener estadísticas generales' });
+        console.error('Error al obtener las compras por usuario:', error);
+        response.status(500).json({ message: 'Error al obtener las compras por usuario' });
     }
 };
 
@@ -29,14 +32,15 @@ exports.get_estadisticasGenerales = async (request, response) => {
 
 exports.get_estadisticasRewards = async (request, response) => {
     try {
-        const rewardsData = await Estadisticas.obtenerEstadisticasRewards();
+        const comprasPorUsuario = await Estadisticas.fetchComprasPorUsuario();        
         response.render('estadisticasRewards', {
             title: 'Estadísticas Rewards',
             csrfToken: request.csrfToken(),
-            rewardsData: rewardsData 
+            data: { comprasPorUsuario } 
         });
     } catch (error) {
-        console.error('Error al obtener estadísticas de recompensas:', error);
-        response.status(500).render('error', { message: 'Error al obtener estadísticas de recompensas' });
+        console.error('Error al obtener estadísticas generales:', error);
+        response.status(500).render('error', { message: 'Error al obtener estadísticas generales' });
     }
 };
+

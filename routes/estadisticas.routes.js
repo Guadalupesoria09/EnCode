@@ -12,5 +12,8 @@ router.get('/generales',isAuth, estadisticasController.get_estadisticasGenerales
 // Ruta para estadísticas rewards
 router.get('/rewards',isAuth, estadisticasController.get_estadisticasRewards);
 
+// Ruta para obtener compras por usuario (JSON)
+router.get('/comprasPorUsuario', estadisticasController.getComprasPorUsuario);
+
 
 module.exports = router;
