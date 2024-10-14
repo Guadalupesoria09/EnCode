@@ -21,13 +21,13 @@
     <h1 class="title has-text-centered">EDITAR PROMOCIÓN</h1>
     <div class="columns">
       <div class="column">
-      <form class="box has-text-centered" action="/promo/editarPromo" method="POST">
+      <form class="box has-text-centered" action="<%= process.env.PATH_ENV %>promo/editarPromo" method="POST">
       <input type="hidden" id="id" name="id" value="<%= promociones.IDPromocion %>">
   <% } else { %>
     <h1 class="title has-text-centered">CREAR PROMOCIÓN</h1>
     <div class="columns">
       <div class="column">
-      <form class="box has-text-centered" action="/promo/crearPromociones" method="POST">
+      <form class="box has-text-centered" action="<%= process.env.PATH_ENV %>promo/crearPromociones" method="POST">
   <% } %>
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
         <div class="field has-text-left">

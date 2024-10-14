@@ -19,7 +19,7 @@
 <% } %>
 
 <div class="control has-text-centered">
-    <a href="/config/crearRol" class="button agregar-btn is-link">AGREGAR MÁS</a>
+    <a href="<%= process.env.PATH_ENV %>config/crearRol" class="button agregar-btn is-link">AGREGAR MÁS</a>
 </div>
 <br>
 <div class="columns is-multiline">
@@ -46,8 +46,8 @@
                     </div>
                 </div>
                 <footer class="card-footer">
-                    <a href="/config/editarRol/<%= rol.IDRol %>" class="card-footer-item">Editar</a>
-                    <a href="/config/eliminarRol/<%= rol.IDRol %>" class="card-footer-item" onclick="return confirm('¿Estás seguro de que deseas eliminar esta sucursal?');">Eliminar</a>
+                    <a href="<%= process.env.PATH_ENV %>config/editarRol/<%= rol.IDRol %>" class="card-footer-item">Editar</a>
+                    <a href="<%= process.env.PATH_ENV %>config/eliminarRol/<%= rol.IDRol %>" class="card-footer-item" onclick="return confirm('¿Estás seguro de que deseas eliminar esta sucursal?');">Eliminar</a>
                 </footer>
             </div>
         </div>

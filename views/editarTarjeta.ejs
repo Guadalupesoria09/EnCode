@@ -1,6 +1,6 @@
 <%- include('includes/head.ejs') %>
 <h1 class="title has-text-centered">EDITAR TARJETA</h1>
-<form action="promo/tarjeta" method="POST">
+<form action="<%= process.env.PATH_ENV %>tarjeta/tarjeta" method="POST">
 <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
 
 <section class="section">
@@ -48,7 +48,7 @@
             <br>
 
             <div class="control has-text-centered">
-                <a href="/promo/promociones" class="button is-link">EDITAR PROMOCIONES</a>
+                <a href="<%= process.env.PATH_ENV %>promo/promociones" class="button is-link">EDITAR PROMOCIONES</a>
             </div>
         </div>
 

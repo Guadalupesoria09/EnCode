@@ -8,9 +8,11 @@ const canEditorTarjeta = require('../utils/can-editorTarjeta');
 
 
 const tarjetaController = require('../controllers/tarjeta.controller');
+const Tarjeta = require('../models/tarjeta.model');
 
 router.get('/tarjeta', isAuth, canVerTarjeta, tarjetaController.get_tarjeta);
 
-router.get('/editorTarjeta', isAuth, canEditorTarjeta, tarjetaController.get_editorTarjeta);
+router.get('/editorTarjeta', isAuth, canVerTarjeta, tarjetaController.get_editorTarjeta);
+router.post('/editorTarjeta', isAuth, canEditorTarjeta,tarjetaController.post_editorTarjeta);
 
 module.exports = router;

@@ -1,13 +1,40 @@
 const Tarjeta = require('../models/tarjeta.model.js')
 const PromoRecomp = require('../models/promocionRecompensa.model.js')
+const Carcasa = require('../models/carcasa.model.js')
+
 
 //Controlador para cargar la página de editar el formato de la tarjeta 
 exports.get_editorTarjeta = (request, response, next) => {
-    response.render('editorTarjeta', {
+
+    Carcasa.fetchAll().then(([carcasas, fieldData]) => {
+        return response.render('editorTarjeta', {
+            carcasas: carcasas,
             username: request.session.NombreUsuario || '', 
             csrfToken: request.csrfToken(),
+        });
+    }).catch((error) => {
+        console.log(error);  // En caso de error.
     });
-  
+
+};
+
+exports.post_editorTarjeta = (request, response, next) => {
+    console.log(request.file);
+
+    const carcasa = new Carcasa (
+        request.body.nombreTarjeta,
+        request.file.filename,
+        request.body.color,
+        request.body.font,
+    );
+
+   carcasa.save().then(() => {
+        response.redirect('tarjeta');
+        })
+        .catch((error) => {
+            console.log(error);  // En caso de error.
+    });
+
 };
 
 //Controlador para cargar la pagina de visualizar y editar los parametros de la  tarjeta.
@@ -22,7 +49,7 @@ exports.get_tarjeta = (request, response, next) => {
         })
 	.catch((error) => {
             console.error('Error al obtener promociones:', error);
-            response.redirect('/error');
+            response.redirect(`${process.env.PATH_ENV}error`);
         });
 };
 
