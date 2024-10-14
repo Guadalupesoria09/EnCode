@@ -21,4 +21,7 @@ router.get('/promocionesActivas', estadisticasController.getPromocionesActivas);
 // Ruta para obtener reclamos por promoción 
 router.get('/reclamosPorPromocion', estadisticasController.getReclamosPorPromocion);
 
+// Ruta para obtener recompensas reclamadas por promoción 
+router.get('/recompensaReclamadaPorPromocion', estadisticasController.getRecompensaReclamadaPorPromocion);
+
 module.exports = router;

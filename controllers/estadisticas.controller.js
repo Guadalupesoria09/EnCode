@@ -51,6 +51,20 @@ exports.getReclamosPorPromocion = async (request, response) => {
 };
 
 
+    // Método para obtener recompensas reclamadas por promoción
+    exports.getRecompensaReclamadaPorPromocion = async (request, response) => {
+    try {
+        const [recompensaReclamadaPorPromocion] = await Estadisticas.fetchRecompensaReclamadaPorPromocion();
+        response.json(recompensaReclamadaPorPromocion);
+    } catch (error) {
+        console.error('Error al obtener las recompensas reclamadas por promoción:', error);
+        response.status(500).json({ message: 'Error al obtener las recompensas reclamadas por promoción' });
+    }
+};
+
+
+
+
 
 exports.get_estadisticasRewards = async (request, response) => {
     try {
