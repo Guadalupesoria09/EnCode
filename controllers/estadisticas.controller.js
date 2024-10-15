@@ -17,6 +17,19 @@ exports.get_estadisticasGenerales = (request, response) => {
     });
 };
 
+// Método para obtener las compras por sucursal por usuario
+exports.getComprasSucursal = async (request, response) => {
+    const { idSucursal } = request.query; // ID de la sucursal desde la URL
+
+    try {
+        const [comprasPorUsuario] = await Estadisticas.fetchComprasSucursal(idSucursal);
+        response.json(comprasPorUsuario);
+    } catch (error) {
+        console.error('Error al obtener las compras por usuario en la sucursal:', error);
+        response.status(500).json({ message: 'Error al obtener las compras por usuario en la sucursal' });
+    }
+};
+
 // Método para obtener las compras por usuario
 exports.getComprasPorUsuario = async (request, response) => {
     try {

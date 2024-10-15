@@ -6,6 +6,9 @@ const isAuth = require('../utils/is-auth');
 // Ruta para la página de opciones de estadísticas
 router.get('/', isAuth, estadisticasController.mostrarOpciones);
 
+// Ruta para obtener las compras por sucursal
+router.get('/comprasSucursal', estadisticasController.getComprasSucursal);
+
 // Ruta para estadísticas generales
 router.get('/generales',isAuth, estadisticasController.get_estadisticasGenerales);
 
