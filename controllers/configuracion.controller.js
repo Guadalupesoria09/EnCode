@@ -1,5 +1,8 @@
+const { response } = require('express');
 const Rol = require('../models/rol.model');
 const RolPriv = require('../models/rolPriv.model');
+const Privilegios = require('../models/privilegio.model')
+
 
 /**
  * Renderiza la página para crear un nuevo rol con la lista de privilegios disponibles.
@@ -16,6 +19,7 @@ exports.get_crearRol = (request, response, next) => {
             response.render('crearRol', {
                 privilegios: privilegios,
                 mensaje: mensaje,
+                editar: false,
                 username: request.session.NombreUsuario,
                 csrfToken: request.csrfToken(),
             });
@@ -56,7 +60,7 @@ exports.get_roles = (request, response, next) => {
 
     RolPriv.fetchAll()
         .then(async ([roles, fieldData]) => {
-            // Recorre cada rol y obtiene sus privilegios asociados.
+            //Recorre cada rol y obtiene sus privilegios asociados.
             for (const rol of roles) {
                 const [privilegios] = await RolPriv.fetchPrivilegios(rol.IDRol);
                 rol.Actividad = privilegios;
@@ -74,6 +78,61 @@ exports.get_roles = (request, response, next) => {
             response.redirect('/error');
         });
 };
+
+exports.get_editarRol = (request, response, next) => {
+    let mensaje = request.session.mensaje || '';
+
+    const IDRol =  request.params.IDRol;
+    
+    RolPriv.fetchRolPriv(IDRol)
+        .then(async ([rol, fieldData]) => {
+            for (let r of rol){
+                let [privilegios, fieldData] = await RolPriv.fetchTipoRol(r.IDRol);
+                r.privilegios = privilegios;
+            }
+        
+            return Privilegios.fetchAll()
+            .then(([privilegios, fieldData]) => {                
+                return response.render('crearRol', {
+                    rol: rol[0],
+                    privilegios: privilegios,
+                    mensaje: mensaje,
+                    editar: true,
+                    csrfToken: request.csrfToken(),
+                    username: request.session.NombreUsuario || '',
+                });
+                
+            });
+        })
+        .catch((error) => {
+            console.log('Error al cargar los datos del rol: ', error);
+            response.redirect('/config/roles');
+        });
+};
+
+exports.post_editarRol = (request, response, next) => {
+    const { IDRol, actividades } = request.body; // 'actividades' ahora contendrá los IDPrivilegio
+    console.log('IDRol:', IDRol);
+    console.log('Actividades:', actividades); // Asegúrate de que aquí tienes los IDPrivilegio
+
+    // Actualiza el rol
+    Rol.editarRol(IDRol)
+        .then(() => {
+            // Llama al modelo para actualizar los privilegios del rol
+            return Rol.editarPrivilegios(IDRol, actividades);
+        })
+        .then(() => {
+            request.session.mensaje = 'Rol y privilegios modificados con éxito';
+            response.redirect('/config/roles');
+        })
+        .catch((err) => {
+            console.log('Error al modificar los datos del rol', err);
+            request.session.mensaje = 'Error al modificar el rol';
+            response.redirect('/config/roles');
+        });
+};
+
+
 
 /**
  * Renderiza la página general con el nombre de usuario actual.

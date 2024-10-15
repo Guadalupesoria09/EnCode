@@ -9,10 +9,16 @@ const canModificarRol = require('../utils/can-modificarRol');  // Middleware par
 const canEliminarRol = require('../utils/can-eliminarRol');  // Middleware para verificar si el usuario puede eliminar un rol.
 
 const configController = require('../controllers/configuracion.controller');
+const { resourceLimits } = require('worker_threads');
 
 //Crear Rol
 router.get('/crearRol', isAuth, canCrearRol, configController.get_crearRol);
 router.post('/crearRol', isAuth, canCrearRol, configController.post_crearRol);
+
+//Get editar Rol
+router.get('/editarRol/:IDRol', isAuth, configController.get_editarRol);
+//Post editar 
+router.post('/editarRol', isAuth, configController.post_editarRol);
 
 //Menu roles
 router.get('/roles', isAuth, canVerRoles, configController.get_roles);

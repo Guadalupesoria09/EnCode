@@ -104,7 +104,7 @@ exports.get_editarSucursales = (request, response, next) => {
                 mensaje: mensaje,
                 editar: true,  // Indicamos que estamos en modo edición.
                 csrfToken: request.csrfToken(),
-                username: request.session.NombreUsuario || ''  // Mostramos el nombre del usuario.
+                username: request.session.NombreUsuario || '',  // Mostramos el nombre del usuario.
             });
         })
         .catch((err) => {
