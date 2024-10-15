@@ -37,14 +37,15 @@
             <div class="control">
                 <% for (let privilegio of privilegios) { %>
                     <label class="checkbox">
-                        <input type="checkbox" id="Actividad" name="Actividad" value="<%= privilegio.Actividad %>" 
-                        <% if (editar) { %> <% for (r in rol.privilegios) { %> <% if (rol.privilegios[r].Actividad == privilegio.Actividad) { %> checked <% } %> <% } %> <% } %>>
+                        <input type="checkbox" id="Actividad" name="actividades[]" value="<%= privilegio.IDPrivilegio %>" 
+                        <% if (editar) { %> <% for (r in rol.privilegios) { %> <% if (rol.privilegios[r].IDPrivilegio == privilegio.IDPrivilegio) { %> checked <% } %> <% } %> <% } %> >
                         <%= privilegio.Actividad %>
                     </label>
                     <br> 
                 <% } %>
             </div>
         </div>
+        
 
         <div class="control has-text-centered">
             <input type="submit" class="button is-link" value="<%= editar ? 'GUARDAR CAMBIOS' : 'CREAR' %>">

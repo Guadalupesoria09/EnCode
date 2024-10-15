@@ -9,7 +9,7 @@ module.exports = class rolPriv {
     }
 
     static fetchTipoRol(IDRol) {
-        return db.execute(`SELECT p.Actividad, rp.IDRol
+        return db.execute(`SELECT p.Actividad, rp.IDRol, rp.IDPrivilegio
             FROM RolPrivilegio rp
             INNER JOIN privilegio p ON
             rp.IDPrivilegio = p.IDPrivilegio

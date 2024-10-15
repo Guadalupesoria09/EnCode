@@ -4,7 +4,7 @@ const { userInfo } = require('os');
 
 const twilio = require('twilio');
 const { request } = require('http');
-const client = new twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const UserSucur = require('../models/userSucur.model');
 
 /**
@@ -185,8 +185,6 @@ exports.post_login = (request, response, next) => {
 
                             Usuario.getPrivilegios(usuario[0].IDUsuario)
                                 .then(([privilegios, fieldData]) => {
-                                    request.session.privilegios = privilegios;
-                                    console.log('Usuario privilegios:', privilegios);
 
                                     request.session.save((err) => {
                                         if (err) {
@@ -274,12 +272,12 @@ exports.post_codigo = (request, response, next) => {
 
                 console.log('Número de teléfono con formato internacional:', telefono);
 
-                client.verify.services(process.env.TWILIO_VERIFY_SERVICE_SID)
+                client.verify.v2.services(process.env.TWILIO_VERIFY_SERVICE_SID)
                     .verifications.create({ to: telefono, channel: 'sms' })
                     .then(() => {
                         console.log('Código de verificación enviado al número:', telefono);
                         request.session.telefono = telefono;
-                        response.redirect('/verificar-codigo');
+                        response.redirect('/verificarCodigo');
                     })
                     .catch((error) => {
                         console.error('Error al enviar el código de verificación:', error);
@@ -303,23 +301,52 @@ exports.post_codigo = (request, response, next) => {
  * Verifica el código de verificación recibido por SMS.
  */
 exports.get_verificar_codigo = (request, response, next) => {
-    const telefono = request.session.telefono;
     const codigo = request.body.codigo;
 
-    client.verify.services(process.env.TWILIO_VERIFY_SERVICE_SID)
-        .verificationChecks.create({ to: telefono, code: codigo })
+    if (!codigo) {
+        console.error('El código no fue proporcionado.');
+        return response.redirect('/verificarCodigo');
+    }
+
+    client.verify.v2.services(process.env.TWILIO_VERIFY_SERVICE_SID)
+        .verificationChecks.create({ code: codigo })
         .then((verification_check) => {
             if (verification_check.status === 'approved') {
-                // Verificación realizada correctamente
                 response.redirect('/cambiar-contrasenia');
             } else {
                 console.log('Código incorrecto');
-                response.redirect('/verificar-codigo');
+                response.redirect('/verificarCodigo');
             }
         })
         .catch((error) => {
             console.error('Error al verificar el código:', error);
-            response.redirect('/verificar-codigo');
+            response.redirect('/verificarCodigo');
         });
 };
 
+exports.post_verificar_codigo = (request, response, next) => {
+    const codigo = request.body.codigo;
+    const telefono = request.session.telefono;
+
+    if (!codigo) {
+        request.session.mensaje = 'Por favor, ingresa un código.';
+        return response.redirect('/verificarCodigo');
+    }
+
+    client.verify.v2.services(process.env.TWILIO_VERIFY_SERVICE_SID)
+        .verificationChecks.create({ to: telefono, code: codigo })
+        .then((verification_check) => {
+            if (verification_check.status === 'approved') {
+                console.log('Código verificado correctamente.');
+                response.redirect('/cambiar-contrasenia');
+            } else {
+                request.session.mensaje = 'Código incorrecto. Inténtalo de nuevo.';
+                response.redirect('/verificarCodigo');
+            }
+        })
+        .catch((error) => {
+            console.error('Error al verificar el código:', error);
+            request.session.mensaje = 'Error al verificar el código. Inténtalo nuevamente.';
+            response.redirect('/verificarCodigo');
+        });
+};

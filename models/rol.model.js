@@ -70,24 +70,12 @@ module.exports = class Rol {
     static editarPrivilegios(IDRol, actividades) {
         return db.execute('DELETE FROM RolPrivilegio WHERE IDRol = ?', [IDRol])
             .then(() => {
-                const promises = actividades.map((actividad) => {
+                const promises = actividades.map((IDPrivilegio) => { // Cambia 'actividad' a 'IDPrivilegio'
                     return db.execute(
-                        'SELECT IDPrivilegio FROM Privilegio WHERE Actividad = ?',
-                        [actividad]
-                    )
-                    .then(([rows]) => {
-                        if (rows.length > 0) {
-                            const IDPrivilegio = rows[0].IDPrivilegio;
-                            return db.execute(
-                                'INSERT INTO RolPrivilegio (IDRol, IDPrivilegio) VALUES (?, ?)',
-                                [IDRol, IDPrivilegio]
-                            );
-                        } else {
-                            throw new Error('La actividad especificada no existe');
-                        }
-                    });
+                        'INSERT INTO RolPrivilegio (IDRol, IDPrivilegio) VALUES (?, ?)',
+                        [IDRol, IDPrivilegio] // Aquí asegurándote de que se usa el IDPrivilegio
+                    );
                 });
-
                 return Promise.all(promises);
             })
             .catch(error => {
@@ -95,4 +83,5 @@ module.exports = class Rol {
                 throw error;
             });
     }
+    
 };
