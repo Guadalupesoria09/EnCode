@@ -64,7 +64,8 @@ module.exports = class UserSucur {
     // Método para obtener todos los usuarios de una sucursal específica.
     static fetchUsuariosPorSucursal(IDSucursal) {
         return db.execute(`
-            SELECT Usuario.IDUsuario, Usuario.NombreUsuario, Usuario.NumTelefono, Rol.TipoRol
+            SELECT usuario.IDUsuario, usuario.NombreUsuario, usuario.NumTelefono, rol.TipoRol,
+	    usuario.FechaNacimiento, usuario.Genero, usuario.Ciudad, usuario.Estado
             FROM usuarioSucursal
             INNER JOIN Usuario ON usuarioSucursal.IDUsuario = Usuario.IDUsuario
             INNER JOIN UsuarioRol ON Usuario.IDUsuario = UsuarioRol.IDUsuario
