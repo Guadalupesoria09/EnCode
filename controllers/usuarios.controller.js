@@ -313,8 +313,6 @@ exports.get_verificar_codigo = (request, response, next) => {
             response.redirect('/verificarCodigo');
         });
 };
-<<<<<<< HEAD
-=======
 
 exports.post_verificar_codigo = (request, response, next) => {
     const codigo = request.body.codigo;
@@ -342,4 +340,3 @@ exports.post_verificar_codigo = (request, response, next) => {
             response.redirect('/verificarCodigo');
         });
 };
->>>>>>> neto/editarR
