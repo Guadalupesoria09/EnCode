@@ -1,6 +1,17 @@
 const Recompensas = require('../models/recompensas.model');
 
 // METHODS GET & POST RECOMPENSAS
+
+//Metodo GET para buscar las recompensas
+exports.get_buscar = (request, response, next) => {
+    Recompensas.find(request.params.valor_busqueda).then(([recompensas, fieldData]) => {
+            response.status(200).json(recompensas);
+        }).catch((error) => { 
+            console.log(error); 
+            response.status(500).json({message: "Internal Server Error"});
+        });
+}
+
 //Metodo GET para recuperar el formulario rellenado para editar una recompensa
 exports.get_editarRecompensa = (request, response, next) => {
     console.log('Ruta /editRecompensas');

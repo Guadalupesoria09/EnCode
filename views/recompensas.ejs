@@ -25,9 +25,19 @@
     <br>
 
     <div class="box is-200x200">
-        <div class="columns is-multiline">
+          
+        <input
+            class="input is-rounded is-link"
+            type="text"
+            placeholder="Buscar..."
+            id="buscar"
+            name="buscar"
+        />
+        <br />
+        <br>
+        <div id="recompensasA" class="columns is-multiline">
             <% for (let recompensa of recompensas) { %>
-                <div id="promocionesA" class="column is-4 is-one-quarter">
+                <div class="column is-4 is-one-quarter">
                     <div class="card">
                         <header class="card-header">
                             <p class="card-header-title"><%= recompensa.NombreRecompensa %></p>
@@ -46,10 +56,7 @@
             <% } %>
         </div>
     </div>
-
-    <!-- Paginación -->
     <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-        <!-- Botón para página anterior -->
         <% if (currentPage > 1) { %>
             <a class="pagination-previous" href="<%= process.env.PATH_ENV %>recomp/recompensas?page=<%= currentPage - 1 %>">Anterior</a>
         <% } else { %>
@@ -74,6 +81,47 @@
             <% } %>
         </ul>
     </nav>
+    <script>
+        document.getElementById("buscar").onkeyup = () => {
+        const valor_busqueda = document.getElementById("buscar").value;
+            
+        fetch(`/recomp/buscar/${valor_busqueda}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(result => {
+            return result.json(); //Regresa otra promesa
+        }).then(data => {
+            console.log(data);
+            let html = "";
+            for (recompensa of data) { 
+                html += `
+                <div class="column is-4 is-one-quarter">
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title">${recompensa.NombreRecompensa}</p>
+                            <button class="card-header-icon" aria-label="more options">
+                                <span class="icon">
+                                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                            </button>
+                        </header>
+                        <footer class="card-footer">
+                            <a href="<%= process.env.PATH_ENV %>recomp/editRecompensas/${recompensa.IDRecompensa}" class="card-footer-item">Editar</a>
+                            <a href="<%= process.env.PATH_ENV %>recomp/delete/${recompensa.IDRecompensa}" class="card-footer-item">Eliminar</a>
+                        </footer>
+                    </div>
+                </div>
+                `;
+            }
+            //Modificamos el DOM de nuestra página de acuerdo a los datos de la segunda promesa
+            document.getElementById("recompensasA").innerHTML = html;
+        }).catch(err => {
+            console.error(err);
+        });
+        }
+    </script>
 
 
     <br>
