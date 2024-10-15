@@ -33,6 +33,18 @@ module.exports = class Estadisticas {
         );
     }
 
+    // Método para obtener la cantidad de reclamos de promociones por usuario en una sucursal
+    static fetchReclamoPromoSucursal(idSucursal) {
+        return db.execute(
+            `SELECT u.NombreUsuario, COUNT(r.IDReclamo) AS TotalReclamos
+             FROM reclama r
+             JOIN promocion p ON r.IDPromocion = p.IDPromocion
+             JOIN promocionSucursal ps ON p.IDPromocion = ps.IDPromocion
+             JOIN usuario u ON r.IDUsuario = u.IDUsuario
+             WHERE ps.IDSucursal = ?
+             GROUP BY u.NombreUsuario`,  [idSucursal]);
+    }
+
 
     // Método para obtener la cantidad de recompensas reclamadas asociadas a cada promoción
     static fetchRecompensaReclamadaPorPromocion() {

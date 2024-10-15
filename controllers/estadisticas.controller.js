@@ -61,6 +61,19 @@ exports.getReclamosPorPromocion = async (request, response) => {
     }
 };
 
+// Método para obtener los reclamos de promociones por usuario en una sucursal
+exports.getReclamoPromoSucursal = async (request, response) => {
+    const { idSucursal } = request.query; // ID de la sucursal desde la URL
+
+    try {
+        const [reclamos] = await Estadisticas.fetchReclamoPromoSucursal(idSucursal);
+        response.json(reclamos);
+    } catch (error) {
+        console.error('Error al obtener las promociones reclamadas por usuario en la sucursal:', error);
+        response.status(500).json({ message: 'Error al obtener las promociones reclamadas por usuario en la sucursal' });
+    }
+};
+
 exports.get_estadisticasRewards = async (request, response) => {
     try {
         const comprasPorUsuario = await Estadisticas.fetchComprasPorUsuario();        
