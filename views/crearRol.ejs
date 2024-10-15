@@ -1,6 +1,6 @@
 <%- include('includes/head.ejs') %>
 <h1 class="title has-text-centered"><%= editar ? 'EDITAR ROL' : 'CREAR ROL' %></h1>
-<form action="<%= editar ? '/config/editarRol' : '/config/crearRol' %>" method="POST">
+<form action="<%= editar ? `${process.env.PATH_ENV}config/editarRol` : `${process.env.PATH_ENV}config/crearRol` %>" method="POST">
 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 <% if (editar) {%>
     <input type="hidden" id="IDRol" name="IDRol" value="<%=rol.IDRol %>">

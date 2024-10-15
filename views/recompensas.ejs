@@ -20,7 +20,7 @@
     <% } %>
     <br>
     <div class="control has-text-centered">
-        <a href="<%= process.env.PATH_ENV %>promo/recompensas/agregar" class="button agregar-btn is-link">AGREGAR MÁS</a>
+        <a href="<%= process.env.PATH_ENV %>recomp/recompensas/agregar" class="button agregar-btn is-link">AGREGAR MÁS</a>
     </div>
     <br>
 
@@ -38,8 +38,8 @@
                             </button>
                         </header>
                         <footer class="card-footer">
-                            <a href="<%= process.env.PATH_ENV %>promo/editRecompensas/<%= recompensa.IDRecompensa %>" class="card-footer-item">Editar</a>
-                            <a href="<%= process.env.PATH_ENV %>promo/delete/<%= recompensa.IDRecompensa %>" class="card-footer-item">Eliminar</a>
+                            <a href="<%= process.env.PATH_ENV %>recomp/editRecompensas/<%= recompensa.IDRecompensa %>" class="card-footer-item">Editar</a>
+                            <a href="<%= process.env.PATH_ENV %>recomp/delete/<%= recompensa.IDRecompensa %>" class="card-footer-item">Eliminar</a>
                         </footer>
                     </div>
                 </div>
@@ -51,14 +51,14 @@
     <nav class="pagination is-centered" role="navigation" aria-label="pagination">
         <!-- Botón para página anterior -->
         <% if (currentPage > 1) { %>
-            <a class="pagination-previous" href="<%= process.env.PATH_ENV %>promo/recompensas?page=<%= currentPage - 1 %>">Anterior</a>
+            <a class="pagination-previous" href="<%= process.env.PATH_ENV %>recomp/recompensas?page=<%= currentPage - 1 %>">Anterior</a>
         <% } else { %>
             <a class="pagination-previous" disabled>Anterior</a>
         <% } %>
 
         <!-- Botón para página siguiente -->
         <% if (currentPage < totalPages) { %>
-            <a class="pagination-next" href="<%= process.env.PATH_ENV %>promo/recompensas?page=<%= currentPage + 1 %>">Siguiente</a>
+            <a class="pagination-next" href="<%= process.env.PATH_ENV %>recomp/recompensas?page=<%= currentPage + 1 %>">Siguiente</a>
         <% } else { %>
             <a class="pagination-next" disabled>Siguiente</a>
         <% } %>
@@ -67,7 +67,7 @@
         <ul class="pagination-list">
             <% for (let i = 1; i <= totalPages; i++) { %>
                 <li>
-                    <a href="<%= process.env.PATH_ENV %>promo/recompensas?page=<%= i %>" class="pagination-link <%= currentPage === i ? 'is-current' : '' %>">
+                    <a href="<%= process.env.PATH_ENV %>recomp/recompensas?page=<%= i %>" class="pagination-link <%= currentPage === i ? 'is-current' : '' %>">
                         <%= i %>
                     </a>
                 </li>

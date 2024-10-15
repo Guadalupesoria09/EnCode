@@ -100,7 +100,7 @@ exports.post_editarUsuario = (request, response, next) => {
         .then(() => Usuario.updateRol(IDUsuario, IDRol))
         .then(() => {
             request.session.mensaje = 'Usuario, sucursal y rol modificados exitosamente';
-            response.redirect('/sucur/sucursales');
+            response.redirect(`${process.env.PATH_ENV}sucur/sucursales`);
         })
         .catch((err) => {
             console.error('Error al modificar los datos del usuario o la sucursal:', err);
@@ -117,11 +117,11 @@ exports.get_deleteUsuario = (req, res, next) => {
     Usuario.deleteUsuario(IDUsuario)
         .then(() => {
             req.session.mensaje = 'Usuario eliminado exitosamente';
-            res.redirect('/sucur/sucursales');
+            res.redirect(`${process.env.PATH_ENV}sucur/sucursales`);
         })
         .catch((err) => {
             console.error('Error al eliminar el usuario:', err);
-            res.redirect('/sucur/sucursales');
+            res.redirect(`${process.env.PATH_ENV}sucur/sucursales`);
         });
 };
 
@@ -171,31 +171,31 @@ exports.post_login = (request, response, next) => {
                                             console.error('Error al guardar la sesión:', err);
                                             return response.redirect('/login');
                                         }
-                                        response.redirect('/home');
+                                        response.redirect(`${process.env.PATH_ENV}home`);
                                     });
                                 })
                                 .catch((err) => {
                                     console.error('Error al obtener privilegios:', err);
-                                    response.redirect('/login');
+                                    response.redirect(`${process.env.PATH_ENV}login`);
                                 });
                         } else {
                             request.session.mensaje = 'El usuario y/o contraseña no coinciden';
-                            response.redirect('/login');
+                            response.redirect(`${process.env.PATH_ENV}login`);
                         }
                     })
                     .catch((err) => {
                         console.error('Error al comparar contraseñas:', err);
-                        response.redirect('/login');
+                        response.redirect(`${process.env.PATH_ENV}login`);
                     });
             } else {
                 request.session.mensaje = 'El usuario no existe';
-                response.redirect('/login');
+                response.redirect(`${process.env.PATH_ENV}login`);
             }
         })
         .catch((err) => {
             console.error('Error al buscar el teléfono en la base de datos:', err);
             request.session.mensaje = 'Error 500: Error del servidor';
-            response.redirect('/login');
+            response.redirect(`${process.env.PATH_ENV}login`);
         });
 };
 
@@ -204,7 +204,7 @@ exports.post_login = (request, response, next) => {
  */
 exports.get_logout = (request, response, next) => {
     request.session.destroy(() => {
-        response.redirect('/login');
+        response.redirect(`${process.env.PATH_ENV}login`);
     });
 };
 

@@ -80,6 +80,9 @@ app.use('/estadisticas', estadisticasRoutes);
 const sucursalesRoutes = require('./routes/sucursales.routes');
 app.use('/sucur', sucursalesRoutes);
 
+const recompensasRoutes = require('./routes/recompensas.routes');
+app.use('/recomp', recompensasRoutes);
+
 const promocionesRoutes = require('./routes/promociones.routes');
 app.use('/promo', promocionesRoutes);
 
