@@ -2,18 +2,6 @@ const db = require('../utils/database');
 
 module.exports = class Compra {
 
-    // Método para obtener las compras por sucursal por usuario
-    exports.getComprasSucursal = async (request, response) => {
-        const { idSucursal } = request.query; // ID de la sucursal desde la URL
-
-        try {
-            const [comprasPorUsuario] = await Estadisticas.fetchComprasSucursal(idSucursal);
-            response.json(comprasPorUsuario);
-        } catch (error) {
-            console.error('Error al obtener las compras por usuario en la sucursal:', error);
-            response.status(500).json({ message: 'Error al obtener las compras por usuario en la sucursal' });
-    }
-
     // Método para obtener la cantidad de compras por un usuario en una sucursal
     static fetchComprasSucursal(idSucursal) {
         return db.execute(
@@ -25,11 +13,20 @@ module.exports = class Compra {
              WHERE ts.IDSucursal = ?
              GROUP BY u.NombreUsuario`,  [idSucursal]
             );
-        }    
+    }   
+    
+    // Método para obtener la cantidad de reclamos de promociones por usuario en una sucursal
+    static fetchReclamoPromoSucursal(idSucursal) {
+        return db.execute(
+            `SELECT u.NombreUsuario, COUNT(r.IDReclamo) AS TotalReclamos
+             FROM reclama r
+             JOIN promocion p ON r.IDPromocion = p.IDPromocion
+             JOIN promocionSucursal ps ON p.IDPromocion = ps.IDPromocion
+             JOIN usuario u ON r.IDUsuario = u.IDUsuario
+             WHERE ps.IDSucursal = ?
+             GROUP BY u.NombreUsuario`,  [idSucursal]);
+    }
 
 }
 
-};
 
-
-}

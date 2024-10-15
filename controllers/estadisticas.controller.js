@@ -1,4 +1,6 @@
 const Estadisticas = require('../models/estadisticas.model');
+const Compras = require('../models/compras.model');
+const Sucursal = require('../models/sucursal.model');
 
  // METHODS GET & POST DE Estadisticas
 
@@ -19,11 +21,14 @@ exports.get_estadisticasGenerales = (request, response) => {
 
 // Método para obtener las compras por sucursal por usuario
 exports.getComprasSucursal = async (request, response) => {
-    const { idSucursal } = request.query; // ID de la sucursal desde la URL
-
+    const  {idSucursal}   = request.query; // ID de la sucursal desde la URL
     try {
-        const [comprasPorUsuario] = await Estadisticas.fetchComprasSucursal(idSucursal);
+        const [comprasPorUsuario] = await Compras.fetchComprasSucursal(idSucursal);
+
+        return response.render('compras');
         response.json(comprasPorUsuario);
+
+       
     } catch (error) {
         console.error('Error al obtener las compras por usuario en la sucursal:', error);
         response.status(500).json({ message: 'Error al obtener las compras por usuario en la sucursal' });
@@ -55,8 +60,9 @@ exports.getPromocionesActivas = async (request, response) => {
 // Método para obtener reclamos por promoción
 exports.getReclamosPorPromocion = async (request, response) => {
     try {
-        const [reclamosPorPromocion] = await Estadisticas.fetchReclamosPorPromocion();
+        const [reclamosPorPromocion] = await Compras.fetchReclamosPorPromocion();
         response.json(reclamosPorPromocion);
+        
     } catch (error) {
         console.error('Error al obtener los reclamos por promoción:', error);
         response.status(500).json({ message: 'Error al obtener los reclamos por promoción' });

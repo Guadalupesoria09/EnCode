@@ -22,7 +22,10 @@
     </div>
 </div>
 
-<canvas id="graficoComprasUsuario" width="200" height="200"></canvas>
+<div class="charts-container" style="display: flex; flex-wrap: wrap; justify-content: center;">
+    <div class="chart-item" style="flex: 700%; max-width: 50%; padding: 30px;"> 
+        <canvas id="comprasUsuarioChart" style="width: 100%; height: auto;"></canvas>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -36,7 +39,7 @@
         $.ajax({
             url: '/estadisticas/comprasSucursal',
             method: 'GET',
-            data: { idSucursal: idSucursal },
+            data: { idSucursal: idSucursal},
             success: function(data) {
                 // Verificar si los datos están vacíos
                 if (!data || data.length === 0) {
@@ -53,7 +56,7 @@
                 }
 
                 // Crear un nuevo gráfico de barras
-                var ctx = document.getElementById('graficoComprasUsuario').getContext('2d');
+                var ctx = document.getElementById('comprasUsuarioChart').getContext('2d');
                 window.comprasChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
@@ -80,54 +83,9 @@
                 alert('Ocurrió un error al cargar los datos. Inténtalo de nuevo.');
             }
         });
+
+        
     });
-</script>
-<script>
-    // Gráfico: Reclamos de Promociones por Usuario
-    $.ajax({
-            url: '/estadisticas/reclamoPromoSucursal',
-            method: 'GET',
-            data: { idSucursal: idSucursal },
-            success: function(data) {
-                if (!data || data.length === 0) {
-                    alert('No se encontraron reclamos para la sucursal seleccionada.');
-                    return;
-                }
-
-                var nombresUsuarios = data.map(function(item) { return item.NombreUsuario; });
-                var totalReclamos = data.map(function(item) { return item.TotalReclamos; });
-
-                if (window.reclamoChart) {
-                    window.reclamoChart.destroy();
-                }
-
-                var ctx = document.getElementById('reclamoPromoChart').getContext('2d');
-                window.reclamoChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: nombresUsuarios,
-                        datasets: [{
-                            label: 'Reclamos de Promociones por Usuario',
-                            data: totalReclamos,
-                            backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                            borderColor: 'rgba(255, 159, 64, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            },
-            error: function(err) {
-                console.error('Error al cargar los datos:', err);
-                alert('Ocurrió un error al cargar los datos. Inténtalo de nuevo.');
-            }
-        });
 </script>
 
 <%- include('includes/foot.ejs') %>
