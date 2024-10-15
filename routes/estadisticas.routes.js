@@ -24,6 +24,9 @@ router.get('/promocionesActivas', estadisticasController.getPromocionesActivas);
 // Ruta para obtener reclamos por promoción 
 router.get('/reclamosPorPromocion', estadisticasController.getReclamosPorPromocion);
 
+// Ruta para obtener reclamos de promociones por usuario por sucursal
+router.get('/reclamoPromoSucursal', estadisticasController.getReclamoPromoSucursal);
+
 // Ruta para obtener recompensas reclamadas por promoción 
 router.get('/recompensaReclamadaPorPromocion', estadisticasController.getRecompensaReclamadaPorPromocion);
 
