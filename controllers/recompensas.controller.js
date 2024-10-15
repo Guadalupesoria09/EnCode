@@ -4,13 +4,29 @@ const Recompensas = require('../models/recompensas.model');
 
 //Metodo GET para buscar las recompensas
 exports.get_buscar = (request, response, next) => {
-    Recompensas.find(request.params.valor_busqueda).then(([recompensas, fieldData]) => {
-            response.status(200).json(recompensas);
-        }).catch((error) => { 
-            console.log(error); 
-            response.status(500).json({message: "Internal Server Error"});
+    const valorBusqueda = request.params.valor_busqueda;
+    const page = parseInt(request.query.page) || 1; // Página actual (default: 1)
+    const limit = 6; // Recompensas por página
+    const offset = (page - 1) * limit; // Saltar recompensas previas
+
+    Recompensas.find(valorBusqueda, limit, offset)
+        .then(([recompensas]) => {
+            return Recompensas.count(valorBusqueda).then(([result]) => {
+                const totalRecompensas = result[0].count;
+                const totalPages = Math.ceil(totalRecompensas / limit);
+
+                response.status(200).json({
+                    recompensas,
+                    currentPage: page,
+                    totalPages: totalPages,
+                });
+            });
+        })
+        .catch((error) => {
+            console.error(error);
+            response.status(500).json({ message: "Internal Server Error" });
         });
-}
+};
 
 //Metodo GET para recuperar el formulario rellenado para editar una recompensa
 exports.get_editarRecompensa = (request, response, next) => {
