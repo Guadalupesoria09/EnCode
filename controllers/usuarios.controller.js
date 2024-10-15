@@ -165,7 +165,7 @@ exports.post_login = (request, response, next) => {
 
                             Usuario.getPrivilegios(usuario[0].IDUsuario)
                                 .then(([privilegios, fieldData]) => {
-
+                                    request.session.privilegios=privilegios;
                                     request.session.save((err) => {
                                         if (err) {
                                             console.error('Error al guardar la sesión:', err);
