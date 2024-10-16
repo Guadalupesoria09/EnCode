@@ -10,13 +10,12 @@ exports.get_editorTarjeta = (request, response, next) => {
 
 
     Vista.fetchAll().then(async ([vistas, fieldData]) => {
-        console.log(vistas.IDSucursal)
         for (let vis of vistas) {
-            let [sucursal, fieldData] = await Vista.fetchInfoSucursal(vis.IDSucursal);
-            car.sucursal = sucursal;
+            let [numSucursal, fieldData] = await Vista.fetchNumSucursal(vis.IDSucursal);
+            vis.numSucursal = numSucursal;
         }
         return response.render('editorTarjeta', {
-            carcasas: carcasas,
+            vistas: vistas,
             username: request.session.NombreUsuario || '', 
             csrfToken: request.csrfToken(),
         });

@@ -7,18 +7,18 @@
 
     <div class="columns is-multiline">
         <div class="column is-narrow">
-        <% for (carcasa of carcasas) { %>
+        <% for (vista of vistas) { %>
             <div class="container">
                 <div class="cardDB">
                     <div class="card-innerDB">
-                        <div class="frontDB" style="background-image: linear-gradient(45deg, <%= carcasa.Color %>, <%= carcasa.Color %>)" >
+                        <div class="frontDB" style="background-image: linear-gradient(45deg, <%= vista.Color %>, <%= vista.Color %>)" >
                              
-                            <img src="<%= process.env.PATH_ENV %>uploads/<%= carcasa.Logo %>" class="db-img" width="600px">
-                            <div class="rowDB" style="font-family: <%= carcasa.Font %>">
+                            <img src="<%= process.env.PATH_ENV %>uploads/<%= vista.Logo %>" class="db-img" width="600px">
+                            <div class="rowDB" style="font-family: <%= vista.Font %>">
                                 <a class="image is-24x24" href="<%= process.env.PATH_ENV %>tarjeta/tarjeta">
                                     <img src="/settings_tarjeta.png">
                                 </a>
-                                <p class="text has-text-right has-text-white"><%= carcasa.nombreTarjeta %></p>
+                                <p class="text has-text-right has-text-white"><%= vista.nombreTarjeta %></p>
                             </div>
 
                             <div class="rowFDB">
@@ -27,7 +27,7 @@
                                 <p class="text has-text-left has-text-white">@teléfono</p>
                                 </div>
                                 <div class="right has-text-right">
-                                    <p class="text has-text-right has-text-white">@<%= carcasa.sucursal %></p>
+                                    <p class="text has-text-right has-text-white">@nombreSucursal</p>
                                     <p class="text has-text-right has-text-white">@teléfono sucursal</p>
                                 </div>
                             </div>
