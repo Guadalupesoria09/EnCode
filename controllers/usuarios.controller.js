@@ -47,7 +47,9 @@ exports.post_register = (request, response, next) => {
     console.log('Usuario Registrado:', request.body);
     nuevo_usuario
         .save()
-        .then(() => response.redirect('/sucur/sucursales'))
+        .then(() => {
+	    response.redirect('/sucur/sucursales');
+	})
         .catch((error) => {
             console.error('Error al guardar el usuario:', error);
         });
