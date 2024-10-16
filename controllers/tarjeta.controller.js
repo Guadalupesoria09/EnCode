@@ -6,9 +6,15 @@ const vista = require('../models/vista.model.js')
 //Controlador para cargar la página de editar el formato de la tarjeta 
 exports.get_editorTarjeta = (request, response, next) => {
 
-    Carcasa.fetchAll().then(([carcasas, fieldData]) => {
+
+
+    Vista.fetchAll().then(async ([vistas, fieldData]) => {
+        for (let vis of vistas) {
+            let [numSucursal, fieldData] = await Vista.fetchNumSucursal(vis.IDSucursal);
+            vis.numSucursal = numSucursal;
+        }
         return response.render('editorTarjeta', {
-            carcasas: carcasas,
+            vistas: vistas,
             username: request.session.NombreUsuario || '', 
             csrfToken: request.csrfToken(),
         });

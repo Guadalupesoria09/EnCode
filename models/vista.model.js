@@ -22,4 +22,13 @@ module.exports = class Vista {
         return db.execute('SELECT * FROM vista');
     }
 
+    static fetchNumSucursal(IDsucursal){
+        return db.execute(`SELECT
+                            NumSucursal
+                        FROM
+                            sucursal s,
+                            vista v
+                        WHERE
+                            s.IDSucursal = v.IDSucursal AND s.IDSucursal = ?`, [IDsucursal]);
+    }
 }
