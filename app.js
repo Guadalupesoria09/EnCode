@@ -89,24 +89,6 @@ app.use('/promo', promocionesRoutes);
 const usuariosRoutes = require('./routes/usuarios.routes');
 app.use('/',usuariosRoutes);
 
-const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    database: 'encode_prueba',
-    password: '', 
-});
-
-pool.getConnection((err, connection) => {
-    if (err) {
-        console.error('Error conectando a la base de datos:', err);
-    } else {
-        console.log('Conexión a la base de datos establecida');
-        connection.release();
-    }
-});
-
-
-
 // Inicia el servidor
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
