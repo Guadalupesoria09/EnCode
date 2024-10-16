@@ -20,7 +20,7 @@ module.exports = class Tarjeta {
             `SELECT 
                  tarjeta.IDUsuario,
                  tarjeta.Limite,
-                 tarjeta.Vigenica,
+                 tarjeta.Vigencia,
                  tarjeta.IDSucursal,
                  usuariorol.IDRol
              FROM
