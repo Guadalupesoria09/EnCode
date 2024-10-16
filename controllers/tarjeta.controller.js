@@ -1,5 +1,5 @@
 const Tarjeta = require('../models/tarjeta.model.js')
-const PromoRecomp = require('../models/promocionRecompensa.model.js')
+const PromoRecomp = require('../models/promoSucurRecomp.model.js')
 const Vista = require('../models/vista.model.js')
 
 
