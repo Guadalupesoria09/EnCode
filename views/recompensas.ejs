@@ -25,9 +25,19 @@
     <br>
 
     <div class="box is-200x200">
-        <div class="columns is-multiline">
+          
+        <input
+            class="input is-rounded is-link"
+            type="text"
+            placeholder="Buscar..."
+            id="buscar"
+            name="buscar"
+        />
+        <br />
+        <br>
+        <div id="recompensasA" class="columns is-multiline">
             <% for (let recompensa of recompensas) { %>
-                <div id="promocionesA" class="column is-4 is-one-quarter">
+                <div class="column is-4 is-one-quarter">
                     <div class="card">
                         <header class="card-header">
                             <p class="card-header-title"><%= recompensa.NombreRecompensa %></p>
@@ -47,9 +57,7 @@
         </div>
     </div>
 
-    <!-- Paginación -->
     <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-        <!-- Botón para página anterior -->
         <% if (currentPage > 1) { %>
             <a class="pagination-previous" href="<%= process.env.PATH_ENV %>recomp/recompensas?page=<%= currentPage - 1 %>">Anterior</a>
         <% } else { %>
@@ -64,7 +72,7 @@
         <% } %>
 
         <!-- Números de página -->
-        <ul class="pagination-list">
+        <ul id="pagination" class="pagination-list">
             <% for (let i = 1; i <= totalPages; i++) { %>
                 <li>
                     <a href="<%= process.env.PATH_ENV %>recomp/recompensas?page=<%= i %>" class="pagination-link <%= currentPage === i ? 'is-current' : '' %>">
@@ -74,7 +82,77 @@
             <% } %>
         </ul>
     </nav>
-
-
+    <script>
+        document.getElementById("buscar").onkeyup = () => {
+            const valorBusqueda = document.getElementById("buscar").value;
+            const page = 1; // Reinicia a la primera página al cambiar la búsqueda
+        
+            fetch(`/recomp/buscar/${valorBusqueda}?page=${page}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            })
+            .then((result) => result.json())
+            .then((data) => {
+                const recompensasA = document.getElementById("recompensasA");
+                const pagination = document.getElementById("pagination");
+        
+                // Actualizar recompensas mostradas
+                let html = "";
+                data.recompensas.forEach((recompensa) => {
+                    html += `
+                        <div class="column is-4 is-one-quarter">
+                            <div class="card">
+                                <header class="card-header">
+                                    <p class="card-header-title">${recompensa.NombreRecompensa}</p>
+                                    <button class="card-header-icon" aria-label="more options">
+                                        <span class="icon">
+                                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                        </span>
+                                    </button>
+                                </header>
+                                <footer class="card-footer">
+                                    <a href="/recomp/editRecompensas/${recompensa.IDRecompensa}" class="card-footer-item">Editar</a>
+                                    <a href="/recomp/delete/${recompensa.IDRecompensa}" class="card-footer-item">Eliminar</a>
+                                </footer>
+                            </div>
+                        </div>`;
+                });
+    
+                recompensasA.innerHTML = html;
+        
+                // Actualizar paginación
+                let paginationHtml = "";
+                for (let i = 1; i <= data.totalPages; i++) {
+                    paginationHtml += `
+                        <li>
+                            <a href="#" class="pagination-link ${data.currentPage === i ? 'is-current' : ''}" 
+                            data-page="${i}">
+                                ${i}
+                            </a>
+                        </li>`;
+                }
+                pagination.innerHTML = paginationHtml;
+        
+                // Agregar evento a los enlaces de paginación
+                document.querySelectorAll('.pagination-link').forEach((link) => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const newPage = parseInt(e.target.getAttribute('data-page'));
+                        fetch(`/recomp/buscar/${valorBusqueda}?page=${newPage}`, {
+                            method: 'GET',
+                            headers: { 'Content-Type': 'application/json' },
+                        })
+                        .then((result) => result.json())
+                        .then((newData) => {
+                            // Actualizar recompensas y paginación con la nueva página
+                            // (Reutilizar la lógica anterior aquí)
+                        })
+                        .catch((error) => console.error(error));
+                    });
+                });
+            })
+            .catch((error) => console.error(error));
+        };
+    </script>
     <br>
 <%- include('includes/foot.ejs') %>

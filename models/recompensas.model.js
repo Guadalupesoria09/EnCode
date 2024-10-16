@@ -56,4 +56,25 @@ module.exports = class Recompensas {
                 .then(([countResult]) => [rows, countResult[0].count]);
         });
     }
+
+    static find(valor_busqueda, limit, offset) {
+        return db.execute(
+            `SELECT * 
+             FROM recompensa 
+             WHERE NombreRecompensa LIKE ? 
+               AND deleted_at IS NULL 
+             LIMIT ? OFFSET ?`,
+            [`%${valor_busqueda}%`, limit, offset]
+        );
+    }
+    
+    static count(valor_busqueda) {
+        return db.execute(
+            `SELECT COUNT(*) as count 
+             FROM recompensa 
+             WHERE NombreRecompensa LIKE ? 
+               AND deleted_at IS NULL`,
+            [`%${valor_busqueda}%`]
+        );
+    }
 }

@@ -20,6 +20,7 @@ router.get('/recompensas/agregar', isAuth, canRegistrarRecompensa, recompensas_c
 router.post('/recompensas/agregar', isAuth, canRegistrarRecompensa, recompensas_controller.post_agregarRecompensas);
 
 // ruta recuperar todas las recompensas
+router.get('/buscar/:valor_busqueda', isAuth, canVerRecompensas, recompensas_controller.get_buscar);
 router.get('/recompensas', isAuth, canVerRecompensas, recompensas_controller.get_recompensas);
 
 module.exports = router;
