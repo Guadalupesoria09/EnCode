@@ -3,48 +3,96 @@ const Rol = require('../models/rol.model');
 const RolPriv = require('../models/rolPriv.model');
 const Privilegios = require('../models/privilegio.model')
 
-
-/**
- * Renderiza la página para crear un nuevo rol con la lista de privilegios disponibles.
- */
+// Render the page to create a new role
 exports.get_crearRol = (request, response, next) => {
     let mensaje = request.session.mensaje || '';
-
-    if (request.session.mensaje) {
-        request.session.mensaje = '';
-    }
+    if (request.session.mensaje) request.session.mensaje = '';
 
     RolPriv.fetchActividades()
-        .then(([privilegios, fieldData]) => {
+        .then(([privilegios]) => {
             response.render('crearRol', {
                 privilegios: privilegios,
                 mensaje: mensaje,
                 editar: false,
-                username: request.session.NombreUsuario,
                 csrfToken: request.csrfToken(),
+                username: request.session.NombreUsuario || '',
             });
         })
-        .catch((error) => {
-            console.error('Error al obtener actividades para crear el rol:', error);
+        .catch(error => {
+            console.error('Error recuperando los privilegios', error);
             response.redirect('/error');
         });
 };
 
-/**
- * Guarda un nuevo rol en la base de datos.
- */
+// Save a new role
 exports.post_crearRol = (request, response, next) => {
-    const rol = new Rol(request.body.TipoRol, request.body.Actividad);
+    const nombreRol = request.body.TipoRol;
+    const actividades = request.body.actividades || []; // Privilege IDs
 
-    rol.save()
+    const rol = new Rol(nombreRol);
+    rol.save(actividades)
         .then(() => {
-            request.session.mensaje = 'Rol creado';
-            response.redirect('roles');
+            request.session.mensaje = 'Rol creado exitosamente';
+            response.redirect('/config/roles');
         })
-        .catch((error) => {
-            console.error('Error al crear el rol:', error);
-            request.session.mensaje = 'El Rol ya existe';
-            response.redirect('crearRol');
+        .catch(error => {
+            console.error('Error creating role:', error);
+            request.session.mensaje = 'Error creando el rol';
+            response.redirect('/config/crearRol');
+        });
+};
+
+// Render edit role page
+exports.get_editarRol = (request, response, next) => {
+    const IDRol = request.params.IDRol;
+    let mensaje = request.session.mensaje || '';
+    console.log(`Editando rol
+    ID Rol: `,IDRol)
+    
+    Promise.all([
+        Rol.fetchRolByID(IDRol),
+        RolPriv.fetchActividades(),
+        RolPriv.fetchPrivilegios(IDRol)
+    ]).then(([rol, [privilegios], [rolPrivilegios]]) => {
+        response.render('crearRol', {
+            rol: rol[0],
+            privilegios: privilegios,
+            rolPrivilegios: rolPrivilegios,
+            mensaje: mensaje,
+            editar: true,
+            csrfToken: request.csrfToken(),
+            username: request.session.NombreUsuario || ''
+        });
+    }).catch(error => {
+        console.error('Error recuperando los privilegios', error);
+        response.redirect('/config/roles');
+    });
+};
+
+// Edit an existing role
+exports.post_editarRol = (request, response, next) => {
+    let IDRol = request.body.IDRol;
+    const nombreRol = request.body.TipoRol;
+    const actividades = request.body.actividades || [];
+
+    console.log('IDRol:', IDRol); 
+    console.log('TipoRol:', nombreRol);
+    console.log('Actividades:', actividades);
+
+    if (!IDRol || IDRol.trim() === '') {
+        console.error('No se recibió un IDRol válido');
+        response.redirect('/config/roles'); // Redirigir si falta IDRol
+    }
+
+    Rol.editarRol(IDRol, nombreRol, actividades)
+        .then(() => {
+            request.session.mensaje = 'Rol y privilegios editados exitosamente';
+            response.redirect('/config/roles');
+        })
+        .catch(error => {
+            console.error('Error actualizando los roles', error);
+            request.session.mensaje = 'Error actualizando rol';
+            response.redirect('/config/roles');
         });
 };
 
@@ -66,7 +114,7 @@ exports.get_roles = (request, response, next) => {
                 rol.Actividad = privilegios;
             }
 
-            response.render('roles', {
+            return response.render('roles', {
                 roles: roles,
                 mensaje: mensaje,
                 username: request.session.NombreUsuario || '',
@@ -78,61 +126,6 @@ exports.get_roles = (request, response, next) => {
             response.redirect('/error');
         });
 };
-
-exports.get_editarRol = (request, response, next) => {
-    let mensaje = request.session.mensaje || '';
-
-    const IDRol =  request.params.IDRol;
-    
-    RolPriv.fetchRolPriv(IDRol)
-        .then(async ([rol, fieldData]) => {
-            for (let r of rol){
-                let [privilegios, fieldData] = await RolPriv.fetchTipoRol(r.IDRol);
-                r.privilegios = privilegios;
-            }
-        
-            return Privilegios.fetchAll()
-            .then(([privilegios, fieldData]) => {                
-                return response.render('crearRol', {
-                    rol: rol[0],
-                    privilegios: privilegios,
-                    mensaje: mensaje,
-                    editar: true,
-                    csrfToken: request.csrfToken(),
-                    username: request.session.NombreUsuario || '',
-                });
-                
-            });
-        })
-        .catch((error) => {
-            console.log('Error al cargar los datos del rol: ', error);
-            response.redirect('/config/roles');
-        });
-};
-
-exports.post_editarRol = (request, response, next) => {
-    const { IDRol, actividades } = request.body; // 'actividades' ahora contendrá los IDPrivilegio
-    console.log('IDRol:', IDRol);
-    console.log('Actividades:', actividades); // Asegúrate de que aquí tienes los IDPrivilegio
-
-    // Actualiza el rol
-    Rol.editarRol(IDRol)
-        .then(() => {
-            // Llama al modelo para actualizar los privilegios del rol
-            return Rol.editarPrivilegios(IDRol, actividades);
-        })
-        .then(() => {
-            request.session.mensaje = 'Rol y privilegios modificados con éxito';
-            response.redirect('/config/roles');
-        })
-        .catch((err) => {
-            console.log('Error al modificar los datos del rol', err);
-            request.session.mensaje = 'Error al modificar el rol';
-            response.redirect('/config/roles');
-        });
-};
-
-
 
 /**
  * Renderiza la página general con el nombre de usuario actual.

@@ -20,6 +20,10 @@ router.get('/editarRol/:IDRol', isAuth, configController.get_editarRol);
 //Post editar 
 router.post('/editarRol', isAuth, configController.post_editarRol);
 
+//Ruta get para eliminar un usuario
+router.get('/eliminarRol/:IDRol', isAuth, configController.get_editarRol);
+
+
 //Menu roles
 router.get('/roles', isAuth, canVerRoles, configController.get_roles);
 
