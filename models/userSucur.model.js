@@ -74,4 +74,10 @@ module.exports = class UserSucur {
         `, [IDSucursal]);
     }
 
+    static fetchSucursalporUsuario(IDUsuario) {
+        return db.execute(`SELECT us.IDSucursal
+            FROM usuarioSucursal us, sucursal s
+            WHERE us.IDSucursal = s.IDSucursal AND IDUsuario = ? AND s.deleted_at IS NULL`, ([IDUsuario]));
+    }
+
 };

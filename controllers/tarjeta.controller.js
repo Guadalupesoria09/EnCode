@@ -1,12 +1,13 @@
 const Tarjeta = require('../models/tarjeta.model.js')
-const PromoRecomp = require('../models/promocionRecompensa.model.js')
-const Carcasa = require('../models/carcasa.model.js')
+const PromoRecomp = require('../models/promoSucurRecomp.model.js')
+const Vista = require('../models/vista.model.js')
+const UserSucur = require('../models/userSucur.model.js')
 
 
 //Controlador para cargar la página de editar el formato de la tarjeta 
 exports.get_editorTarjeta = (request, response, next) => {
 
-    Carcasa.fetchAll().then(([carcasas, fieldData]) => {
+    Vista.fetchAll().then(([carcasas, fieldData]) => {
         return response.render('editorTarjeta', {
             carcasas: carcasas,
             username: request.session.NombreUsuario || '', 
@@ -19,22 +20,26 @@ exports.get_editorTarjeta = (request, response, next) => {
 };
 
 exports.post_editorTarjeta = (request, response, next) => {
+    const idUsuario = request.session.IDUsuario;
     console.log(request.file);
 
-    const carcasa = new Carcasa (
-        request.body.nombreTarjeta,
-        request.file.filename,
-        request.body.color,
-        request.body.font,
-    );
+    UserSucur.fetchSucursalporUsuario(idUsuario).then(async ([sucursal, fieldData]) => { 
+        const idSucursal = sucursal[0].IDSucursal;
 
-   carcasa.save().then(() => {
-        response.redirect('tarjeta');
-        })
-        .catch((error) => {
+        const carcasa = new Vista (
+            request.body.nombreTarjeta,
+            request.file.filename,
+            request.body.color,
+            request.body.font,
+            idSucursal
+        );
+    
+       carcasa.save().then(() => {
+            response.redirect('editorTarjeta');
+            }).catch((error) => {
             console.log(error);  // En caso de error.
-    });
-
+        });
+    })
 };
 
 //Controlador para cargar la pagina de visualizar y editar los parametros de la  tarjeta.

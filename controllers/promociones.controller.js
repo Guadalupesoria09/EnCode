@@ -1,6 +1,7 @@
 const Promociones = require('../models/promociones.model');
 const Recompensas = require('../models/recompensas.model');
-const PromoRecomp = require('../models/promocionRecompensa.model');
+const PromoSucurRecomp = require('../models/promoSucurRecomp.model');
+const UserSucur = require('../models/userSucur.model');
 
 
 // METHODS GET & POST DE PROMOCIONES
@@ -16,14 +17,14 @@ exports.get_editarPromo = (request, response, next) => {
 
     console.log(id);
 
-    PromoRecomp.fetchPromoRecomp(id).then(async ([promociones, fieldData]) => {
+    PromoSucurRecomp.fetchPromoRecomp(id).then(async ([promociones, fieldData]) => {
         for (let promo of promociones) {
-            let [recompensas, fieldData] = await PromoRecomp.fetchAllnombreR(promo.IDPromocion);
+            let [recompensas, fieldData] = await PromoSucurRecomp.fetchAllnombreR(promo.IDPromocion);
             promo.recompensas = recompensas;
         }
 
         for (let idPR of promociones){
-            let [IDPromocionRecompensa, fieldData] = await PromoRecomp.fetchIDPR(idPR.IDPromocion);
+            let [IDPromocionRecompensa, fieldData] = await PromoSucurRecomp.fetchIDPR(idPR.IDPromocion);
             idPR.IDPromocionRecompensa = IDPromocionRecompensa;
         }
         //promociones[0].FechaInicio = promociones[0].FechaInicio.getFullYear()+'-'+promociones[0].FechaInicio.getMonth()+'-'+promociones[0].FechaInicio.getDate();
@@ -67,7 +68,7 @@ exports.post_editarPromo = async (request, response, next) => {
 
     try {
         // Paso 1: Obtener las relaciones existentes para la promoción
-        const [relacionesExistentes] = await PromoRecomp.fetchIDPR(idPromo);
+        const [relacionesExistentes] = await PromoSucurRecomp.fetchIDPR(idPromo);
         console.log('Relaciones Existentes:', relacionesExistentes);
         
         // Extraer IDs de las recompensas existentes y sus relaciones
@@ -80,7 +81,7 @@ exports.post_editarPromo = async (request, response, next) => {
                 // Solo actualizar si el ID de recompensa ha cambiado
                 if (recompensasExistentes[i] !== nuevasRecompensas[i]) {
                     const idRelacion = idPromocionRecompensas[i]; // Obtener el ID de la relación
-                    await PromoRecomp.editSingleRelation(idRelacion, nuevasRecompensas[i]); // Actualiza usando el ID de la relación
+                    await PromoSucurRecomp.editSingleRelation(idRelacion, nuevasRecompensas[i]); // Actualiza usando el ID de la relación
                 }
             }
         }
@@ -89,7 +90,7 @@ exports.post_editarPromo = async (request, response, next) => {
         for (let i = recompensasExistentes.length; i < nuevasRecompensas.length; i++) {
             // Verificamos que la nueva recompensa no exista ya en las recompensas existentes
             if (!recompensasExistentes.includes(nuevasRecompensas[i])) {
-                const nuevaRelacion = new PromoRecomp(idPromo, nuevasRecompensas[i]);
+                const nuevaRelacion = new PromoSucurRecomp(idPromo, nuevasRecompensas[i]);
                 await nuevaRelacion.save(); // Guardamos la nueva relación
             }
         }
@@ -118,6 +119,7 @@ exports.get_registrar = (request, response, next) => {
                 recompensas: recompensas,
                 username: request.session.NombreUsuario || '',  
                 editar: false,
+                privilegios: request.session.privilegios || [],
                 mensaje: mensaje,
                 csrfToken: request.csrfToken(),
             }); 
@@ -128,6 +130,8 @@ exports.get_registrar = (request, response, next) => {
 };
 
 exports.post_registrar = (request, response, next) => {
+
+    const idUsuario = request.session.IDUsuario;
 
     console.log(request.body);
 
@@ -143,28 +147,38 @@ exports.post_registrar = (request, response, next) => {
 
     promocion.save().then(() => {
 
-        Promociones.fetchIDPROMO(request.body.nombrePromo).then(async ([promociones, fieldData]) => {
-            const idPromo = promociones[0].IDPromocion;
-            
-            let promoRecomps = '';
-            
-            for (let recomp in idRecompensa) {
-                promoRecomps = new PromoRecomp(
-                    idPromo, 
-                    idRecompensa[recomp],  
-                );
-                console.log(promoRecomps);
-                try {
-                    await promoRecomps.save();
-                } catch(error) {
-                    console.log(error);
+        UserSucur.fetchSucursalporUsuario(idUsuario).then(async ([sucursal, fieldData]) => {
+            const idSucursal = sucursal[0].IDSucursal;
+
+            Promociones.fetchIDPROMO(request.body.nombrePromo).then(async ([promociones, fieldData]) => {
+                const idPromo = promociones[0].IDPromocion;
+                
+                let promoRecomps = '';
+                
+                for (let recomp in idRecompensa) {
+                    promoSucurRecomps = new PromoSucurRecomp(
+                        idPromo, 
+                        idRecompensa[recomp],
+                        idSucursal,
+    
+                    );
+                    console.log(promoSucurRecomps);
+                    try {
+                        await promoSucurRecomps.save();
+                    } catch(error) {
+                        console.log(error);
+                    }
                 }
-            }
-            
-            request.session.mensaje = 'Promoción creada';
-            return response.redirect(`${process.env.PATH_ENV}promo/promociones`);
+                
+                request.session.mensaje = 'Promoción creada';
+                return response.redirect(`${process.env.PATH_ENV}promo/promociones`);
+    
+            }).catch((error) => { 
+                console.log(error);
+            });
 
         }).catch((error) => { 
+            request.session.mensaje = 'Error al recuperar sucursal'
             console.log(error);
         });
 
@@ -185,9 +199,9 @@ exports.get_promo = (request, response, next) => {
         request.session.mensaje = '';
     }
 
-    PromoRecomp.fetchAll().then(async ([promociones, fieldData]) => {
+    PromoSucurRecomp.fetchAll().then(async ([promociones, fieldData]) => {
         for (let promo of promociones) {
-            let [recompensas, fieldData] = await PromoRecomp.fetchAllnombreR(promo.IDPromocion);
+            let [recompensas, fieldData] = await PromoSucurRecomp.fetchAllnombreR(promo.IDPromocion);
             promo.recompensas = recompensas;
         }
         return response.render('promociones', {
