@@ -7,7 +7,14 @@ const UserSucur = require('../models/userSucur.model.js')
 //Controlador para cargar la página de editar el formato de la tarjeta 
 exports.get_editorTarjeta = (request, response, next) => {
 
-    Vista.fetchAll().then(([carcasas, fieldData]) => {
+
+
+    Vista.fetchAll().then(async ([vistas, fieldData]) => {
+        console.log(vistas.IDSucursal)
+        for (let vis of vistas) {
+            let [sucursal, fieldData] = await Vista.fetchInfoSucursal(vis.IDSucursal);
+            car.sucursal = sucursal;
+        }
         return response.render('editorTarjeta', {
             carcasas: carcasas,
             username: request.session.NombreUsuario || '', 
