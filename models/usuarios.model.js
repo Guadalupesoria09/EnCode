@@ -18,66 +18,50 @@ module.exports = class Usuario {
 
     // Método para guardar un nuevo usuario en la base de datos, incluyendo la encriptación de la contraseña.
     save() {
-        let IDUsuario;
-        let IDRol;
-        return bcrypt.hash(this.Contrasenia, 12)
-            .then((Contrasenia_cifrada) => {
-                // Insertamos el usuario en la base de datos.
-                return db.execute(
-                    'INSERT INTO Usuario(NombreUsuario, NumTelefono, FechaNacimiento, Contrasenia, Genero, Direccion, Ciudad, Estado) VALUES (?,?,?,?,?,?,?,?)',
-                    [this.NombreUsuario, this.NumTelefono, this.FechaNacimiento, Contrasenia_cifrada,
-                    this.Genero, this.Direccion, this.Ciudad, this.Estado]
-                );
-            })
-            .then(([result]) => {
-                // Obtenemos el ID del usuario recién creado.
-                IDUsuario = result.insertId;
-                return db.execute('SELECT IDRol FROM Rol WHERE IDRol = ?', [this.IDRol]);
-            })
-            .then(([rows]) => {
-                // Verificamos si el rol especificado existe.
-                if (rows.length > 0) {
-                    IDRol = rows[0].IDRol;
-                    return db.execute(
-                        'INSERT INTO UsuarioRol(IDUsuario, IDRol) VALUES (?, ?)',
-                        [IDUsuario, IDRol]
-                    );
-                } else {
-                    throw Error('El rol especificado no existe');
-                }
-            })
-            .then(() => {
-                // Verificamos si la sucursal especificada existe.
-                return db.execute('SELECT IDSucursal FROM Sucursal WHERE IDSucursal = ?', [this.NombreSucursal]);
-            })
-            .then(([rows]) => {
-                if (rows.length > 0) {
-                    const IDSucursal = rows[0].IDSucursal;
-                    return db.execute(
-                        'INSERT INTO usuarioSucursal(IDUsuario, IDSucursal) VALUES (?, ?)',
-                        [IDUsuario, IDSucursal]
-                   ).then(() => {
-                    // Si el IDRol es igual a 2, insertar en Tarjeta y TarjetaSucursal
-                    if (IDRol === 2) {
-                        return db.execute(
-                            'INSERT INTO Tarjeta(IDUsuario) VALUES (?)',
-                            [IDUsuario]
-                        )
-                        .then(([result]) => {
-                            const IDTarjeta = result.insertId;
-                            return db.execute(
-                                'INSERT INTO TarjetaSucursal(IDTarjeta, IDSucursal) VALUES (?, ?)',
-                                [IDTarjeta, IDSucursal]
-                            );
-                        });
-                    }
-                });
+    let IDusuario;
+    let IDRol;
+    let IDSucursal
+    
+    return bcrypt.hash(this.Contrasenia, 12)
+        .then(Contrasenia_cifrada => {
+            // Inserta el usuario en la base de datos
+            return db.execute(
+                'INSERT INTO Usuario (NombreUsuario, NumTelefono, FechaNacimiento, Contrasenia, Genero, Direccion, Ciudad, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 
+                [this.NombreUsuario, this.NumTelefono, this.FechaNacimiento, Contrasenia_cifrada, this.Genero, this.Direccion, this.Ciudad, this.Estado]
+            );
+        })
+        .then(([result]) => {
+            IDusuario = result.insertId;
+            return db.execute('SELECT IDRol FROM Rol WHERE IDRol = ?', [this.IDRol]);
+        })
+        .then(([rows]) => {
+            if (rows.length > 0) {
+                IDRol = rows[0].IDRol;
+                return db.execute('INSERT INTO UsuarioRol (IDusuario, IDRol) VALUES (?, ?)', [IDusuario, IDRol]);
+            } else {
+                throw new Error('El rol especificado no existe');
+            }
+        })
+        .then(() => {
+            // Verificamos si la sucursal especificada existe
+            return db.execute('SELECT IDSucursal FROM Sucursal WHERE IDSucursal = ?', [this.NombreSucursal]);
+        })
+        .then(([rows]) => {
+            if (rows.length > 0) {
+                IDSucursal = rows[0].IDSucursal;
+                return db.execute('INSERT INTO UsuarioSucursal (IDusuario, IDSucursal) VALUES (?, ?)', [IDusuario, IDSucursal]);
             } else {
                 throw new Error('La sucursal especificada no existe');
             }
         })
-        .catch(error => console.log(error));
-    } 
+        .then(() => {
+            if (IDRol === 2) {
+                return db.execute('INSERT INTO Tarjeta (IDusuario, IDSucursal) VALUES (?, ?)', [IDusuario, IDSucursal]);
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });} 
 
     //Este método servirá para devolver los objetos del almacenamiento persistente.
     static fetchAll() {

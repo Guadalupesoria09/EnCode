@@ -44,6 +44,7 @@ exports.post_editorTarjeta = (request, response, next) => {
 
 //Controlador para cargar la pagina de visualizar y editar los parametros de la  tarjeta.
 exports.get_tarjeta = (request, response, next) => {
+    Tarjeta.fetchTarjetaDueno()
     PromoRecomp.fetchAll()
         .then(([promociones, fieldData]) => {
             response.render('editarTarjeta',{
@@ -76,4 +77,3 @@ exports.post_tarjeta = (request, response, next) => {
         response.redirect('editarTarjeta');  // Redirige de vuelta a la página de editar tarjeta.
     });
 };
-
