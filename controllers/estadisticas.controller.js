@@ -150,3 +150,19 @@ exports.getMasUtilizadas = async (request, response) => {
         response.status(500).json({ message: 'Error al obtener las recompensas más utilizadas' });
     }
 };
+
+exports.getMenosUtilizadas = async (request, response) => {
+    try {
+        const [recompensasMenosUtilizadas] = await PromoSucurRecomp.fetchMenosUtilizadas();
+
+        if (!recompensasMenosUtilizadas || recompensasMenosUtilizadas.length === 0) {
+            return response.status(404).json({ message: 'No se encontraron recompensas menos utilizadas.' });
+        }
+
+        return response.json(recompensasMenosUtilizadas);
+
+    } catch (error) {
+        console.error('Error al obtener las recompensas menos utilizadas:', error);
+        response.status(500).json({ message: 'Error al obtener las recompensas menos utilizadas' });
+    }
+};
