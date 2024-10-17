@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const estadisticasController = require('../controllers/estadisticas.controller');
 const isAuth = require('../utils/is-auth');
+const canVerestadisticas = require('../utils/can-verEstadisticas');
 
 // Ruta para la página de opciones de estadísticas
 router.get('/', isAuth, estadisticasController.mostrarOpciones);
@@ -35,6 +36,9 @@ router.get('/reclamoPromoSucursal', estadisticasController.getReclamoPromoSucurs
 
 // Ruta para obtener ventas por mes en una sucursal
 router.get('/ventas', estadisticasController.getVentasPorMes);
+
+// Ruta para obtener las recompensas que se utilizan en una sucursal
+router.get('/recompensasActivas', isAuth, canVerestadisticas, estadisticasController.getRecompensasActivas);
 
 // Ruta para obtener promociones activas en una sucursal
 router.get('/promocioneSucursal', estadisticasController.getPromocioneSucursal);

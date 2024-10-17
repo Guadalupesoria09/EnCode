@@ -72,7 +72,7 @@ module.exports = class promoSucurRecomp {
         );
     }
 
-    static fetchRecompensasActivades(){
+    static fetchRecompensasActivas(){
         return db.execute(
 	    `SELECT recompensa.NombreRecompensa, COUNT(recompensa.NombreRecompensa) AS Cantidad
                  FROM promocionsucursalrecompensa

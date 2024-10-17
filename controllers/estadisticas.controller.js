@@ -1,10 +1,11 @@
 const Estadisticas = require('../models/estadisticas.model');
 const Compras = require('../models/compras.model');
 const Sucursal = require('../models/sucursal.model');
+const PromoSucurRecomp = require('../models/promoSucurRecomp.model');
 
  // METHODS GET & POST DE Estadisticas
 
- exports.mostrarOpciones = (request, response) => {
+exports.mostrarOpciones = (request, response) => {
     response.render('estadisticas', {
         title: 'Opciones de Estadísticas',
 	privilegios: request.session.privilegios,
@@ -17,6 +18,25 @@ exports.get_estadisticasGenerales = (request, response) => {
         title: 'Estadísticas Generales',
         csrfToken: request.csrfToken()
     });
+};
+
+exports.getRecompensasActivas = async (request, response) => {
+    const { idSucursal } = request.query; // ID de la sucursal desde la URL
+    try {
+        const [recompensasActivas] = await PromoSucurRecomp.fetchRecompensasActivas(idSucursal);
+
+        // Verificamos si hay recompensas
+        if (!recompensasActivas || recompensasActivas.length === 0) {
+            return response.status(404).json({ message: 'No se encontraron recompensas activas.' });
+        }
+
+        // Renderizamos la vista o devolvemos el JSON dependiendo del uso
+        return response.json(recompensasActivas);
+
+    } catch (error) {
+        console.error('Error al obtener las recompensas activas:', error);
+        response.status(500).json({ message: 'Error al obtener las recompensas activas' });
+    }
 };
 
 // Método para obtener las compras por sucursal por usuario

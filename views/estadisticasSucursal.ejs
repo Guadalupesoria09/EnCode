@@ -235,7 +235,58 @@
                 alert('Ocurrió un error al cargar los datos de promociones. Inténtalo de nuevo.');
             }
         });
-    });       
+    });
+
+    $.ajax({
+            url: '/recompensasActivas', // Esta es la ruta del servidor
+            method: 'GET',
+            data: { idSucursal: idSucursal }, 
+            success: function(data) {
+                if (!data || data.length === 0) {
+                    alert('No se encontraron recompensas activas.');
+                    return;
+                }
+
+                // Procesar los datos recibidos
+                var nombresRecompensas = data.map(function(item) { return item.NombreRecompensa; });
+                var cantidades = data.map(function(item) { return item.Cantidad; });
+
+                // Si ya hay un gráfico previo, destruirlo antes de crear uno nuevo
+                if (window.recompensasChart) {
+                    window.recompensasChart.destroy();
+                }
+
+                // Crear el gráfico con Chart.js
+                var ctx = document.getElementById('recompensasChart').getContext('2d');
+                window.recompensasChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: nombresRecompensas,
+                        datasets: [{
+                            label: 'Cantidad de Promociones Activas',
+                            data: cantidades,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            },
+            error: function(err) {
+                console.error('Error al cargar las recompensas activas:', err);
+                alert('Ocurrió un error al cargar las recompensas activas. Inténtalo de nuevo.');
+            }
+        });
+    
+    
+       
 </script>
 
 <%- include('includes/foot.ejs') %>
