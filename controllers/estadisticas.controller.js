@@ -134,3 +134,19 @@ exports.get_estadisticasRewards = async (request, response) => {
         response.status(500).render('error', { message: 'Error al obtener estadísticas de recompensas' });
     }
 };
+
+exports.getMasUtilizadas = async (request, response) => {
+    try {
+        const [recompensasMasUtilizadas] = await PromoSucurRecomp.fetchMasUtilizadas();
+
+        if (!recompensasMasUtilizadas || recompensasMasUtilizadas.length === 0) {
+            return response.status(404).json({ message: 'No se encontraron recompensas más utilizadas.' });
+        }
+
+        return response.json(recompensasMasUtilizadas);
+
+    } catch (error) {
+        console.error('Error al obtener las recompensas más utilizadas:', error);
+        response.status(500).json({ message: 'Error al obtener las recompensas más utilizadas' });
+    }
+};

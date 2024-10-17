@@ -38,6 +38,10 @@
     <div class="chart-item" style="flex: 700%; max-width: 50%; padding: 30px;"> 
         <canvas id="promosActivChart" style="width: 100%; height: auto;"></canvas>
     </div>
+
+    <div class="chart-item" style="flex: 700%; max-width: 50%; padding: 30px;"> 
+        <canvas id="masUtilizadasChart" style="width: 100%; height: auto;"></canvas>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -236,6 +240,43 @@
             }
         });
     });       
+</script>
+
+<script>
+    $.ajax({
+            url: '/recompensasMasUtilizadas',
+            method: 'GET',
+            success: function(data) {
+                var nombresRecompensas = data.map(function(item) { return item.NombreRecompensa; });
+                var cantidades = data.map(function(item) { return item.Cantidad; });
+
+                var ctxMas = document.getElementById('masUtilizadasChart').getContext('2d');
+                new Chart(ctxMas, {
+                    type: 'bar',
+                    data: {
+                        labels: nombresRecompensas,
+                        datasets: [{
+                            label: 'Cantidad de Promociones',
+                            data: cantidades,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            },
+            error: function(err) {
+                console.error('Error al cargar las recompensas más utilizadas:', err);
+                alert('Ocurrió un error al cargar las recompensas más utilizadas.');
+            }
+        });
 </script>
 
 <%- include('includes/foot.ejs') %>
