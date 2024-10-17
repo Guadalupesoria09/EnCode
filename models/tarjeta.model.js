@@ -3,21 +3,21 @@ const db = require('../utils/database');  // Importamos la conexión a la base d
 module.exports = class Tarjeta {
     constructor(miLimite, miVigencia) {
         // Inicializamos las propiedades de la clase con los datos de la tarjeta.
-        this.Limite = miLimite;
+	this.Limite = miLimite;
         this.CP = miVigencia;
     }
 
     // Método para guardar datos en la tarjeta.
-    save() {
+    static editParametros(IDTarjeta, Limite, Vigencia) {
         return db.execute(
-            'INSERT INTO Tarjeta (Limite, Vigenica) VALUES(?,?)',
-            [this.Limite, this.Vigencia]
-        );
+            `UPDATE tarjeta SET Limite = ?, Vigencia = ? WHERE IDTarjeta = ?;`,
+            [Limite, Vigencia, IDTarjeta]);
     }
 
-    static fetchTarjetaDueno(){
+    static fetchTarjetaDueno(IDSucursal){
         return db.execute(
-            `SELECT 
+            `SELECT
+	         tarjeta.IDTarjeta,
                  tarjeta.IDUsuario,
                  tarjeta.Limite,
                  tarjeta.Vigencia,
@@ -28,9 +28,8 @@ module.exports = class Tarjeta {
              INNER JOIN usuariorol ON tarjeta.IDUsuario = usuariorol.IDUsuario
              WHERE 
                  IDRol = 2 
-                 AND IDSucursal = 1
-                 LIMIT 1;`
-	)
+                 AND IDSucursal = ?
+                 LIMIT 1;`,[IDSucursal]);
     } 
 
 }

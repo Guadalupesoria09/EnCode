@@ -1,8 +1,8 @@
 <%- include('includes/head.ejs') %>
 <h1 class="title has-text-centered">EDITAR TARJETA</h1>
-<form action="<%= process.env.PATH_ENV %>tarjeta/tarjeta" method="POST">
-<input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-
+<form action="<%= process.env.PATH_ENV %>tarjeta/editarTarjeta" method="POST">
+<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+<input type="hidden" name="IDTarjeta" value="<%= tarjeta.IDTarjeta %>">
 <section class="section">
 <div class="container">
     <div class="columns">
@@ -13,7 +13,7 @@
                     <div class="field">
                         <label class="label">Sellos</label>
                         <div class="control">
-                            <input id="Limite" name="Limite" class="input" type="number" required>
+                            <input id="Limite" name="Limite" class="input" type="number" value="<%= tarjeta.Limite %>" required>
                         </div>
                     </div>
                     
@@ -35,7 +35,7 @@
                     <div class="field">
                         <label class="label">Vigencia</label>
                         <div class="control">
-                            <input id="Vigencia" name="Vigencia" class="input" type="date" required>
+                            <input id="Vigencia" name="Vigencia" class="input" type="date" value="<%= tarjeta.Vigencia %>" required>
                         </div>
                     </div>
                                
