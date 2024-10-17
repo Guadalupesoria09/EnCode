@@ -1,0 +1,241 @@
+<%- include('includes/head.ejs') %>
+
+<h1 class="title has-text-centered">Estadísticas Sucursal</h1>
+
+<div class="columns is-centered">
+    <div class="column is-half">
+        <form id="formEstadisticas" action="/estadisticas/comprasSucursal" method="GET">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+            <!-- Campo para seleccionar la sucursal -->
+            <div class="field">
+                <label class="label">Selecciona la Sucursal</label>
+                <div class="control">
+                    <input class="input" type="text" name="nombreSucursal" placeholder="Nombre de la Sucursal" required>
+                </div>
+            </div>
+
+            <div class="control has-text-centered">
+                <button type="submit" class="button is-link">Ver Graficas</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="charts-container" style="display: flex; flex-wrap: wrap; justify-content: center;">
+    <div class="chart-item" style="flex: 700%; max-width: 50%; padding: 30px;"> 
+        <canvas id="comprasUsuarioChart" style="width: 100%; height: auto;"></canvas>
+    </div>
+
+    <div class="chart-item" style="flex: 700%; max-width: 50%; padding: 30px;"> 
+        <canvas id="reclamoPromoChart" style="width: 100%; height: auto;"></canvas>
+    </div>
+
+    <div class="chart-item" style="flex: 700%; max-width: 50%; padding: 30px;"> 
+        <canvas id="ventasPorMesChart" style="width: 100%; height: auto;"></canvas>
+    </div>
+
+    <div class="chart-item" style="flex: 700%; max-width: 50%; padding: 30px;"> 
+        <canvas id="promosActivChart" style="width: 100%; height: auto;"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $('#formEstadisticas').submit(function(event) {
+        event.preventDefault(); // Evita que el formulario se envíe de manera tradicional
+
+        var idSucursal = $('input[name="idSucursal"]').val();
+
+        // Gráfico: Compras por Usuario
+        $.ajax({
+            url: '/estadisticas/comprasSucursal',
+            method: 'GET',
+            data: { nombreSucursal: nombreSucursal },
+            success: function(data) {
+                // Verificar si los datos están vacíos
+                if (!data || data.length === 0) {
+                    alert('No se encontraron compras para la sucursal seleccionada.');
+                    return;
+                }
+
+                var nombresUsuarios = data.map(function(item) { return item.NombreUsuario; });
+                var totalCompras = data.map(function(item) { return item.TotalCompras; });
+
+                if (window.comprasChart) {
+                    window.comprasChart.destroy();
+                }
+
+                var ctx = document.getElementById('comprasUsuarioChart').getContext('2d');
+                window.comprasChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: nombresUsuarios,
+                        datasets: [{
+                            label: 'Compras por Usuario',
+                            data: totalCompras,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            },
+
+            error: function(err) {
+                console.error('Error al cargar los datos:', err);
+                alert('Ocurrió un error al cargar los datos. Inténtalo de nuevo.');
+            }
+        });
+
+        // Gráfico: Reclamos de Promociones por Usuario
+        $.ajax({
+            url: '/estadisticas/reclamoPromoSucursal',
+            method: 'GET',
+            data: { idSucursal: idSucursal },
+            success: function(data) {
+                if (!data || data.length === 0) {
+                    alert('No se encontraron reclamos para la sucursal seleccionada.');
+                    return;
+                }
+
+                var nombresUsuarios = data.map(function(item) { return item.NombreUsuario; });
+                var totalReclamos = data.map(function(item) { return item.TotalReclamos; });
+
+                if (window.reclamoChart) {
+                    window.reclamoChart.destroy();
+                }
+
+                var ctx = document.getElementById('reclamoPromoChart').getContext('2d');
+                window.reclamoChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: nombresUsuarios,
+                        datasets: [{
+                            label: 'Reclamos de Promociones por Usuario',
+                            data: totalReclamos,
+                            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            },
+            error: function(err) {
+                console.error('Error al cargar los datos:', err);
+                alert('Ocurrió un error al cargar los datos. Inténtalo de nuevo.');
+            }
+        });
+
+        // Gráfico: ventas por mes
+        $.ajax({
+            url: '/estadisticas/ventas',
+            method: 'GET',
+            data: { idSucursal: idSucursal },
+            success: function(data) {
+                if (!data || data.length === 0) {
+                    alert('No se encontraron ventas disponibles para la sucursal seleccionada.');
+                    return;
+                }
+
+                var meses = data.map(function(item) { return item.Mes; });
+                var totalVentas = data.map(function(item) { return item.TotalVentas; });
+
+                if (window.ventasChart) {
+                    window.ventasChart.destroy();
+                }
+
+                var ctxVentas = document.getElementById('ventasPorMesChart').getContext('2d');
+                window.ventasChart = new Chart(ctxVentas, {
+                    type: 'bar',
+                    data: {
+                        labels: meses,
+                        datasets: [{
+                            label: 'Ventas Mensuales',
+                            data: totalVentas,
+                            fill: false,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            },
+            error: function(err) {
+                console.error('Error al cargar los datos de ventas:', err);
+                alert('Ocurrió un error al cargar los datos de ventas. Inténtalo de nuevo.');
+            }
+        });
+
+
+        // Gráfico: Promociones Activas
+        $.ajax({
+            url: '/estadisticas/promocioneSucursal',
+            method: 'GET',
+            data: { idSucursal: idSucursal },
+            success: function(data) {
+                if (!data || data.length === 0) {
+                    alert('No se encontraron promociones activas para la sucursal seleccionada.');
+                    return;
+                }
+
+                var nombresPromos = data.map(function(item) { return item.NombrePromocion; });
+                var fechasInicio = data.map(function(item) { return item.FechaInicio; });
+
+                if (window.promosChart) {
+                    window.promosChart.destroy();
+                }
+
+                var ctxPromos = document.getElementById('promosActivChart').getContext('2d');
+                window.promosChart = new Chart(ctxPromos, {
+                    type: 'bar',
+                    data: {
+                        labels: nombresPromos,
+                        datasets: [{
+                            label: 'Promociones Activas',
+                            data: fechasInicio,
+                            fill: false,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            },
+            error: function(err) {
+                console.error('Error al cargar los datos de promociones:', err);
+                alert('Ocurrió un error al cargar los datos de promociones. Inténtalo de nuevo.');
+            }
+        });
+    });       
+</script>
+
+<%- include('includes/foot.ejs') %>

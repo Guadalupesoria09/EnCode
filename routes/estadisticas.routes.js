@@ -9,8 +9,8 @@ router.get('/', isAuth, estadisticasController.mostrarOpciones);
 // Ruta para estadísticas generales
 router.get('/generales',isAuth, estadisticasController.get_estadisticasGenerales);
 
-// Ruta para estadísticas rewards
-router.get('/rewards',isAuth, estadisticasController.get_estadisticasRewards);
+// Ruta para estadísticas sucursal
+router.get('/sucursal',isAuth, estadisticasController.get_estadisticasSucursal);
 
 // Ruta para obtener compras por usuario 
 router.get('/comprasPorUsuario', estadisticasController.getComprasPorUsuario);
@@ -23,5 +23,17 @@ router.get('/reclamosPorPromocion', estadisticasController.getReclamosPorPromoci
 
 // Ruta para obtener recompensas reclamadas por promoción 
 router.get('/recompensaReclamadaPorPromocion', estadisticasController.getRecompensaReclamadaPorPromocion);
+
+// Ruta para obtener las compras por sucursal
+router.get('/comprasSucursal', estadisticasController.getComprasSucursal);
+
+// Ruta para obtener reclamos de promociones por usuario por sucursal
+router.get('/reclamoPromoSucursal', estadisticasController.getReclamoPromoSucursal);
+
+// Ruta para obtener ventas por mes en una sucursal
+router.get('/ventas', estadisticasController.getVentasPorMes);
+
+// Ruta para obtener promociones activas en una sucursal
+router.get('/promocioneSucursal', estadisticasController.getPromocioneSucursal);
 
 module.exports = router;
