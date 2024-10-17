@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>DuperBrands</title>
-    <link rel="stylesheet" type="text/css" href="/CSS/dbEstilos.css">
+    <link rel="stylesheet" type="text/css" href="<%= process.env.PATH_ENV %>CSS/dbEstilos.css">
 </head>
 <body>
     <nav class="navbar is-primary is-spaced" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" href="/home">
-                <img src="/logoDuper/dbLongBlue.jpg" alt="DuperBrands Logo">
+                <img src="<%= process.env.PATH_ENV %>logoDuper/dbLongBlue.jpg" alt="DuperBrands Logo">
             </a>
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                 <span aria-hidden="true"></span>

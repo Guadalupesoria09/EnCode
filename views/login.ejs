@@ -43,13 +43,13 @@
 </head>
 <body>
     <div class="background-image"></div>
-    <img src="/logoDuper/dbLongWhite.jpg" alt="Logo" class="logo">
+    <img src="<%= process.env.PATH_ENV %>logoDuper/dbLongWhite.jpg" alt="Logo" class="logo">
     <div class="login-box">
         <header>
             <h1 class="title">¡Bienvenido!</h1>
         </header>
         <main>
-            <form action="/login" method="POST"> 
+            <form action="<%= process.env.PATH_ENV %>login" method="POST"> 
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <div class="field">
                     <label class="label" for="Numero">Teléfono</label>

@@ -24,7 +24,7 @@ exports.get_register = (request, response, next) => {
         })
         .catch((err) => {
             console.error('Error al cargar las sucursales o roles:', err);
-            response.redirect('/sucur/sucursales');
+            response.redirect(`${process.env.PATH_ENVsucur}sucursales`);
         });
 };
 
@@ -48,7 +48,7 @@ exports.post_register = (request, response, next) => {
     nuevo_usuario
         .save()
         .then(() => {
-	    response.redirect('/sucur/sucursales');
+	    response.redirect(`${process.env.PATH_ENVsucur}sucur/sucursales`);
 	})
         .catch((error) => {
             console.error('Error al guardar el usuario:', error);
@@ -66,7 +66,7 @@ exports.get_editarUsuario = (request, response, next) => {
     Usuario.fetchOneByID(IDUsuario)
         .then(([usuario]) => {
             if (!usuario || usuario.length === 0) {
-                return response.redirect('/error');
+                return response.redirect(`${process.env.PATH_ENVsucur}error`);
             }
             usuarioData = usuario[0];
             fecha = usuario[0].FechaNacimiento.toISOString();
@@ -85,7 +85,7 @@ exports.get_editarUsuario = (request, response, next) => {
         })
         .catch((err) => {
             console.error('Error al cargar los datos del usuario o las sucursales:', err);
-            response.redirect('/sucur/sucursales');
+            response.redirect(`${process.env.PATH_ENVsucur}sucur/sucursales`);
         });
 };
 
@@ -106,7 +106,7 @@ exports.post_editarUsuario = (request, response, next) => {
         })
         .catch((err) => {
             console.error('Error al modificar los datos del usuario o la sucursal:', err);
-            response.redirect(`/editarUsuario/${IDUsuario}`);
+            response.redirect(`${process.env.PATH_ENVsucur}editarUsuario/${IDUsuario}`);
         });
 };
 
@@ -171,7 +171,7 @@ exports.post_login = (request, response, next) => {
                                     request.session.save((err) => {
                                         if (err) {
                                             console.error('Error al guardar la sesión:', err);
-                                            return response.redirect('/login');
+                                            return response.redirect(`${process.env.PATH_ENVsucur}login`);
                                         }
                                         response.redirect(`${process.env.PATH_ENV}home`);
                                     });
