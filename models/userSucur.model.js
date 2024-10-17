@@ -6,7 +6,7 @@ module.exports = class UserSucur {
      * @returns {Promise<Array>} Promesa que se resuelve con la lista de sucursales.
      */
     static fetchAll() {
-        return db.execute('SELECT * FROM Sucursal;');
+        return db.execute('SELECT * FROM sucursal;');
     }
 
     /**
@@ -32,12 +32,12 @@ module.exports = class UserSucur {
      */
     static fetchDuenos(IDSucursal) {
         return db.execute(
-            `SELECT Usuario.NombreUsuario, Rol.TipoRol
-            FROM usuarioSucursal
-            INNER JOIN Usuario ON usuarioSucursal.IDUsuario = Usuario.IDUsuario
-            INNER JOIN UsuarioRol ON Usuario.IDUsuario = UsuarioRol.IDUsuario
-            INNER JOIN Rol ON UsuarioRol.IDRol = Rol.IDRol
-            WHERE Rol.TipoRol = 'Dueño' AND Usuario.deleted_at IS NULL AND usuarioSucursal.IDSucursal = ?`, [IDSucursal]
+            `SELECT usuario.NombreUsuario, Rol.TipoRol
+            FROM usuariosucursal
+            INNER JOIN usuario ON usuarioSucursal.IDUsuario = Usuario.IDUsuario
+            INNER JOIN usuarioRol ON usuario.IDUsuario = UsuarioRol.IDUsuario
+            INNER JOIN Rol ON usuarioRol.IDRol = rol.IDRol
+            WHERE rol.TipoRol = 'Dueño' AND usuario.deleted_at IS NULL AND usuarioSucursal.IDSucursal = ?`, [IDSucursal]
         );
     }
 
@@ -49,13 +49,13 @@ module.exports = class UserSucur {
      */
     save(IDUsuario, IDSucursal) {
         return db.execute(
-            'INSERT INTO usuarioSucursal(IDUsuario, IDSucursal) VALUES (?, ?)', [IDUsuario, IDSucursal]
+            'INSERT INTO usuariosucursal(IDUsuario, IDSucursal) VALUES (?, ?)', [IDUsuario, IDSucursal]
         );
     }
 
     static updateSucursal(IDUsuario, IDSucursal) {
         return db.execute(`
-            UPDATE usuarioSucursal 
+            UPDATE usuariosucursal 
             SET IDSucursal = ?
             WHERE IDUsuario = ?`, 
             [IDSucursal, IDUsuario]);
@@ -67,10 +67,10 @@ module.exports = class UserSucur {
             SELECT usuario.IDUsuario, usuario.NombreUsuario, usuario.NumTelefono, rol.TipoRol,
 	    usuario.FechaNacimiento, usuario.Genero, usuario.Ciudad, usuario.Estado
             FROM usuarioSucursal
-            INNER JOIN Usuario ON usuarioSucursal.IDUsuario = Usuario.IDUsuario
-            INNER JOIN UsuarioRol ON Usuario.IDUsuario = UsuarioRol.IDUsuario
-            INNER JOIN Rol ON UsuarioRol.IDRol = Rol.IDRol
-            WHERE usuarioSucursal.IDSucursal = ? AND Usuario.deleted_at IS NULL
+            INNER JOIN usuario ON usuarioSucursal.IDUsuario = usuario.IDUsuario
+            INNER JOIN usuarioRol ON usuario.IDUsuario = usuariorol.IDUsuario
+            INNER JOIN rol ON usuarioRol.IDRol = rol.IDRol
+            WHERE usuarioSucursal.IDSucursal = ? AND usuario.deleted_at IS NULL
         `, [IDSucursal]);
     }
 

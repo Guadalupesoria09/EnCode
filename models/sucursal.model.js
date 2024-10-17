@@ -14,7 +14,7 @@ module.exports = class Sucursal {
     // Método para guardar una nueva sucursal en la base de datos.
     save() {
         return db.execute(
-            'INSERT INTO Sucursal (Direccion, CP, Ciudad, Estado, NumSucursal, NombreSucursal) VALUES(?,?,?,?,?,?)',
+            'INSERT INTO sucursal (Direccion, CP, Ciudad, Estado, NumSucursal, NombreSucursal) VALUES(?,?,?,?,?,?)',
             [this.Direccion, this.CP, this.Ciudad, this.Estado, this.NumSucursal, this.NombreSucursal]
         );
     }
@@ -22,7 +22,7 @@ module.exports = class Sucursal {
     // Método estático para editar una sucursal existente.
     static editarSucursales(IDSucursal, Direccion, CP, Ciudad, Estado, NumSucursal, NombreSucursal) {
         return db.execute(
-            'UPDATE Sucursal SET Direccion = ?, CP = ?, Ciudad = ?, Estado = ?, NumSucursal = ?, NombreSucursal = ? WHERE IDSucursal = ?',
+            'UPDATE sucursal SET Direccion = ?, CP = ?, Ciudad = ?, Estado = ?, NumSucursal = ?, NombreSucursal = ? WHERE IDSucursal = ?',
             [Direccion, CP, Ciudad, Estado, NumSucursal, NombreSucursal, IDSucursal]
         );
     }
