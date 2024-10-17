@@ -1,5 +1,5 @@
 <%- include('includes/head.ejs') %>
-<h1 class="title has-text-centered"><%= editar ? 'EDITAR ROL' : 'CREAR ROL' %></h1>
+<h1 class="title has-text-centered"><%= editar ? 'EDITAR ROL' : 'REGISTRAR ROL' %></h1>
 <form action="<%= editar ? `${process.env.PATH_ENV}config/editarRol` : `${process.env.PATH_ENV}config/crearRol` %>" method="POST">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <% if (editar) { %>
@@ -38,7 +38,7 @@
         
         
         <div class="control has-text-centered">
-            <input type="submit" class="button is-link" value="<%= editar ? 'GUARDAR CAMBIOS' : 'CREAR' %>">
+            <input type="submit" class="button is-link" value="<%= editar ? 'GUARDAR CAMBIOS' : 'REGISTRAR ROL' %>">
         </div>
     </div>
 </form>
