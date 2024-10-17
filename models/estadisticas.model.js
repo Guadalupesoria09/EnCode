@@ -38,7 +38,7 @@ class Estadisticas {
     static fetchRecompensaReclamadaPorPromocion() {
         return db.execute(
             `SELECT p.NombrePromocion AS Promocion, COUNT(r.IDReclamo) AS TotalReclamaciones
-             FROM Reclama r
+             FROM reclama r
              JOIN Promocion p ON r.IDPromocion = p.IDPromocion
              GROUP BY p.NombrePromocion`
             );

@@ -8,7 +8,7 @@ module.exports = class Compra {
             `SELECT u.NombreUsuario, COUNT(c.IDSello) AS TotalCompras
              FROM compra c
              JOIN tarjeta t ON c.IDTarjeta = t.IDTarjeta
-             JOIN tarjetaSucursal ts ON t.IDTarjeta = ts.IDTarjeta
+             JOIN tarjetasucursal ts ON t.IDTarjeta = ts.IDTarjeta
              JOIN usuario u ON c.IDUsuario = u.IDUsuario
              WHERE ts.IDSucursal = ?
              GROUP BY u.NombreUsuario`,  [idSucursal]
@@ -21,7 +21,7 @@ module.exports = class Compra {
             `SELECT u.NombreUsuario, COUNT(r.IDReclamo) AS TotalReclamos
              FROM reclama r
              JOIN promocion p ON r.IDPromocion = p.IDPromocion
-             JOIN promocionSucursal ps ON p.IDPromocion = ps.IDPromocion
+             JOIN promocionsucursal ps ON p.IDPromocion = ps.IDPromocion
              JOIN usuario u ON r.IDUsuario = u.IDUsuario
              WHERE ps.IDSucursal = ?
              GROUP BY u.NombreUsuario`,  [idSucursal]);

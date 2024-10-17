@@ -32,12 +32,12 @@ module.exports = class UserSucur {
      */
     static fetchDuenos(IDSucursal) {
         return db.execute(
-            `SELECT usuario.NombreUsuario, Rol.TipoRol
+            `SELECT usuario.NombreUsuario, rol.TipoRol
             FROM usuariosucursal
-            INNER JOIN usuario ON usuarioSucursal.IDUsuario = Usuario.IDUsuario
-            INNER JOIN usuarioRol ON usuario.IDUsuario = UsuarioRol.IDUsuario
-            INNER JOIN Rol ON usuarioRol.IDRol = rol.IDRol
-            WHERE rol.TipoRol = 'Dueño' AND usuario.deleted_at IS NULL AND usuarioSucursal.IDSucursal = ?`, [IDSucursal]
+            INNER JOIN usuario ON usuariosucursal.IDUsuario = usuario.IDUsuario
+            INNER JOIN usuariorol ON usuario.IDUsuario = usuariorol.IDUsuario
+            INNER JOIN rol ON usuariorol.IDRol = rol.IDRol
+            WHERE rol.TipoRol = 'Dueño' AND usuario.deleted_at IS NULL AND usuariosucursal.IDSucursal = ?`, [IDSucursal]
         );
     }
 
@@ -66,9 +66,9 @@ module.exports = class UserSucur {
         return db.execute(`
             SELECT usuario.IDUsuario, usuario.NombreUsuario, usuario.NumTelefono, rol.TipoRol,
 	    usuario.FechaNacimiento, usuario.Genero, usuario.Ciudad, usuario.Estado
-            FROM usuarioSucursal
-            INNER JOIN usuario ON usuarioSucursal.IDUsuario = usuario.IDUsuario
-            INNER JOIN usuarioRol ON usuario.IDUsuario = usuariorol.IDUsuario
+            FROM usuariosucursal
+            INNER JOIN usuario ON usuariosucursal.IDUsuario = usuario.IDUsuario
+            INNER JOIN usuariorol ON usuario.IDUsuario = usuariorol.IDUsuario
             INNER JOIN rol ON usuariorol.IDRol = rol.IDRol
             WHERE usuariosucursal.IDSucursal = ? AND usuario.deleted_at IS NULL
         `, [IDSucursal]);

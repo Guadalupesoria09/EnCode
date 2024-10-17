@@ -6,16 +6,16 @@ module.exports = class rolPriv {
     static fetchAll() {
         return db.execute(`
             SELECT r.IDRol, r.TipoRol, p.Actividad
-            FROM RolPrivilegio rp
-            INNER JOIN Rol r ON rp.IDRol = r.IDRol
-            INNER JOIN Privilegio p ON rp.IDPrivilegio = p.IDPrivilegio
+            FROM rolprivilegio rp
+            INNER JOIN rol r ON rp.IDRol = r.IDRol
+            INNER JOIN privilegio p ON rp.IDPrivilegio = p.IDPrivilegio
             WHERE r.deleted_at IS NULL
         `);
     }
 
     static fetchTipoRol(IDRol) {
         return db.execute(`SELECT p.Actividad, rp.IDRol, rp.IDPrivilegio
-            FROM RolPrivilegio rp
+            FROM rolprivilegio rp
             INNER JOIN privilegio p ON
             rp.IDPrivilegio = p.IDPrivilegio
             WHERE rp.IDRol = ?`, [IDRol])
@@ -23,7 +23,7 @@ module.exports = class rolPriv {
 
     static fetchRolPriv(IDRol) {
         return db.execute(`SELECT DISTINCT r.IDRol, TipoRol, deleted_at
-            FROM RolPrivilegio rp, rol r
+            FROM rolprivilegio rp, rol r
             WHERE rp.IDRol = r.IDRol AND deleted_at IS NULL AND rp.IDRol = ?`, [IDRol]);
     }
 
@@ -32,8 +32,8 @@ module.exports = class rolPriv {
     static fetchPrivilegios(IDRol) {
         return db.execute(`
             SELECT p.Actividad, p.IDPrivilegio
-            FROM RolPrivilegio rp
-            INNER JOIN Privilegio p ON rp.IDPrivilegio = p.IDPrivilegio
+            FROM rolprivilegio rp
+            INNER JOIN privilegio p ON rp.IDPrivilegio = p.IDPrivilegio
             WHERE rp.IDRol = ?
         `, [IDRol]);
     }
@@ -41,6 +41,6 @@ module.exports = class rolPriv {
 
      // Fetch all available privileges
      static fetchActividades() {
-        return db.execute('SELECT IDPrivilegio, Actividad FROM Privilegio');
+        return db.execute('SELECT IDPrivilegio, Actividad FROM privilegio');
     }
 };

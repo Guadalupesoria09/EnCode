@@ -19,7 +19,7 @@ module.exports = class Rol {
     // Insert the role in the database
     async insertRol() {
         const [result] = await db.execute(
-            'INSERT INTO Rol (TipoRol) VALUES (?)',
+            'INSERT INTO rol (TipoRol) VALUES (?)',
             [this.TipoRol]
         );
         return result.insertId;
@@ -29,7 +29,7 @@ module.exports = class Rol {
     async assignPrivileges(IDRol, actividades) {
         const promises = actividades.map(async (IDPrivilegio) => {
             return await db.execute(
-                'INSERT INTO RolPrivilegio (IDRol, IDPrivilegio) VALUES (?, ?)',
+                'INSERT INTO rolprivilegio (IDRol, IDPrivilegio) VALUES (?, ?)',
                 [IDRol, IDPrivilegio]
             );
         });
@@ -40,15 +40,15 @@ module.exports = class Rol {
     static async editarRol(IDRol, nuevoNombre, actividades) {
         try {
             // Update role name
-            await db.execute('UPDATE Rol SET TipoRol = ? WHERE IDRol = ?', [nuevoNombre, IDRol]);
+            await db.execute('UPDATE rol SET TipoRol = ? WHERE IDRol = ?', [nuevoNombre, IDRol]);
 
             // Remove old privileges
-            await db.execute('DELETE FROM RolPrivilegio WHERE IDRol = ?', [IDRol]);
+            await db.execute('DELETE FROM rolprivilegio WHERE IDRol = ?', [IDRol]);
 
             // Add new privileges
             const promises = actividades.map((IDPrivilegio) => {
                 return db.execute(
-                    'INSERT INTO RolPrivilegio (IDRol, IDPrivilegio) VALUES (?, ?)',
+                    'INSERT INTO rolprivilegio (IDRol, IDPrivilegio) VALUES (?, ?)',
                     [IDRol, IDPrivilegio]
                 );
             });
@@ -72,7 +72,7 @@ module.exports = class Rol {
     }
 
     static editarRol(IDRol) {
-        return db.execute('UPDATE Rol SET TipoRol = ? WHERE IDRol = ?', [IDRol])
+        return db.execute('UPDATE rol SET TipoRol = ? WHERE IDRol = ?', [IDRol])
             .then(result => {
                 if (result.affectedRows === 0) {
                     throw new Error('No se encontró el rol para actualizar');
@@ -86,11 +86,11 @@ module.exports = class Rol {
     }
 
     static editarPrivilegios(IDRol, actividades) {
-        return db.execute('DELETE FROM RolPrivilegio WHERE IDRol = ?', [IDRol])
+        return db.execute('DELETE FROM rolprivilegio WHERE IDRol = ?', [IDRol])
             .then(() => {
                 const promises = actividades.map((IDPrivilegio) => { // Cambia 'actividad' a 'IDPrivilegio'
                     return db.execute(
-                        'INSERT INTO RolPrivilegio (IDRol, IDPrivilegio) VALUES (?, ?)',
+                        'INSERT INTO rolprivilegio (IDRol, IDPrivilegio) VALUES (?, ?)',
                         [IDRol, IDPrivilegio] // Aquí asegurándote de que se usa el IDPrivilegio
                     );
                 });
