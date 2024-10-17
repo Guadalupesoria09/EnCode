@@ -69,14 +69,14 @@ module.exports = class UserSucur {
             FROM usuarioSucursal
             INNER JOIN usuario ON usuarioSucursal.IDUsuario = usuario.IDUsuario
             INNER JOIN usuarioRol ON usuario.IDUsuario = usuariorol.IDUsuario
-            INNER JOIN rol ON usuarioRol.IDRol = rol.IDRol
-            WHERE usuarioSucursal.IDSucursal = ? AND usuario.deleted_at IS NULL
+            INNER JOIN rol ON usuariorol.IDRol = rol.IDRol
+            WHERE usuariosucursal.IDSucursal = ? AND usuario.deleted_at IS NULL
         `, [IDSucursal]);
     }
 
     static fetchSucursalporUsuario(IDUsuario) {
         return db.execute(`SELECT us.IDSucursal
-            FROM usuarioSucursal us, sucursal s
+            FROM usuariosucursal us, sucursal s
             WHERE us.IDSucursal = s.IDSucursal AND IDUsuario = ? AND s.deleted_at IS NULL`, ([IDUsuario]));
     }
 
