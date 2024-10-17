@@ -72,5 +72,15 @@ module.exports = class promoSucurRecomp {
         );
     }
 
+    static fetchRecompensasActivades(){
+        return db.execute(
+	    `SELECT recompensa.NombreRecompensa, COUNT(recompensa.NombreRecompensa) AS Cantidad
+                 FROM promocionsucursalrecompensa
+                 JOIN recompensa ON promocionsucursalrecompensa.IDRecompensa = recompensa.IDRecompensa
+                 GROUP BY recompensa.NombreRecompensa
+                 ORDER BY Cantidad DESC
+	    `);
+    }
+
     
 }

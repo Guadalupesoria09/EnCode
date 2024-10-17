@@ -48,7 +48,7 @@ exports.post_register = (request, response, next) => {
     nuevo_usuario
         .save()
         .then(() => {
-	    response.redirect(`${process.env.PATH_ENVsucur}sucur/sucursales`);
+	    response.redirect(`${process.env.PATH_ENV}sucur/sucursales`);
 	})
         .catch((error) => {
             console.error('Error al guardar el usuario:', error);
