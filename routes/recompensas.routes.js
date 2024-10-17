@@ -16,8 +16,8 @@ router.get('/editRecompensas/:id', isAuth, canModificarRecompensa, recompensas_c
 router.post('/editRecompensas', isAuth, canModificarRecompensa, recompensas_controller.post_editarRecompensa);
 
 // rutas registrar recompensa
-router.get('/recompensas/agregar', isAuth, canRegistrarRecompensa, recompensas_controller.get_agregarRecompensas);
-router.post('/recompensas/agregar', isAuth, canRegistrarRecompensa, recompensas_controller.post_agregarRecompensas);
+router.get('/agregar', isAuth, canRegistrarRecompensa, recompensas_controller.get_agregarRecompensas);
+router.post('/agregar', isAuth, canRegistrarRecompensa, recompensas_controller.post_agregarRecompensas);
 
 // ruta recuperar todas las recompensas
 router.get('/buscar/:valor_busqueda', isAuth, canVerRecompensas, recompensas_controller.get_buscar);

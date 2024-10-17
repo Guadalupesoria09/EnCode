@@ -20,7 +20,7 @@
     <% } %>
     <br>
     <div class="control has-text-centered">
-        <a href="<%= process.env.PATH_ENV %>recomp/recompensas/agregar" class="button agregar-btn is-link">AGREGAR MÁS</a>
+        <a href="<%= process.env.PATH_ENV %>recomp/agregar" class="button agregar-btn is-link">AGREGAR MÁS</a>
     </div>
     <br>
 
@@ -75,7 +75,7 @@
         <ul id="pagination" class="pagination-list">
             <% for (let i = 1; i <= totalPages; i++) { %>
                 <li>
-                    <a href="<%= process.env.PATH_ENV %>recomp/recompensas?page=<%= i %>" class="pagination-link <%= currentPage === i ? 'is-current' : '' %>">
+                    <a href="<%= process.env.PATH_ENV %>recomp/recompensas?page=<%= i %>" class="pagination-link <%= currentPage == i ? 'is-current' : '' %>">
                         <%= i %>
                     </a>
                 </li>
@@ -125,7 +125,7 @@
                 for (let i = 1; i <= data.totalPages; i++) {
                     paginationHtml += `
                         <li>
-                            <a href="#" class="pagination-link ${data.currentPage === i ? 'is-current' : ''}" 
+                            <a href="#" class="pagination-link ${data.currentPage == i ? 'is-current' : ''}" 
                             data-page="${i}">
                                 ${i}
                             </a>

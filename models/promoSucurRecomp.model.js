@@ -41,11 +41,11 @@ module.exports = class promoSucurRecomp {
     }
 
     static fetchOne(IDpromorecomp) {
-        return db.execute('SELECT * FROM promocionsucurrecompensa WHERE IDpromocionsucursalrecompensa = ?', [IDpromorecomp]);
+        return db.execute('SELECT * FROM promocionsucursalrecompensa WHERE IDPromocionSucurRecompensa = ?', [IDpromorecomp]);
     }
     
     static fetchIDPR(idPromo) {
-        return db.execute('SELECT IDpromocionsucurrecompensa FROM promocionsucursalrecompensa WHERE IDPromocion = ?', [idPromo])
+        return db.execute('SELECT IDPromocionSucurRecompensa FROM promocionsucursalrecompensa WHERE IDPromocion = ?', [idPromo])
     }
 
     static fetch(IDpromorecomp) {
@@ -67,7 +67,7 @@ module.exports = class promoSucurRecomp {
         return db.execute(
             `UPDATE promocionsucursalrecompensa 
              SET IDRecompensa = ? 
-             WHERE IDpromocionsucurrecompensa = ?`, 
+             WHERE IDPromocionSucurRecompensa = ?`, 
             [nuevaIDRecompensa, idpromocionsucursalrecompensa] // Asegúrate de que ambos valores no sean undefined
         );
     }

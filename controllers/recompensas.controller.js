@@ -64,7 +64,7 @@ exports.post_editarRecompensa = (request, response, next) => {
     Recompensas.edit(request.body.id, request.body.NombreRecompensa)
         .then((rows, fieldData) => {
             request.session.mensaje = 'Recompensa actualizada';
-            return response.redirect('<%= process.env.PATH_ENV%>promo/recompensas');
+            return response.redirect(`${process.env.PATH_ENV}recomp/recompensas`);
         }).catch((error) => { 
             console.log(error); 
     });
@@ -77,7 +77,7 @@ exports.get_deleteRecomp = (request, response, next) => {
 
     Recompensas.delete(id).then(() => {
         request.session.mensaje = "Recompensa eliminada";
-        return response.redirect('/promo/recompensas');
+        return response.redirect(`${process.env.PATH_ENV}recomp/recompensas`);
 
     }).catch((error) => {
         console.log(error);
@@ -105,8 +105,6 @@ exports.get_agregarRecompensas = (request, response, next) => {
             }); 
         }).catch((error) => {
             console.log(error);
-            request.session.mensaje = 'Ya existe una recompensa con este nombre'
-            return response.redirect('<%= process.env.PATH_ENV%>promo/recompensas');
         });
 };
 
@@ -116,21 +114,20 @@ exports.post_agregarRecompensas = (request, response, next) => {
 
     const recompensas = new Recompensas(request.body.NombreRecompensa);
 
-    request.session.mensaje = 'Recompensa creada';
-
     recompensas.save()
         .then(() => {
-            return response.redirect('<%= process.env.PATH_ENV%>promo/recompensas');
+            request.session.mensaje = 'Recompensa creada';
+            return response.redirect('recompensas');
         }).catch((error) => {
             console.log(error);
             request.session.mensaje = 'Ya existe una recompensa con este nombre'
-            return response.redirect('<%= process.env.PATH_ENV%>promo/recompensas/agregar');
+            return response.redirect('<%= process.env.PATH_ENV%>recomp/agregar');
         });
 };
 
 //Metodo get para recuperar todas las recompensas
 exports.get_recompensas = (request, response, next) => {
-    console.log('Ruta /promo/recompensas');
+    console.log('Ruta /recomp/recompensas');
 
     let mensaje = request.session.mensaje || '';
 
@@ -158,21 +155,6 @@ exports.get_recompensas = (request, response, next) => {
         }).catch((error) => {
             console.log(error);
             request.session.mensaje = 'Error al cargar las recompensas';
-            return response.redirect('<%= process.env.PATH_ENV%>promo/recompensas');
+            return response.redirect('<%= process.env.PATH_ENV%>recomp/recompensas');
     });
-
-    // Recompensas.fetchAll()
-    //     .then(([recompensas, fieldData]) => {
-    //         return response.render('recompensas', {
-    //             username: request.session.NombreUsuario || '',  
-    //             csrfToken: request.csrfToken(),
-    //             recompensas: recompensas,
-    //             mensaje: mensaje,
-    //             editar: false,
-    //         }); 
-    //     }).catch((error) => {
-    //         console.log(error);
-    //         request.session.mensaje = 'Ya existe una recompensa con este nombre'
-    //         return response.redirect('/promo/recompensas');
-    // });
 }

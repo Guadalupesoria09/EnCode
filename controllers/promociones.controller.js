@@ -23,10 +23,6 @@ exports.get_editarPromo = (request, response, next) => {
             promo.recompensas = recompensas;
         }
 
-        for (let idPR of promociones){
-            let [IDPromocionRecompensa, fieldData] = await PromoSucurRecomp.fetchIDPR(idPR.IDPromocion);
-            idPR.IDPromocionRecompensa = IDPromocionRecompensa;
-        }
         //promociones[0].FechaInicio = promociones[0].FechaInicio.getFullYear()+'-'+promociones[0].FechaInicio.getMonth()+'-'+promociones[0].FechaInicio.getDate();
         let fecha = promociones[0].FechaInicio.toISOString();
         console.log(fecha);
@@ -73,14 +69,14 @@ exports.post_editarPromo = async (request, response, next) => {
         
         // Extraer IDs de las recompensas existentes y sus relaciones
         const recompensasExistentes = relacionesExistentes.map(rel => rel.IDRecompensa);
-        const idPromocionRecompensas = relacionesExistentes.map(rel => rel.IDPromocionRecompensa); // Asegúrate de tener los IDs de las relaciones
+        const idPromocionSucurRecompensas = relacionesExistentes.map(rel => rel.IDPromocionSucurRecompensa); // Asegúrate de tener los IDs de las relaciones
 
         // Paso 2: Actualizar relaciones existentes
         for (let i = 0; i < recompensasExistentes.length; i++) {
             if (nuevasRecompensas[i] !== undefined) {
                 // Solo actualizar si el ID de recompensa ha cambiado
                 if (recompensasExistentes[i] !== nuevasRecompensas[i]) {
-                    const idRelacion = idPromocionRecompensas[i]; // Obtener el ID de la relación
+                    const idRelacion = idPromocionSucurRecompensas[i]; // Obtener el ID de la relación
                     await PromoSucurRecomp.editSingleRelation(idRelacion, nuevasRecompensas[i]); // Actualiza usando el ID de la relación
                 }
             }
