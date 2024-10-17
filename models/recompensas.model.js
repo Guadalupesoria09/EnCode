@@ -49,10 +49,10 @@ module.exports = class Recompensas {
 
     static fetchPaginated(limit, offset) {
         return db.execute(
-            'SELECT * FROM recompensa LIMIT ? OFFSET ?',
+            'SELECT * FROM recompensa WHERE deleted_at IS NULL LIMIT ? OFFSET ?',
             [limit, offset]
         ).then(([rows, fieldData]) => {
-            return db.execute('SELECT COUNT(*) as count FROM recompensa') // Para obtener el total de recompensas
+            return db.execute('SELECT COUNT(*) as count FROM recompensa WHERE deleted_at IS NULL') // Para obtener el total de recompensas
                 .then(([countResult]) => [rows, countResult[0].count]);
         });
     }
