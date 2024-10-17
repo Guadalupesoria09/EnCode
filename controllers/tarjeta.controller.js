@@ -1,17 +1,17 @@
 const Tarjeta = require('../models/tarjeta.model.js')
 const PromoRecomp = require('../models/promoSucurRecomp.model.js')
 const Vista = require('../models/vista.model.js')
+const UserSucur = require('../models/userSucur.model.js')
 
 
 //Controlador para cargar la página de editar el formato de la tarjeta 
 exports.get_editorTarjeta = (request, response, next) => {
 
-
-
     Vista.fetchAll().then(async ([vistas, fieldData]) => {
         for (let vis of vistas) {
-            let [numSucursal, fieldData] = await Vista.fetchNumSucursal(vis.IDSucursal);
-            vis.numSucursal = numSucursal;
+            console.log('IDV',vis.IDVista,'IDS', vis.IDSucursal)
+            let [NumSucursal, fieldData] = await Vista.fetchNumSucursal(vis.IDSucursal);
+            vis.NumSucursal = NumSucursal;
         }
         return response.render('editorTarjeta', {
             vistas: vistas,
@@ -27,11 +27,13 @@ exports.get_editorTarjeta = (request, response, next) => {
 exports.post_editorTarjeta = (request, response, next) => {
     console.log(request.file);
 
-    const carcasa = new Carcasa (
+
+    const vista = new Vista (
         request.body.nombreTarjeta,
         request.file.filename,
         request.body.color,
         request.body.font,
+        1,
     );
 
    vista.save().then(() => {

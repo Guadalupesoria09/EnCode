@@ -1,5 +1,4 @@
 <%- include('includes/head.ejs') %>
-<h1 class="title has-text-centered">RECOMPENSAS</h1>
 <main>
   <% if(mensaje != '') { %>
     <div class="notification is-link">
@@ -19,24 +18,26 @@
     </script>
   <% } %>
   <% if (editar) { %>
+    <h1 class="title has-text-centered">EDITAR RECOMPENSA</h1>
     <div class="columns">
       <div class="column">
       <form class="box has-text-centered" action="<%= process.env.PATH_ENV %>recomp/editRecompensas" method="POST">
-      <input type="hidden" id="id" name="id" value="<%= recompensa.IDRecompensa %>">
+      <input type="hidden" id="id" name="id" value="<%= editRecompensas.IDRecompensa %>">
   <% } else { %>
+    <h1 class="title has-text-centered">REGISTRO RECOMPENSA</h1>
     <div class="columns">
       <div class="column is-three-fifths is-offset-one-fifth">
-      <form class="box has-text-centered" action="<%= process.env.PATH_ENV %>recomp/recompensas/agregar" method="POST">
+      <form class="box has-text-centered" action="<%= process.env.PATH_ENV %>recomp/agregar" method="POST">
   <% } %>
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <div class="field has-text-left">
         <label class="label" for="NombreRecompensa">Nombre</label>
         <div class="control">
-          <input class="input" id="NombreRecompensa" name="NombreRecompensa" type="text" placeholder="2x1"  value="<% if (editar) { %> <%= recompensa.NombreRecompensa %> <% } %>" required />
+          <input class="input" id="NombreRecompensa" name="NombreRecompensa" type="text" placeholder="2x1"  value="<%= editar ? editRecompensas.NombreRecompensa : '' %>" required />
         </div>
       </div>
       <div class="control has-text-centered">
-        <input type="submit" class="button is-link" value=" REGISTRAR">
+        <input type="submit" class="button is-link" value="REGISTRAR">
       </div>
     </form>
     <br>
