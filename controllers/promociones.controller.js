@@ -63,6 +63,11 @@ exports.post_editarPromo = async (request, response, next) => {
     }
 
     try {
+        await Promociones.edit(idPromo, request.body.nombrePromo, 
+            request.body.fechaInicio,
+            request.body.fechaFin, 
+            request.body.compra, 
+            request.body.precio,);
         // Paso 1: Obtener las relaciones existentes para la promoción
         const [relacionesExistentes] = await PromoSucurRecomp.fetchIDPR(idPromo);
         console.log('Relaciones Existentes:', relacionesExistentes);
