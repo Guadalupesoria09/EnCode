@@ -43,5 +43,11 @@ router.get('/recompensasActivas', isAuth, canVerestadisticas, estadisticasContro
 // Ruta para obtener promociones activas en una sucursal
 router.get('/promocioneSucursal', estadisticasController.getPromocioneSucursal);
 
+// Ruta para obtener las recompensas menos utilizadas
+router.get('/recompensasMenosUtilizadas', isAuth, canVerestadisticas, promoController.getMenosUtilizadas);
+
+// Ruta para obtener las 5 recompensas más utilizadas
+router.get('/recompensasMasUtilizadas', isAuth, canVerestadisticas, PromoSucurRecomp.getMasUtilizadas);
+
 module.exports = router;
 

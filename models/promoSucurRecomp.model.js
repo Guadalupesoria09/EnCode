@@ -94,5 +94,15 @@ module.exports = class promoSucurRecomp {
 	    `);
     }
 
+    static fetchMenosUtilizadas() {
+        return db.execute(
+            `SELECT recompensa.NombreRecompensa, COUNT(reclama.IDPromocion) AS Cantidad
+             FROM promocionsucursalrecompensa
+             JOIN recompensa ON promocionsucursalrecompensa.IDRecompensa = recompensa.IDRecompensa
+             JOIN reclama ON promocionsucursalrecompensa.IDPromocion = reclama.IDPromocion
+             GROUP BY recompensa.NombreRecompensa
+             ORDER BY Cantidad ASC
+             LIMIT 5`);
+    }
     
 }
