@@ -1,13 +1,27 @@
 <%- include('includes/head.ejs') %>
 <h1 class="title has-text-centered">MIS TARJETAS</h1>
 <main>
-    <!-- <div class="buttons is-centered">
-        <a href="/promo/tarjeta" class="button is-link">Editar tarjeta</a>
-    </div> -->
-
+    <% if(mensaje != '') { %>
+        <div class="notification is-link">
+            <button class="delete"></button>
+            <%= mensaje %>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                    const $notification = $delete.parentNode;
+    
+                    $delete.addEventListener('click', () => {
+                    $notification.parentNode.removeChild($notification);
+                    });
+                });
+            });
+        </script>
+    <% } %>
+    <br />
     <div class="columns is-multiline">
         <div class="column is-narrow">
-        <% for (vista of vistas) { %>
+        <% for (let vista of vistas) { %>
             <div class="container">
                 <div class="cardDB">
                     <div class="card-innerDB">
@@ -16,7 +30,7 @@
                             <img src="<%= process.env.PATH_ENV %>uploads/<%= vista.Logo %>" class="db-img" width="600px">
                             <div class="rowDB" style="font-family: <%= vista.Font %>">
                                 <a class="image is-24x24" href="<%= process.env.PATH_ENV %>tarjeta/tarjeta">
-                                    <img src="/settings_tarjeta.png">
+                                    <img src="<%= process.env.PATH_ENV %>settings_tarjeta.png">
                                 </a>
                                 <p class="text has-text-right has-text-white"><%= vista.nombreTarjeta %></p>
                             </div>
@@ -27,9 +41,16 @@
                                 <p class="text has-text-left has-text-white">@teléfono</p>
                                 </div>
                                 <div class="right has-text-right">
-                                    <p class="text has-text-right has-text-white">@nombreSucursal</p>
-                                    <% console.log(vista.NumSucursal) %>
-                                    <p class="text has-text-right has-text-white">@</p>
+                                    <p class="text has-text-right has-text-white"><% if (vista.NombreSucursal.length == 0) { %> 'Sin nombre' <% } %>
+                                        <% for (let name of vista.NombreSucursal) { %>
+                                            <%= name.NombreSucursal %>
+                                        <% } %> 
+                                    </p>
+                                    <p class="text has-text-right has-text-white"><% if (vista.NumSucursal.length == 0) { %> 'Sin numero' <% } %>
+                                        <% for (let num of vista.NumSucursal) { %>
+                                            <%= num.NumSucursal %>
+                                        <% } %> 
+                                    </p>
                                         
                                 </div>
                             </div>
