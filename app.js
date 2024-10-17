@@ -67,17 +67,15 @@ app.use((request, response, next) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
 const tarjetaRoutes = require('./routes/tarjeta.routes');
 app.use('/tarjeta', tarjetaRoutes);
 
 const configuracionRoutes = require('./routes/configuracion.routes');
 app.use('/config', configuracionRoutes);
-
+/*
 const estadisticasRoutes = require('./routes/estadisticas.routes');
 app.use('/estadisticas', estadisticasRoutes);
-
+*/
 const sucursalesRoutes = require('./routes/sucursales.routes');
 app.use('/sucur', sucursalesRoutes);
 

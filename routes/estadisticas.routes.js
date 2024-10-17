@@ -40,3 +40,4 @@ router.get('/ventas', estadisticasController.getVentasPorMes);
 router.get('/promocioneSucursal', estadisticasController.getPromocioneSucursal);
 
 module.exports = router;
+
