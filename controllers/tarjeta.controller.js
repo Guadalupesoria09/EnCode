@@ -50,14 +50,26 @@ exports.post_tarjeta = (request, response, next) => {
 //Controlador para cargar la página de editar el formato de la tarjeta 
 exports.get_editorTarjeta = (request, response, next) => {
 
+    let mensaje = request.session.mensaje || '';
+
+    if (request.session.mensaje) {
+        request.session.mensaje = '';
+    }
+
     Vista.fetchAll().then(async ([vistas, fieldData]) => {
         for (let vis of vistas) {
-            console.log('IDV',vis.IDVista,'IDS', vis.IDSucursal)
-            let [NumSucursal, fieldData] = await Vista.fetchNumSucursal(vis.IDSucursal);
+            let [NumSucursal, fieldData] = await Vista.fetchNumSucursal(vis.IDVista);
             vis.NumSucursal = NumSucursal;
         }
+
+        for (let vis of vistas) {
+            let [NombreSucursal, fieldData] = await Vista.fetchNameSucursal(vis.IDVista);
+            vis.NombreSucursal = NombreSucursal;
+        }
+
         return response.render('editorTarjeta', {
             vistas: vistas,
+            mensaje: mensaje,
             username: request.session.NombreUsuario || '', 
             csrfToken: request.csrfToken(),
         });
@@ -69,21 +81,27 @@ exports.get_editorTarjeta = (request, response, next) => {
 
 exports.post_editorTarjeta = (request, response, next) => {
     console.log(request.file);
+    idUsuario = request.session.IDUsuario;
 
+    UserSucur.fetchSucursalporUsuario(idUsuario).then(([sucursal, fieldData]) => {
+        const idSucursal = sucursal[0].IDSucursal;
 
-    const vista = new Vista (
-        request.body.nombreTarjeta,
-        request.file.filename,
-        request.body.color,
-        request.body.font,
-        1,
-    );
+        const vista = new Vista (
+            request.body.nombreTarjeta,
+            request.file.filename,
+            request.body.color,
+            request.body.font,
+            idSucursal,
+        );
+    
+       vista.save().then(() => {
+            request.session.mensaje = 'Nueva vista de tarjeta creada'
+            response.redirect('editorTarjeta');
+            })
+            .catch((error) => {
+                console.log(error);  // En caso de error.
+        });
 
-   vista.save().then(() => {
-        response.redirect('tarjeta');
-        })
-        .catch((error) => {
-            console.log(error);  // En caso de error.
-    });
+    })
 
 };
