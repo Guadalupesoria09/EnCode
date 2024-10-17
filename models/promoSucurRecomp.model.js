@@ -40,6 +40,18 @@ module.exports = class promoSucurRecomp {
 
     }
 
+    static fetchMasUtilizadas() {
+        return db.execute(
+            `SELECT recompensa.NombreRecompensa, COUNT(reclama.IDPromocion) AS Cantidad
+             FROM promocionsucursalrecompensa
+             JOIN recompensa ON promocionsucursalrecompensa.IDRecompensa = recompensa.IDRecompensa
+             JOIN reclama ON promocionsucursalrecompensa.IDPromocion = reclama.IDPromocion
+             GROUP BY recompensa.NombreRecompensa
+             ORDER BY Cantidad DESC
+             LIMIT 5`
+        );
+    }
+
     static fetchOne(IDpromorecomp) {
         return db.execute('SELECT * FROM promocionsucursalrecompensa WHERE IDPromocionSucurRecompensa = ?', [IDpromorecomp]);
     }
