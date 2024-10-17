@@ -4,7 +4,7 @@ const { userInfo } = require('os');
 
 const twilio = require('twilio');
 const { request } = require('http');
-const client = new twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const UserSucur = require('../models/userSucur.model');
 
 /**
@@ -47,29 +47,11 @@ exports.post_register = (request, response, next) => {
     console.log('Usuario Registrado:', request.body);
     nuevo_usuario
         .save()
-        .then(() => response.redirect('/sucur/sucursales'))
+        .then(() => {
+	    response.redirect('/sucur/sucursales');
+	})
         .catch((error) => {
             console.error('Error al guardar el usuario:', error);
-        });
-};
-
-/**
- * Muestra los usuarios de una sucursal específica.
- */
-exports.get_usuariosDeSucursal = (request, response, next) => {
-    const IDSucursal = request.params.IDSucursal;
-
-    Usuario.fetchUsuariosPorSucursal(IDSucursal)
-        .then(([usuarios]) => {
-            response.render('listarUsuarios', {
-                usuarios: usuarios,
-                username: request.session.NombreUsuario || '',
-                csrfToken: request.csrfToken(),
-            });
-        })
-        .catch((err) => {
-            console.error('Error al obtener usuarios de la sucursal:', err);
-            response.redirect('/sucur/sucursales');
         });
 };
 
@@ -116,11 +98,11 @@ exports.post_editarUsuario = (request, response, next) => {
         request.body;
 
     Usuario.update(IDUsuario, NombreUsuario, NumTelefono, FechaNacimiento, Genero, Direccion, Ciudad, Estado)
-        .then(() => Usuario.updateSucursal(IDUsuario, IDSucursal))
+        .then(() => UserSucur.updateSucursal(IDUsuario, IDSucursal))
         .then(() => Usuario.updateRol(IDUsuario, IDRol))
         .then(() => {
             request.session.mensaje = 'Usuario, sucursal y rol modificados exitosamente';
-            response.redirect('/sucur/sucursales');
+            response.redirect(`${process.env.PATH_ENV}sucur/sucursales`);
         })
         .catch((err) => {
             console.error('Error al modificar los datos del usuario o la sucursal:', err);
@@ -137,11 +119,11 @@ exports.get_deleteUsuario = (req, res, next) => {
     Usuario.deleteUsuario(IDUsuario)
         .then(() => {
             req.session.mensaje = 'Usuario eliminado exitosamente';
-            res.redirect('/sucur/sucursales');
+            res.redirect(`${process.env.PATH_ENV}sucur/sucursales`);
         })
         .catch((err) => {
             console.error('Error al eliminar el usuario:', err);
-            res.redirect('/sucur/sucursales');
+            res.redirect(`${process.env.PATH_ENV}sucur/sucursales`);
         });
 };
 
@@ -185,39 +167,37 @@ exports.post_login = (request, response, next) => {
 
                             Usuario.getPrivilegios(usuario[0].IDUsuario)
                                 .then(([privilegios, fieldData]) => {
-                                    request.session.privilegios = privilegios;
-                                    console.log('Usuario privilegios:', privilegios);
-
+                                    request.session.privilegios=privilegios;
                                     request.session.save((err) => {
                                         if (err) {
                                             console.error('Error al guardar la sesión:', err);
                                             return response.redirect('/login');
                                         }
-                                        response.redirect('/home');
+                                        response.redirect(`${process.env.PATH_ENV}home`);
                                     });
                                 })
                                 .catch((err) => {
                                     console.error('Error al obtener privilegios:', err);
-                                    response.redirect('/login');
+                                    response.redirect(`${process.env.PATH_ENV}login`);
                                 });
                         } else {
                             request.session.mensaje = 'El usuario y/o contraseña no coinciden';
-                            response.redirect('/login');
+                            response.redirect(`${process.env.PATH_ENV}login`);
                         }
                     })
                     .catch((err) => {
                         console.error('Error al comparar contraseñas:', err);
-                        response.redirect('/login');
+                        response.redirect(`${process.env.PATH_ENV}login`);
                     });
             } else {
                 request.session.mensaje = 'El usuario no existe';
-                response.redirect('/login');
+                response.redirect(`${process.env.PATH_ENV}login`);
             }
         })
         .catch((err) => {
             console.error('Error al buscar el teléfono en la base de datos:', err);
             request.session.mensaje = 'Error 500: Error del servidor';
-            response.redirect('/login');
+            response.redirect(`${process.env.PATH_ENV}login`);
         });
 };
 
@@ -226,7 +206,7 @@ exports.post_login = (request, response, next) => {
  */
 exports.get_logout = (request, response, next) => {
     request.session.destroy(() => {
-        response.redirect('/login');
+        response.redirect(`${process.env.PATH_ENV}login`);
     });
 };
 
@@ -234,12 +214,22 @@ exports.get_logout = (request, response, next) => {
  * Renderiza la página de inicio.
  */
 exports.get_home = (request, response, next) => {
-    response.render('home', {
-        username: request.session.NombreUsuario || '',
-        csrfToken: request.csrfToken(),
-        mensaje: request.session.mensaje || '',
-    });
+    Usuario.fetch(request.params.IDUsuario)
+        .then(([usuarios, fieldData]) => {
+            response.render('home', {
+                usuarios: usuarios,
+                username: request.session.NombreUsuario || '',
+                csrfToken: request.csrfToken(),
+                mensaje: request.session.mensaje || '',
+                privilegios: request.session.privilegios || [],
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            next(err);
+        });
 };
+
 
 /**
  * Renderiza la página de recuperación de contraseña.
@@ -274,12 +264,12 @@ exports.post_codigo = (request, response, next) => {
 
                 console.log('Número de teléfono con formato internacional:', telefono);
 
-                client.verify.services(process.env.TWILIO_VERIFY_SERVICE_SID)
+                client.verify.v2.services(process.env.TWILIO_VERIFY_SERVICE_SID)
                     .verifications.create({ to: telefono, channel: 'sms' })
                     .then(() => {
                         console.log('Código de verificación enviado al número:', telefono);
                         request.session.telefono = telefono;
-                        response.redirect('/verificar-codigo');
+                        response.redirect('/verificarCodigo');
                     })
                     .catch((error) => {
                         console.error('Error al enviar el código de verificación:', error);
@@ -303,23 +293,52 @@ exports.post_codigo = (request, response, next) => {
  * Verifica el código de verificación recibido por SMS.
  */
 exports.get_verificar_codigo = (request, response, next) => {
-    const telefono = request.session.telefono;
     const codigo = request.body.codigo;
 
-    client.verify.services(process.env.TWILIO_VERIFY_SERVICE_SID)
-        .verificationChecks.create({ to: telefono, code: codigo })
+    if (!codigo) {
+        console.error('El código no fue proporcionado.');
+        return response.redirect('/verificarCodigo');
+    }
+
+    client.verify.v2.services(process.env.TWILIO_VERIFY_SERVICE_SID)
+        .verificationChecks.create({ code: codigo })
         .then((verification_check) => {
             if (verification_check.status === 'approved') {
-                // Verificación realizada correctamente
                 response.redirect('/cambiar-contrasenia');
             } else {
                 console.log('Código incorrecto');
-                response.redirect('/verificar-codigo');
+                response.redirect('/verificarCodigo');
             }
         })
         .catch((error) => {
             console.error('Error al verificar el código:', error);
-            response.redirect('/verificar-codigo');
+            response.redirect('/verificarCodigo');
         });
 };
 
+exports.post_verificar_codigo = (request, response, next) => {
+    const codigo = request.body.codigo;
+    const telefono = request.session.telefono;
+
+    if (!codigo) {
+        request.session.mensaje = 'Por favor, ingresa un código.';
+        return response.redirect('/verificarCodigo');
+    }
+
+    client.verify.v2.services(process.env.TWILIO_VERIFY_SERVICE_SID)
+        .verificationChecks.create({ to: telefono, code: codigo })
+        .then((verification_check) => {
+            if (verification_check.status === 'approved') {
+                console.log('Código verificado correctamente.');
+                response.redirect('/cambiar-contrasenia');
+            } else {
+                request.session.mensaje = 'Código incorrecto. Inténtalo de nuevo.';
+                response.redirect('/verificarCodigo');
+            }
+        })
+        .catch((error) => {
+            console.error('Error al verificar el código:', error);
+            request.session.mensaje = 'Error al verificar el código. Inténtalo nuevamente.';
+            response.redirect('/verificarCodigo');
+        });
+};

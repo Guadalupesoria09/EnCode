@@ -1,6 +1,6 @@
 <%- include('includes/head.ejs') %>
 <h1 class="title has-text-centered">EDITAR TARJETA</h1>
-<form action="promo/tarjeta" method="POST">
+<form action="<%= process.env.PATH_ENV %>tarjeta/tarjeta" method="POST">
 <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
 
 <section class="section">
@@ -17,19 +17,20 @@
                         </div>
                     </div>
                     
-                    <div class="field">
-                        <label class="label" for="NombrePromocion">Promociones</label>
-                        <div class="control">
-                            <% for (let promocion of promociones) { %>
-                                <label class="checkbox">
-                                    <input type="checkbox" id="NombrePromocion" name="NombrePromocion" required
-                                        <% if (promocion.NombrePromocion == promocion.NombrePromocion) %> >
-                                    <%= promocion.NombrePromocion %>
-                                </label>
-                                <br>
-                            <% } %>
-                        </div>
-                    </div>
+                   <div class="field">
+                       <label class="label" for="NombrePromocion">Promociones</label>
+                       <div class="control">
+                           <ul>
+                               <% for (let promocion of promociones) { %>
+                                   <% if (promocion.Activo == 1) { %>
+                                       <li>
+                                           <%= promocion.NombrePromocion %>
+                                       </li>
+                                   <% } %>
+                               <% } %>
+                           </ul>
+                       </div>
+                   </div>
                             
                     <div class="field">
                         <label class="label">Vigencia</label>
@@ -37,12 +38,17 @@
                             <input id="Vigencia" name="Vigencia" class="input" type="date" required>
                         </div>
                     </div>
+                               
+                    <div class="control has-text-centered">
+                        <input type="submit" class="button is-link" value="ENVIAR">
+                    </div>
                 </div>
             </div>
             </form>
             <br>
+
             <div class="control has-text-centered">
-                <a href="/promo/promociones" class="button is-link">EDITAR PROMOCIONES</a>
+                <a href="<%= process.env.PATH_ENV %>promo/promociones" class="button is-link">EDITAR PROMOCIONES</a>
             </div>
         </div>
 

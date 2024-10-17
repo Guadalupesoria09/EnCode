@@ -19,7 +19,7 @@
 <% } %>
 
 <div class="control has-text-centered">
-    <a href="/sucur/registrarSucursal" class="button agregar-btn is-link">AGREGAR MÁS</a>
+    <a href="<%= process.env.PATH_ENV %>sucur/registrarSucursal" class="button agregar-btn is-link">AGREGAR MÁS</a>
 </div>
 <br>
 <div class="columns is-multiline">
@@ -53,10 +53,10 @@
                 </div>
                 
                 <footer class="card-footer">
-                    <a href="/sucur/<%= sucursal.IDSucursal %>/usuarios" class="card-footer-item">Editar usuarios</a>
+                    <a href="<%= process.env.PATH_ENV %>sucur/<%= sucursal.IDSucursal %>/usuarios" class="card-footer-item">Editar usuarios</a>
 
-                    <a href="/sucur/editarSucursal/<%= sucursal.IDSucursal %>" class="card-footer-item">Editar sucursal</a>
-                    <a href="/sucur/eliminarSucursal/<%= sucursal.IDSucursal %>" class="card-footer-item" onclick="return confirm('¿Estás seguro de que deseas eliminar esta sucursal?');">Eliminar</a>
+                    <a href="<%= process.env.PATH_ENV %>sucur/editarSucursal/<%= sucursal.IDSucursal %>" class="card-footer-item">Editar sucursal</a>
+                    <a href="<%= process.env.PATH_ENV %>sucur/eliminarSucursal/<%= sucursal.IDSucursal %>" class="card-footer-item" onclick="return confirm('¿Estás seguro de que deseas eliminar esta sucursal?');">Eliminar</a>
                 </footer>
             </div>
         </div>

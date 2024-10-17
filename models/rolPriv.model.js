@@ -1,33 +1,46 @@
 const db = require('../utils/database');
 
 module.exports = class rolPriv {
-    /**
-     * Obtiene todos los roles disponibles en la base de datos.
-     * @returns {Promise<Array>} Promesa que se resuelve con la lista de roles.
-     */
+
+    // Fetch all roles along with privileges
     static fetchAll() {
-        return db.execute('SELECT * FROM Rol;');
+        return db.execute(`
+            SELECT r.IDRol, r.TipoRol, p.Actividad
+            FROM RolPrivilegio rp
+            INNER JOIN Rol r ON rp.IDRol = r.IDRol
+            INNER JOIN Privilegio p ON rp.IDPrivilegio = p.IDPrivilegio
+            WHERE r.deleted_at IS NULL
+        `);
     }
 
-    /**
-     * Obtiene los privilegios asociados a un rol específico.
-     * @param {number} IDRol - El ID del rol para el cual se desean obtener los privilegios.
-     * @returns {Promise<Array>} Promesa que se resuelve con la lista de privilegios asociados.
-     */
+    static fetchTipoRol(IDRol) {
+        return db.execute(`SELECT p.Actividad, rp.IDRol, rp.IDPrivilegio
+            FROM RolPrivilegio rp
+            INNER JOIN privilegio p ON
+            rp.IDPrivilegio = p.IDPrivilegio
+            WHERE rp.IDRol = ?`, [IDRol])
+    }
+
+    static fetchRolPriv(IDRol) {
+        return db.execute(`SELECT DISTINCT r.IDRol, TipoRol, deleted_at
+            FROM RolPrivilegio rp, rol r
+            WHERE rp.IDRol = r.IDRol AND deleted_at IS NULL AND rp.IDRol = ?`, [IDRol]);
+    }
+
+
+    // Fetch privileges by role
     static fetchPrivilegios(IDRol) {
-        return db.execute(
-            `SELECT Privilegio.Actividad
-            FROM RolPrivilegio
-            INNER JOIN Privilegio ON RolPrivilegio.IDPrivilegio = Privilegio.IDPrivilegio
-            WHERE RolPrivilegio.IDRol = ?`, [IDRol]
-        );
+        return db.execute(`
+            SELECT p.Actividad, p.IDPrivilegio
+            FROM RolPrivilegio rp
+            INNER JOIN Privilegio p ON rp.IDPrivilegio = p.IDPrivilegio
+            WHERE rp.IDRol = ?
+        `, [IDRol]);
     }
 
-    /**
-     * Obtiene todas las actividades disponibles en la tabla Privilegio.
-     * @returns {Promise<Array>} Promesa que se resuelve con la lista de actividades.
-     */
-    static fetchActividades() {
-        return db.execute('SELECT Privilegio.Actividad FROM Privilegio;');
+
+     // Fetch all available privileges
+     static fetchActividades() {
+        return db.execute('SELECT IDPrivilegio, Actividad FROM Privilegio');
     }
 };

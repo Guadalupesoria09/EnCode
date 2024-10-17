@@ -20,7 +20,7 @@
     <% } %>
     <br />
     <div class="control has-text-centered">
-        <a href="/promo/crearPromociones" class="button agregar-btn is-link">AGREGAR MÁS</a>
+        <a href="<%= process.env.PATH_ENV %>promo/crearPromociones" class="button agregar-btn is-link">AGREGAR MÁS</a>
     </div>
     <br>
     <div class="columns is-multiline">
@@ -48,7 +48,7 @@
                     </ul>
                   <% } %> 
 
-                  <form action="/promo/promociones" name="estatusForm<%= promocion.IDPromocion %>" method="POST">
+                  <form action="<%= process.env.PATH_ENV %>promo/promociones" name="estatusForm<%= promocion.IDPromocion %>" method="POST">
                   <input type="hidden" id="id" name="id" value="<%= promocion.IDPromocion %>">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
                     <div class="switches">
@@ -78,8 +78,8 @@
                 </div>
               </div>
               <footer class="card-footer">
-                <a href="/promo/editarPromo/<%= promocion.IDPromocion %>" class="card-footer-item">Editar</a>
-                <a href="/promo/deletePromo/<%= promocion.IDPromocion %>" class="card-footer-item">Eliminar</a>
+                <a href="<%= process.env.PATH_ENV %>promo/editarPromo/<%= promocion.IDPromocion %>" class="card-footer-item">Editar</a>
+                <a href="<%= process.env.PATH_ENV %>promo/deletePromo/<%= promocion.IDPromocion %>" class="card-footer-item">Eliminar</a>
               </footer>
             </div>
             <br>

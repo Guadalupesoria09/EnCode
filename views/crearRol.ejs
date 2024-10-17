@@ -1,51 +1,45 @@
 <%- include('includes/head.ejs') %>
-<h1 class="title has-text-centered">CREAR ROL</h1>
-<form action="/config/crearRol" method="POST">
-<input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+<h1 class="title has-text-centered"><%= editar ? 'EDITAR ROL' : 'CREAR ROL' %></h1>
+<form action="<%= editar ? `${process.env.PATH_ENV}config/editarRol` : `${process.env.PATH_ENV}config/crearRol` %>" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <% if (editar) { %>
+        <input type="hidden" id="IDRol" name="IDRol" value="<%= rol.IDRol %>">
+    <% } %>
 
-<% if (mensaje && mensaje.trim() !== '') { %>
-    <div class="notification is-link">
-        <button class="delete"></button>
-        <%= mensaje %>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
-                const $notification = $delete.parentNode;
-
-                $delete.addEventListener('click', () => {
-                    $notification.parentNode.removeChild($notification);
-                });
-            });
-        });
-    </script>
-<% } %>
+    <% if (mensaje && mensaje.trim() !== '') { %>
+        <div class="notification is-link">
+            <button class="delete"></button>
+            <%= mensaje %>
+        </div>
+    <% } %>
 
     <div class="box">
         <div class="field">
             <label class="label" for="TipoRol">Nombre del rol</label>
             <div class="control">
-                <input id="TipoRol" name="TipoRol" class="input" type="text" placeholder="Empleado" required>
+                <input id="TipoRol" name="TipoRol" class="input" type="text" value="<% if (editar) { %> <%= rol.TipoRol %> <% } %>" placeholder="Empleado" required>
             </div>
         </div>
-
+        
         <div class="field">
             <label class="label" for="Actividad">Actividades</label>
             <div class="control">
-                <% for (privilegio of privilegios) { %>
+                <% for (let privilegio of privilegios) { %>
                     <label class="checkbox">
-                        <input type="checkbox" id="Actividad" name="Actividad" value="<%= privilegio.Actividad %>" 
-                            <% if (privilegio.Actividad == privilegio.Actividad) { %>checked<% } %> >
-                        <%= privilegio.Actividad %>
+                        <input type="checkbox" name="actividades" value="<%= privilegio.IDPrivilegio %>" 
+                        <% if (editar) { %> <% for (r in rol.privilegios) { %> <% if (rol.privilegios[r].IDPrivilegio == privilegio.IDPrivilegio) { %> checked <% } %> <% } %> <% } %> 
+                        >
+                        <%= privilegio.Actividad %> <!-- Muestra la actividad al usuario -->
                     </label>
-                    <br> 
+                    <br>
                 <% } %>
             </div>
         </div>
-   
+        
+        
         <div class="control has-text-centered">
-           <input type="submit" class="button is-link" value="CREAR">
-        </div> 
+            <input type="submit" class="button is-link" value="<%= editar ? 'GUARDAR CAMBIOS' : 'CREAR' %>">
+        </div>
     </div>
 </form>
-<%- include('includes/foot.ejs') %>        
+<%- include('includes/foot.ejs') %>

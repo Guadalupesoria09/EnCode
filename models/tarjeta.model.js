@@ -15,4 +15,22 @@ module.exports = class Tarjeta {
         );
     }
 
+    static fetchTarjetaDueno(){
+        return db.execute(
+            `SELECT 
+                 tarjeta.IDUsuario,
+                 tarjeta.Limite,
+                 tarjeta.Vigencia,
+                 tarjeta.IDSucursal,
+                 usuariorol.IDRol
+             FROM
+                 tarjeta
+             INNER JOIN usuariorol ON tarjeta.IDUsuario = usuariorol.IDUsuario
+             WHERE 
+                 IDRol = 2 
+                 AND IDSucursal = 1
+                 LIMIT 1;`
+	)
+    } 
+
 }

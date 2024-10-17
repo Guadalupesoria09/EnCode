@@ -33,13 +33,11 @@
                 
                 <div class="column is-half">
                     <div class="buttons is-centered">
-
-
-                        <a href="/estadisticas" class="button is-primary is-large is-fullwidth my-4">Estadísticas</a>
-                        <a href="/tarjeta/editorTarjeta" class="button is-primary is-large is-fullwidth my-4">Promociones</a>
-                        <a href="/sucur/sucursales" class="button is-primary is-large is-fullwidth my-4">Sucursales</a>
-                        <a href="/config/general" class="button is-primary is-large is-fullwidth my-4">Configuración</a>
-
+                        <a href="<%= process.env.PATH_ENV %>estadisticas" class="button is-primary is-large is-fullwidth my-4">Estadísticas</a>
+                        <a href="<%= process.env.PATH_ENV %>tarjeta/editorTarjeta" class="button is-primary is-large is-fullwidth my-4">Tarjeta</a>
+                        <a href="<%= process.env.PATH_ENV %>promo/promociones" class="button is-primary is-large is-fullwidth my-4">Promociones</a>
+                        <a href="<%= process.env.PATH_ENV %>sucur/sucursales" class="button is-primary is-large is-fullwidth my-4">Sucursales</a>
+                        <a href="<%= process.env.PATH_ENV %>config/general" class="button is-primary is-large is-fullwidth my-4">Configuración</a>
                     </div>
                 </div>
                 </div>

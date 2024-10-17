@@ -30,7 +30,7 @@ router.get('/recuperar', users_controller.get_recuperar);
 router.post('/enviar-codigo', users_controller.post_codigo);
 
 // Ruta GET para verificar el código enviado para la recuperación de contraseña.
-router.get('/verificar-codigo', users_controller.get_verificar_codigo);
+router.get('/verificarCodigo', users_controller.get_verificar_codigo);
 
 // Ruta GET para editar un usuario, accesible solo para usuarios autenticados. Recibe el ID del usuario como parámetro.
 router.get('/editarUsuario/:IDUsuario', isAuth, users_controller.get_editarUsuario);
@@ -40,9 +40,6 @@ router.post('/editarUsuario', isAuth, users_controller.post_editarUsuario);
 
 // Ruta GET para eliminar un usuario. Recibe el ID del usuario como parámetro.
 router.get('/eliminarUsuario/:IDUsuario', users_controller.get_deleteUsuario);
-
-// Ruta GET para obtener los usuarios asociados a una sucursal específica. Solo accesible para usuarios autenticados.
-router.get('/sucur/:IDSucursal/usuarios', isAuth, users_controller.get_usuariosDeSucursal);
 
 // Ruta GET para redirigir a la raíz del sitio (posiblemente el login o home).
 router.get('/', users_controller.get_root);

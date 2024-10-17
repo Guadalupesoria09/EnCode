@@ -52,4 +52,32 @@ module.exports = class UserSucur {
             'INSERT INTO usuarioSucursal(IDUsuario, IDSucursal) VALUES (?, ?)', [IDUsuario, IDSucursal]
         );
     }
+
+    static updateSucursal(IDUsuario, IDSucursal) {
+        return db.execute(`
+            UPDATE usuarioSucursal 
+            SET IDSucursal = ?
+            WHERE IDUsuario = ?`, 
+            [IDSucursal, IDUsuario]);
+    }
+    
+    // Método para obtener todos los usuarios de una sucursal específica.
+    static fetchUsuariosPorSucursal(IDSucursal) {
+        return db.execute(`
+            SELECT usuario.IDUsuario, usuario.NombreUsuario, usuario.NumTelefono, rol.TipoRol,
+	    usuario.FechaNacimiento, usuario.Genero, usuario.Ciudad, usuario.Estado
+            FROM usuarioSucursal
+            INNER JOIN Usuario ON usuarioSucursal.IDUsuario = Usuario.IDUsuario
+            INNER JOIN UsuarioRol ON Usuario.IDUsuario = UsuarioRol.IDUsuario
+            INNER JOIN Rol ON UsuarioRol.IDRol = Rol.IDRol
+            WHERE usuarioSucursal.IDSucursal = ? AND Usuario.deleted_at IS NULL
+        `, [IDSucursal]);
+    }
+
+    static fetchSucursalporUsuario(IDUsuario) {
+        return db.execute(`SELECT us.IDSucursal
+            FROM usuarioSucursal us, sucursal s
+            WHERE us.IDSucursal = s.IDSucursal AND IDUsuario = ? AND s.deleted_at IS NULL`, ([IDUsuario]));
+    }
+
 };

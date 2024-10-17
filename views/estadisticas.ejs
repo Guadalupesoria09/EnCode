@@ -6,7 +6,7 @@
 
 
     <div class="column is-narrow">
-        <form action="/estadisticas/generales" method="GET">
+        <form action="<%= process.env.PATH_ENV %>estadisticas/generales" method="GET">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input type="hidden" name="option" value="generales">
 
@@ -23,7 +23,7 @@
 
 
     <div class="column is-narrow">
-        <form action="/estadisticas/sucursal" method="GET">
+        <form action="<%= process.env.PATH_ENV %>estadisticas/rewards" method="GET">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input type="hidden" name="option" value="sucursal">
 

@@ -1,8 +1,16 @@
 <%- include('includes/head.ejs') %>
 <form action="/enviar-codigo" method="POST">
-    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-    <label for="telefono">Número de teléfono:</label>
-    <input type="text" id="telefono" name="telefono" placeholder="+52 1 XXX XXXXXXX" required>
-    <button type="submit">Enviar código</button>
+    <div class="box">
+        <div class="field">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <label for="telefono">Número de teléfono:</label>
+            <br></br>
+            <input class="input" id="telefono" name="telefono" placeholder="+52 1 XXX XXXXXXX" required>
+            <br></br>
+
+            <button class="button is-link" type="submit">Enviar código</button>
+        </div>
+    </div>
+
 </form>
 <%- include('includes/foot.ejs') %>

@@ -1,20 +1,38 @@
 const Estadisticas = require('../models/estadisticas.model');
+const Compras = require('../models/compras.model');
+const Sucursal = require('../models/sucursal.model');
 
  // METHODS GET & POST DE Estadisticas
 
  exports.mostrarOpciones = (request, response) => {
     response.render('estadisticas', {
         title: 'Opciones de Estadísticas',
+	privilegios: request.session.privilegios,
         csrfToken: request.csrfToken()
     });
 };
-
 
 exports.get_estadisticasGenerales = (request, response) => {
     response.render('estadisticasGenerales', {
         title: 'Estadísticas Generales',
         csrfToken: request.csrfToken()
     });
+};
+
+// Método para obtener las compras por sucursal por usuario
+exports.getComprasSucursal = async (request, response) => {
+    const  {idSucursal}   = request.query; // ID de la sucursal desde la URL
+    try {
+        const [comprasPorUsuario] = await Compras.fetchComprasSucursal(idSucursal);
+
+        return response.render('compras');
+        response.json(comprasPorUsuario);
+
+       
+    } catch (error) {
+        console.error('Error al obtener las compras por usuario en la sucursal:', error);
+        response.status(500).json({ message: 'Error al obtener las compras por usuario en la sucursal' });
+    }
 };
 
 // Método para obtener las compras por usuario
@@ -42,14 +60,14 @@ exports.getPromocionesActivas = async (request, response) => {
 // Método para obtener reclamos por promoción
 exports.getReclamosPorPromocion = async (request, response) => {
     try {
-        const [reclamosPorPromocion] = await Estadisticas.fetchReclamosPorPromocion();
+        const [reclamosPorPromocion] = await Compras.fetchReclamosPorPromocion();
         response.json(reclamosPorPromocion);
+        
     } catch (error) {
         console.error('Error al obtener los reclamos por promoción:', error);
         response.status(500).json({ message: 'Error al obtener los reclamos por promoción' });
     }
 };
-
 
     // Método para obtener recompensas reclamadas por promoción
     exports.getRecompensaReclamadaPorPromocion = async (request, response) => {
@@ -61,31 +79,6 @@ exports.getReclamosPorPromocion = async (request, response) => {
         response.status(500).json({ message: 'Error al obtener las recompensas reclamadas por promoción' });
     }
 };
-
-
-
-
-exports.get_estadisticasSucursal = (request, response) => {
-    response.render('estadisticasSucursal', {
-        title: 'Estadísticas Sucursal',
-        csrfToken: request.csrfToken()
-    });
-};
-
-
-// Método para obtener las compras por sucursal por usuario
-exports.getComprasSucursal = async (request, response) => {
-    const { idSucursal } = request.query; // ID de la sucursal desde la URL
-
-    try {
-        const [comprasPorUsuario] = await Estadisticas.fetchComprasSucursal(idSucursal);
-        response.json(comprasPorUsuario);
-    } catch (error) {
-        console.error('Error al obtener las compras por usuario en la sucursal:', error);
-        response.status(500).json({ message: 'Error al obtener las compras por usuario en la sucursal' });
-    }
-};
-
 
 // Método para obtener los reclamos de promociones por usuario en una sucursal
 exports.getReclamoPromoSucursal = async (request, response) => {
@@ -100,14 +93,14 @@ exports.getReclamoPromoSucursal = async (request, response) => {
     }
 };
 
-
-// Método para obtener ventas de un mes en una sucursal
-exports.getVentasPorMes = async (request, response) => {
-    const { idSucursal } = request.query; // ID de la sucursal desde la URL
-
+exports.get_estadisticasRewards = async (request, response) => {
     try {
-        const [ventasPorMes] = await Estadisticas.fetchVentasPorMes(idSucursal);
-        response.json(ventasPorMes);
+        const comprasPorUsuario = await Estadisticas.fetchComprasPorUsuario();        
+        response.render('estadisticasRewards', {
+            title: 'Estadísticas Rewards',
+            csrfToken: request.csrfToken(),
+            data: { comprasPorUsuario } 
+        });
     } catch (error) {
         console.error('Error al obtener las ventas por mes:', error);
         response.status(500).json({ message: 'Error al obtener las ventas por mes' });
@@ -125,5 +118,19 @@ exports.getPromocioneSucursal = async (request, response) => {
     } catch (error) {
         console.error('Error al obtener las promociones activas:', error);
         response.status(500).json({ message: 'Error al obtener las promociones activas' });
+    }
+};
+
+exports.get_estadisticasRewards = async (request, response) => {
+    try {
+        const rewardsData = await Estadisticas.obtenerEstadisticasRewards();
+        response.render('estadisticasRewards', {
+            title: 'Estadísticas Rewards',
+            csrfToken: request.csrfToken(),
+            rewardsData: rewardsData 
+        });
+    } catch (error) {
+        console.error('Error al obtener estadísticas de recompensas:', error);
+        response.status(500).render('error', { message: 'Error al obtener estadísticas de recompensas' });
     }
 };

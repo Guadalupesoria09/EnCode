@@ -1,21 +1,22 @@
 const db = require('../utils/database');
 
-module.exports = class promoRecomp {
-    constructor(miIDpromo, miIDrecomp) {
+module.exports = class promoSucurRecomp {
+    constructor(miIDpromo, miIDrecomp, miIDsucur) {
         this.IDpromocion = miIDpromo;
         this.IDrecompensa = miIDrecomp;
+        this.IDsucursal = miIDsucur;
     }
 
     save() {
         return db.execute(
-            'INSERT INTO promocionrecompensa(IDPromocion, IDRecompensa) VALUES(?,?)', 
-            [this.IDpromocion, this.IDrecompensa]);
+            'INSERT INTO promocionsucursalrecompensa(IDPromocion, IDRecompensa, IDSucursal) VALUES(?,?,?)', 
+            [this.IDpromocion, this.IDrecompensa, this.IDsucursal]);
     }
 
     static fetchAll() {
         return db.execute(
             `SELECT DISTINCT p.IDPromocion, NombrePromocion, FechaInicio, FechaCaducidad, Compra, Precio, Activo, deleted_at
-            FROM promocionrecompensa pr, promocion p
+            FROM promocionsucursalrecompensa pr, promocion p
             WHERE pr.IDPromocion = p.IDPromocion  AND deleted_at IS NULL`);
     }
     
@@ -24,7 +25,7 @@ module.exports = class promoRecomp {
             `SELECT
                 r.NombreRecompensa, pr.IDPromocion
             FROM
-                promocionrecompensa pr
+                promocionsucursalrecompensa pr
             INNER JOIN recompensa r ON
                 pr.IDRecompensa = r.IDRecompensa
             WHERE
@@ -34,17 +35,17 @@ module.exports = class promoRecomp {
 
     static fetchPromoRecomp(idPromo){
         return db.execute(`SELECT DISTINCT p.IDPromocion, NombrePromocion, FechaInicio, FechaCaducidad, Compra, Precio, Activo
-                FROM promocionrecompensa pr, promocion p WHERE pr.IDPromocion = p.IDPromocion 
+                FROM promocionsucursalrecompensa pr, promocion p WHERE pr.IDPromocion = p.IDPromocion 
                 AND pr.IDPromocion = ?`, [idPromo]);
 
     }
 
     static fetchOne(IDpromorecomp) {
-        return db.execute('SELECT * FROM promocionrecompensa WHERE IDPromocionRecompensa = ?', [IDpromorecomp]);
+        return db.execute('SELECT * FROM promocionsucurrecompensa WHERE IDpromocionsucursalrecompensa = ?', [IDpromorecomp]);
     }
     
     static fetchIDPR(idPromo) {
-        return db.execute('SELECT IDPromocionRecompensa FROM promocionrecompensa WHERE IDPromocion = ?', [idPromo])
+        return db.execute('SELECT IDpromocionsucurrecompensa FROM promocionsucursalrecompensa WHERE IDPromocion = ?', [idPromo])
     }
 
     static fetch(IDpromorecomp) {
@@ -57,17 +58,17 @@ module.exports = class promoRecomp {
     
     static edit(idPromocion, idRecompensa) {
         return db.execute(`
-            UPDATE promocionrecompensa SET IDRecompensa = ?
+            UPDATE promocionsucursalrecompensa SET IDRecompensa = ?
             WHERE IDPromocion = ?`, 
             [idRecompensa, idPromocion]);
     }
 
-    static editSingleRelation(idPromocionRecompensa, nuevaIDRecompensa) {
+    static editSingleRelation(idpromocionsucursalrecompensa, nuevaIDRecompensa) {
         return db.execute(
-            `UPDATE promocionrecompensa 
+            `UPDATE promocionsucursalrecompensa 
              SET IDRecompensa = ? 
-             WHERE IDPromocionRecompensa = ?`, 
-            [nuevaIDRecompensa, idPromocionRecompensa] // Asegúrate de que ambos valores no sean undefined
+             WHERE IDpromocionsucurrecompensa = ?`, 
+            [nuevaIDRecompensa, idpromocionsucursalrecompensa] // Asegúrate de que ambos valores no sean undefined
         );
     }
 

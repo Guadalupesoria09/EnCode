@@ -2,6 +2,26 @@ const { SsmlBreak } = require('twilio/lib/twiml/VoiceResponse'); // Importamos u
 const Sucursal = require('../models/sucursal.model');  // Importamos el modelo de Sucursal.
 const UserSucur = require('../models/userSucur.model');  // Importamos el modelo de UsuarioSucursal.
 
+exports.get_usuariosDeSucursal = (request, response, next) => {
+    const IDSucursal = request.params.IDSucursal;
+    
+    Sucursal.fetchSucursalByID(IDSucursal).then(([sucursal,fieldData]) => {
+        return UserSucur.fetchUsuariosPorSucursal(IDSucursal)
+        .then(([usuarios]) => {
+            response.render('listarUsuarios', {
+		sucursal: sucursal[0],
+                usuarios: usuarios,
+                username: request.session.NombreUsuario || '',
+                csrfToken: request.csrfToken(),
+            });
+	})
+    })
+    .catch((err) => {
+        console.error('Error al obtener usuarios de la sucursal:', err);
+        response.redirect(`${process.env.PATH_ENV}sucur/sucursales`);
+    });
+};
+
 // Controlador para eliminar una sucursal.
 exports.get_deleteSucursal = (request, response, next) => {
     const IDSucursal = request.params.IDSucursal;  // Obtenemos el ID de la sucursal desde los parámetros de la solicitud.
@@ -10,11 +30,11 @@ exports.get_deleteSucursal = (request, response, next) => {
     Sucursal.deleteSucursal(IDSucursal)
         .then(() => {
             request.session.mensaje = "Sucursal eliminada exitosamente";  // Mensaje de éxito.
-            return response.redirect('/sucur/sucursales');  // Redirigimos a la lista de sucursales.
+            return response.redirect(`${process.env.PATH_ENV}sucur/sucursales`);  // Redirigimos a la lista de sucursales.
         })
         .catch((err) => {
             console.log('Error al eliminar sucursal', err);  // En caso de error, lo registramos en la consola.
-            return response.redirect('/sucur/sucursales');  // Redirigimos a la lista de sucursales en caso de error.
+            return response.redirect(`${process.env.PATH_ENV}sucur/sucursales`);  // Redirigimos a la lista de sucursales en caso de error.
         });
 };
 
@@ -52,7 +72,7 @@ exports.post_registrarSucursal = (request, response, next) => {
     sucursal.save()
         .then(() => {
             request.session.mensaje = 'Sucursal creada';  // Mensaje de éxito.
-            response.redirect('/registrar');  // Redirigimos a la página de registro.
+            response.redirect(`${process.env.PATH_ENV}registrar`);  // Redirigimos a la página de registro.
         })
         .catch((error) => {
             console.log(error);  // En caso de error, lo registramos.
@@ -71,7 +91,7 @@ exports.get_editarSucursales = (request, response, next) => {
     Sucursal.fetchSucursalByID(IDSucursal)
         .then(([sucursal, fieldData]) => {
             if (!sucursal || sucursal.length === 0) {
-                return response.redirect('/error');  // Redirigimos si no encontramos la sucursal.
+                return response.redirect(`${process.env.PATH_ENV}error`);  // Redirigimos si no encontramos la sucursal.
             }
             sucursalData = sucursal[0];  // Asignamos los datos de la sucursal.
             return Promise.all([]);  // Usamos Promise.all si necesitamos múltiples promesas (vacío en este caso).
@@ -84,12 +104,12 @@ exports.get_editarSucursales = (request, response, next) => {
                 mensaje: mensaje,
                 editar: true,  // Indicamos que estamos en modo edición.
                 csrfToken: request.csrfToken(),
-                username: request.session.NombreUsuario || ''  // Mostramos el nombre del usuario.
+                username: request.session.NombreUsuario || '',  // Mostramos el nombre del usuario.
             });
         })
         .catch((err) => {
             console.log('Error al cargar los datos del usuario o las sucursales:', err);  // En caso de error, lo registramos.
-            response.redirect('/sucur/sucursales');  // Redirigimos a la lista de sucursales en caso de error.
+            response.redirect(`${process.env.PATH_ENV}sucur/sucursales`);  // Redirigimos a la lista de sucursales en caso de error.
         });
 };
 
@@ -103,11 +123,11 @@ exports.post_editarSucursales = (request, response, next) => {
     Sucursal.editarSucursales(IDSucursal, Direccion, CP, Ciudad, Estado, NumSucursal, NombreSucursal)
         .then(() => {
             request.session.mensaje = 'Sucursal modificada con éxito';  // Mensaje de éxito.
-            response.redirect('/sucur/sucursales');  // Redirigimos a la lista de sucursales.
+            response.redirect(`${process.env.PATH_ENV}sucur/sucursales`);  // Redirigimos a la lista de sucursales.
         })
         .catch((err) => {
             console.log('Error al modificar los datos de la sucursal', err);  // En caso de error, lo registramos.
-            response.redirect('/sucur/sucursales');  // Redirigimos a la lista de sucursales en caso de error.
+            response.redirect(`${process.env.PATH_ENV}sucur/sucursales`);  // Redirigimos a la lista de sucursales en caso de error.
         });
 };
 
@@ -132,7 +152,8 @@ exports.get_sucursales = (request, response, next) => {
                 sucursales: sucursales,
                 mensaje: mensaje,
                 username: request.session.NombreUsuario || '',
-                csrfToken: request.csrfToken()
+                csrfToken: request.csrfToken(),
+                privilegios: request.session.privilegios || [],
             });
         })
         .catch((error) => {

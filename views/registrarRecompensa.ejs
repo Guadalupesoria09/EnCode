@@ -21,12 +21,12 @@
   <% if (editar) { %>
     <div class="columns">
       <div class="column">
-      <form class="box has-text-centered" action="/promo/editRecompensas" method="POST">
+      <form class="box has-text-centered" action="<%= process.env.PATH_ENV %>recomp/editRecompensas" method="POST">
       <input type="hidden" id="id" name="id" value="<%= recompensa.IDRecompensa %>">
   <% } else { %>
     <div class="columns">
       <div class="column is-three-fifths is-offset-one-fifth">
-      <form class="box has-text-centered" action="/promo/recompensas/agregar" method="POST">
+      <form class="box has-text-centered" action="<%= process.env.PATH_ENV %>recomp/recompensas/agregar" method="POST">
   <% } %>
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <div class="field has-text-left">

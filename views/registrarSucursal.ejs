@@ -1,6 +1,6 @@
 <%- include('includes/head.ejs') %>
 <h1 class="title has-text-centered"><%= editar ? 'EDITAR SUCURSAL' : 'AGREGAR SUCURSALES'%></h1>
-<form action="<%=editar ? '/sucur/editarSucursal' : '/sucur/registrarSucursal' %>" method="POST">
+<form action="<%=editar ? `${process.env.PATH_ENV}sucur/editarSucursal` : `${process.env.PATH_ENV}sucur/registrarSucursal` %>" method="POST">
 
 <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
 <% if (editar) {%>

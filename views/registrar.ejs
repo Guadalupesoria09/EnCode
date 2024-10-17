@@ -1,6 +1,6 @@
 <%- include('includes/head.ejs') %>
 <h1 class="title"><%= editar ? 'Editar Usuario' : 'Registro de Usuario'%></h1>
-<form action="<%=editar ? '/editarUsuario' : '/registrar' %>" method="POST">
+<form action="<%=editar ? `${process.env.PATH_ENV}editarUsuario` : `${process.env.PATH_ENV}registrar` %>" method="POST">
 
 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 <% if (editar) { %>

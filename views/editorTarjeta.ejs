@@ -7,64 +7,95 @@
 
     <div class="columns is-multiline">
         <div class="column is-narrow">
+        <% for (vista of vistas) { %>
             <div class="container">
                 <div class="cardDB">
                     <div class="card-innerDB">
-                        <div class="frontDB">
-                            <img src="/Dupper-brands-logo.png" class="db-img" width="600px">
-                            <div class="rowDB">
-                                <a class="image is-24x24" href="/promo/tarjeta">
+                        <div class="frontDB" style="background-image: linear-gradient(45deg, <%= vista.Color %>, <%= vista.Color %>)" >
+                             
+                            <img src="<%= process.env.PATH_ENV %>uploads/<%= vista.Logo %>" class="db-img" width="600px">
+                            <div class="rowDB" style="font-family: <%= vista.Font %>">
+                                <a class="image is-24x24" href="<%= process.env.PATH_ENV %>tarjeta/tarjeta">
                                     <img src="/settings_tarjeta.png">
                                 </a>
-                                <p class="text has-text-right has-text-white">DUPER REWARDS</p>
+                                <p class="text has-text-right has-text-white"><%= vista.nombreTarjeta %></p>
                             </div>
-                            <div class="rowDB sellos">
-                                <div id="circle"></div>
-                                <div id="circle"></div>
-                                <div id="circle"></div>
-                                <div id="circle"></div>
-                                <div id="circle"></div>
-                            </div>
-                            <div class="rowDB sellos">
-                                <div id="circle"></div>
-                                <div id="circle"></div>
-                                <div id="circle"></div>
-                                <div id="circle"></div>
-                                <div id="circle"></div>
-                            </div>
+
                             <div class="rowFDB">
                                 <div class="left has-text-left">
                                 <p class="text has-text-left has-text-white">@usuario</p>
                                 <p class="text has-text-left has-text-white">@teléfono</p>
                                 </div>
                                 <div class="right has-text-right">
-                                    <p class="text has-text-right has-text-white">@sucursal</p>
+                                    <p class="text has-text-right has-text-white">@nombreSucursal</p>
                                     <p class="text has-text-right has-text-white">@teléfono sucursal</p>
                                 </div>
                             </div>
-                        
+
                         </div>
                     </div>
                 </div>
             </div> 
             <br>
+        <% } %>
         </div>
 
         <div class="column ">
-        <form class="box has-text-centered" action="/promo/editorTarjeta" method="POST">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-            <div class="field">
-                <label class="label" for="background">Logo</label>
-                <div class="control">
-                    <input type="file" name="background" required>
+        <form class="box has-text-centered" action="<%= process.env.PATH_ENV %>tarjeta/editorTarjeta" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+                <div class="field has-text-left">
+                    <label class="label" for="nombreTarjeta">Nombre</label>
+                    <div class="control">
+                    <input class="input" id="nombreTarjeta" name="nombreTarjeta" type="text" placeholder="Duper Rewards" required/>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="control">
-                <input type="submit" class="button is-link" value="Guardar">
-            </div>
-            
+
+                <div class="field has-text-left">
+                    <label class="label" for="background">Logo</label>
+                    <div id="file-js-example" class="file has-name">
+                        <label class="file-label" for="background">
+                          <input class="file-input" type="file" name="background"  id="background" required/>
+                          <span class="file-cta">
+                            <span class="file-icon">
+                              <i class="fas fa-upload"></i>
+                            </span>
+                            <span class="file-label"> Elige un archivo </span>
+                          </span>
+                          <span class="file-name">No hay archivos</span>
+                        </label>
+                    </div>
+                </div>    
+
+                <div class="field has-text-left">
+                    <label class="label" for="color">Color</label>
+                    <div class="control">
+                        <input type="color" id="color" name="color" value="#ff0000" required>
+                    </div>
+                </div>
+
+                <div class="field has-text-left">
+                    
+                    <label class="label" for="font">Font</label>
+                    <div class="control">
+                    <input class="input" id="font" name="font" type="text" placeholder="Times New Roman" required/>
+                </div>
+                
+                <br>
+                
+                <div class="control">
+                    <input type="submit" class="button is-link" value="Guardar">
+                </div>
         </form>
+        <script>
+            const fileInput = document.querySelector("#file-js-example input[type=file]");
+            fileInput.onchange = () => {
+              if (fileInput.files.length > 0) {
+                const fileName = document.querySelector("#file-js-example .file-name");
+                fileName.textContent = fileInput.files[0].name;
+              }
+            };
+        </script>
         </div>
     </div>
 <%- include('includes/foot.ejs') %>

@@ -1,0 +1,18 @@
+<%- include('includes/head.ejs') %>
+
+<form action="/enviar-codigo" method="POST">
+    <div class="box">
+        <div class="field">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <h1>Verificar Código</h1>
+
+            <form action="/verificarCodigo" method="POST">
+                <label for="codigo">Introduce el código que recibiste:</label>
+                <input type="text" class="input" id="codigo" name="codigo" required>
+                <button type="submit">Verificar Código</button>
+            </form>
+        </div>
+    </div>
+</form>
+
+<%- include('includes/foot.ejs') %>

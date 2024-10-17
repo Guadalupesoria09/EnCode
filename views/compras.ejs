@@ -1,0 +1,91 @@
+<%- include('includes/head.ejs') %>
+
+<h1 class="title has-text-centered">Estadísticas Sucursal</h1>
+
+<div class="columns is-centered">
+    <div class="column is-half">
+        <form id="formEstadisticas" action="/estadisticas/comprasSucursal" method="GET">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+            <!-- Campo para seleccionar la sucursal -->
+            <div class="field">
+                <label class="label">Selecciona la Sucursal</label>
+                <div class="control">
+                    <input class="input" type="number" name="idSucursal" placeholder="ID de la Sucursal" required>
+                </div>
+            </div>
+
+            <div class="control has-text-centered">
+                <button type="submit" class="button is-link">Ver Graficas</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="charts-container" style="display: flex; flex-wrap: wrap; justify-content: center;">
+    <div class="chart-item" style="flex: 700%; max-width: 50%; padding: 30px;"> 
+        <canvas id="comprasUsuarioChart" style="width: 100%; height: auto;"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $('#formEstadisticas').submit(function(event) {
+        event.preventDefault(); // Evita que el formulario se envíe de manera tradicional
+
+        var idSucursal = $('input[name="idSucursal"]').val();
+
+        $.ajax({
+            url: '/estadisticas/comprasSucursal',
+            method: 'GET',
+            data: { idSucursal: idSucursal},
+            success: function(data) {
+                // Verificar si los datos están vacíos
+                if (!data || data.length === 0) {
+                    alert('No se encontraron compras para la sucursal seleccionada.');
+                    return;
+                }
+
+                var nombresUsuarios = data.map(function(item) { return item.NombreUsuario; });
+                var totalCompras = data.map(function(item) { return item.TotalCompras; });
+
+                // Destruye gráfico previo si existe
+                if (window.comprasChart) {
+                    window.comprasChart.destroy();
+                }
+
+                // Crear un nuevo gráfico de barras
+                var ctx = document.getElementById('comprasUsuarioChart').getContext('2d');
+                window.comprasChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: nombresUsuarios,
+                        datasets: [{
+                            label: 'Compras por Usuario',
+                            data: totalCompras,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            },
+            error: function(err) {
+                console.error('Error al cargar los datos:', err);
+                alert('Ocurrió un error al cargar los datos. Inténtalo de nuevo.');
+            }
+        });
+
+        
+    });
+</script>
+
+<%- include('includes/foot.ejs') %>

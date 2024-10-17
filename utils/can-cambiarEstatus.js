@@ -1,17 +1,17 @@
-module.exports = (request, response, next) => {
 
+module.exports = (request, response, next) => {
     let canCambiarestatus = false;
 
-    for (let privilegio of request.session.permisos) {
-        if (privilegio.Actividad == 'cambiar estatus') {
+    for (let privilegio of request.session.privilegios) {
+        if (privilegio.Privilegio === 'cambiar estatus') {
             canCambiarestatus = true;
+            break;
         }
     }
 
     if (canCambiarestatus) {
         next();
     } else {
-        return response.render('404');
+        return response.render('/promo/promociones');
     }
-
-}
+};

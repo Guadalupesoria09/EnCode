@@ -21,13 +21,16 @@
         </div>
         <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-end">
-                <a class="navbar-item has-text-primary-20-invert" href="/estad/Estadisticas">
+                <a class="navbar-item has-text-primary-20-invert" href="<%= process.env.PATH_ENV %>estadisticas/generales">
                     Estadísticas
                 </a>
-                <a class="navbar-item has-text-primary-20-invert" href="/promo/tarjeta">
+                <a class="navbar-item has-text-primary-20-invert" href="<%= process.env.PATH_ENV %>tarjeta/editorTarjeta">
+                    Tarjeta
+                </a>
+                <a class="navbar-item has-text-primary-20-invert" href="<%= process.env.PATH_ENV %>promo/promociones">
                     Promociones
                 </a>
-                <a class="navbar-item has-text-primary-20-invert" href="/sucur/sucursales">
+                <a class="navbar-item has-text-primary-20-invert" href="<%= process.env.PATH_ENV %>sucur/sucursales">
                     Sucursales
                 </a>
             </div>
@@ -36,14 +39,14 @@
                     <div class="buttons">
                         <% if (username && username !== '') { %>
                             <a class="button is-link">Bienvenido(a) <%= username %></a>
-                            <a href="/logout" class="button has-text-primary-20 is-white">
+                            <a href="<%= process.env.PATH_ENV %>logout" class="button has-text-primary-20 is-white">
                                 <strong>Salir</strong>
                             </a>
                         <% } else { %>
-                            <a href="/registrar" class="button is-link">
+                            <a href="<%= process.env.PATH_ENV %>registrar" class="button is-link">
                                 <strong>Registrarse</strong>
                             </a>
-                            <a href="/login" class="button is-link">
+                            <a href="<%= process.env.PATH_ENV %>login" class="button is-link">
                                 <strong>Entrar</strong>
                             </a>
                         <% } %>

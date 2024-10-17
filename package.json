@@ -4,10 +4,10 @@
   "description": "\"Proyecto EnCode\"",
   "main": "app.js",
   "scripts": {
-  "start": "nodemon app.js",
-  "start:dev": "nodemon app.js",
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
+    "start": "cross-env PATH_ENV='/encode/' node app.js",
+    "start:dev": "cross-env PATH_ENV='/' node --watch app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Guadalupesoria09/EnCode.git"
@@ -24,6 +24,7 @@
     "body-parser": "^1.20.2",
     "chart.js": "^4.4.4",
     "cookie-parser": "^1.4.6",
+    "cross-env": "^7.0.3",
     "csrf": "^3.1.0",
     "csurf": "^1.2.2",
     "dotenv": "^16.4.5",
@@ -36,6 +37,6 @@
     "node": "^22.9.0",
     "nodemon": "^3.1.6",
     "serve-favicon": "^2.5.0",
-    "twilio": "^5.3.2"
+    "twilio": "^5.3.3"
   }
 }
