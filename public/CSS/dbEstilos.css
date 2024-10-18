@@ -34,79 +34,93 @@ body {
 
 /* ---- Carcasa ----- */
 
+/* Parent container */
 .container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #041E3F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #041E3F;
+  min-height: 100vh; /* Full height to center the card vertically */
 }
 
-.cardDB{
-    width: 500px;
-    height: 300px;
-    color: #fff;
-    cursor: pointer;
+/* Card styling */
+.cardDB {
+  width: 500px;
+  height: 300px;
+  color: #fff;
+  cursor: pointer;
+  position: relative;
 }
 
-.card-innerDB{
-    width: 100%;
-    height: 100%;
-    position: relative;
+/* Inner card layout */
+.card-innerDB {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
-.frontDB{
-    width: 100%;
-    height: 100%;
-    background-image: linear-gradient(45deg, #2d388a, #245e73);
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 20px 30px;
-    border-radius: 15px;
-    overflow: hidden;
+/* Front of the card */
+.frontDB {
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(45deg, #2d388a, #245e73);
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 20px 30px;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
-.rowDB{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 25px;
-    font-family: 'Cambria', 'Cochin', Georgia, Times, 'Times New Roman', serif;
-    font-family: Arial, Helvetica, sans-serif;
-    margin-top: 0px;
-    font-weight: bold;
+/* Top row (logo and text) */
+.rowDB {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 25px;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 0;
+  font-weight: bold;
 }
 
-#circle { 
-    width: 50px;
-    height: 50px;
-    background: #8c9eb5; 
-    -moz-border-radius: 35px; 
-    -webkit-border-radius: 35px; 
-    border-radius: 35px;
+/* Circle styling */
+#circle {
+  width: 50px;
+  height: 50px;
+  background: #000000;
+  border-radius: 50%;
 }
 
-.sellos {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    margin-top: 0px;
+/* Dynamic rows of circles */
+.rowSDB {
+  display: flex;
+  align-items: center;
+  justify-content: space-around; /* Distribute circles evenly */
+  width: 100%;
+  margin: 5px 0;
 }
 
-.db-img{
-    width: 100%;
-    position: absolute;
-    opacity: 0.3;
-    top: 0;
-    left: 0;
+/* Card background image */
+.db-img {
+  width: 100%;
+  position: absolute;
+  opacity: 0.3;
+  top: 0;
+  left: 0;
 }
 
+/* Footer content */
 .rowFDB {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 12px;
-    margin-top: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 20px; /* Stick the footer to the bottom with some padding */
+  left: 0;
+  width: 100%;
+  font-size: 12px;
+  padding: 0 20px; /* Adjust horizontal padding */
+  z-index: 10;
 }
 
 

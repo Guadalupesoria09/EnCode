@@ -3,6 +3,7 @@
 <form action="<%= process.env.PATH_ENV %>tarjeta/editarTarjeta" method="POST">
 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 <input type="hidden" name="IDTarjeta" value="<%= tarjeta.IDTarjeta %>">
+<input type="hidden" id="id" name="id" value="<%= vistas.IDVista %>">
 <section class="section">
 <div class="container">
     <div class="columns">
@@ -57,38 +58,36 @@
           <div class="container">
             <div class="cardDB">
               <div class="card-innerDB">
-                <div class="frontDB">
-                  <img src="/Dupper-brands-logo.png" class="db-img" width="600px">
-                  <div class="rowDB">
+                <div class="frontDB" style="background-image: linear-gradient(45deg, <%= vistas.Color %>, <%= vistas.Color %>)">
+                    <img src="<%= process.env.PATH_ENV %>uploads/<%= vistas.Logo %>" class="db-img" width="600px">
+                    <div class="rowDB" style="font-family: <%= vistas.Font %>">
                     <a class="image is-24x24" href="#">
-                      <img src="/settings_tarjeta.png">
+                        <img src="<%= process.env.PATH_ENV %>settings_tarjeta.png">
                     </a>
-                    <p class="text has-text-right has-text-white">DUPER REWARDS</p>
-                  </div>
+                    <p class="text has-text-right has-text-white"><%= vistas.nombreTarjeta %></p>
+                    </div>
 
                   <!-- Aquí se generan dinámicamente los círculos de sellos -->
-                  <div class="rowDB sellos">
-                    <% for (let i = 0; i < tarjeta.Limite; i++) { %>
-                      <% if (i % 5 === 0 && i !== 0) { %> <!-- Inicia una nueva fila cada 5 sellos -->
-                        </div><div class="rowDB sellos">
-                      <% } %>
-                      <div id="circle" class="filled-circle"></div> <!-- Círculo lleno -->
-                    <% } %>
-                  </div>
+                    <div class="rowSDB">
+                        <% for (let i = 0; i < tarjeta.Limite; i++) { %>
+                        <% if (i % 5 === 0 && i !== 0) { %> <!-- Inicia una nueva fila cada 5 sellos -->
+                            </div><div class="rowSDB">
+                        <% } %>
+                        <div id="circle" class="filled-circle"></div> <!-- Círculo lleno -->
+                        <% } %>
+                    </div>
 
+                    <div class="rowFDB">
+                    <div class="left has-text-left">
+                        <p class="text has-text-left has-text-white">@usuario</p>
+                        <p class="text has-text-left has-text-white">@teléfono</p>
+                    </div>
+                    <div class="right has-text-right">
+                        <p class="text has-text-right has-text-white"><%= vistas.NombreSucursal %></p>
+                        <p class="text has-text-right has-text-white"><%= vistas.NumSucursal %></p>
+                    </div>
+                    </div>
                 </div>
-
-                <div class="rowFDB">
-                  <div class="left has-text-left">
-                    <p class="text has-text-left has-text-white">@usuario</p>
-                    <p class="text has-text-left has-text-white">@teléfono</p>
-                  </div>
-                  <div class="right has-text-right">
-                    <p class="text has-text-right has-text-white">@sucursal</p>
-                    <p class="text has-text-right has-text-white">@teléfono sucursal</p>
-                  </div>
-                </div>
-
               </div>
             </div>
           </div>

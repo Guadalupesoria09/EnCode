@@ -5,45 +5,52 @@ const UserSucur = require('../models/userSucur.model.js')
 
 //Controlador para cargar la pagina de visualizar y editar los parametros de la  tarjeta.
 exports.get_tarjeta = (request, response, next) => {
+    const IDVista = request.params.id;
     const IDUsuario = request.session.IDUsuario;
-    UserSucur.fetchSucursalporUsuario(IDUsuario).then(async([sucursal, fieldData]) => {
-        const IDSucursal = sucursal[0].IDSucursal;
-	await Tarjeta.fetchTarjetaDueno(IDSucursal).then(async([tarjeta, fieldData]) => {
-	    const IDTarjeta = tarjeta[0].IDTarjeta;
-            let fecha = tarjeta[0].Vigencia.toISOString();
-	    tarjeta[0].Vigencia=fecha.split('T')[0];
-	    await PromoRecomp.fetchAll().then(async([promociones, fieldData]) => {
-                response.render('editarTarjeta',{
-	            tarjeta: tarjeta[0],
-		    promociones: promociones,
+
+    Vista.fetchVISTA(IDVista).then(([vistas, fieldData]) => {
+        console.log(vistas);
+        UserSucur.fetchSucursalporUsuario(IDUsuario).then(async([sucursal, fieldData]) => {
+            const IDSucursal = sucursal[0].IDSucursal;
+        await Tarjeta.fetchTarjetaDueno(IDSucursal).then(async([tarjeta, fieldData]) => {
+            const IDTarjeta = tarjeta[0].IDTarjeta;
+                let fecha = tarjeta[0].Vigencia.toISOString();
+            tarjeta[0].Vigencia=fecha.split('T')[0];
+            await PromoRecomp.fetchAll().then(async([promociones, fieldData]) => {
+                    response.render('editarTarjeta',{
+                    tarjeta: tarjeta[0],
+                    vistas: vistas[0],
+                    promociones: promociones,
                     username: request.session.NombreUsuario || '', 
                     csrfToken: request.csrfToken(),
-		    
-		});  
+                });  
             })
-	})
+        })
+    }).catch((error) => {
+        console.error('Error al obtener promociones:', error);
+        response.redirect(`${process.env.PATH_ENV}error`);
+    });
+
     })
-	.catch((error) => {
-            console.error('Error al obtener promociones:', error);
-            response.redirect(`${process.env.PATH_ENV}error`);
-        });
 };
 
 //Controlador para manejar la solicitud POST al registrar nuevos parametros a la tarjeta
 exports.post_tarjeta = (request, response, next) => {
-    console.log(request.body);	
+    console.log(request.body);
+    const id = request.body.id;
+
     Tarjeta.editParametros(
 	    request.body.IDTarjeta, 
 	    request.body.Limite, 
 	    request.body.Vigencia,)
     .then(() => {
        request.session.mensaje = 'Parametros actualizados';  // Mensaje de éxito.
-       return response.redirect('editarTarjeta');
+       return response.redirect(`editarTarjeta/${id}`);
     })
     .catch((error) => {
         console.log(error);  // En caso de error.
         request.session.mensaje = 'No se pudieron guardar los parametros';  // Mensaje de error.
-        response.redirect('editarTarjeta');  // Redirige de vuelta a la página de editar tarjeta.
+        response.redirect(`editarTarjeta/${id}`);  // Redirige de vuelta a la página de editar tarjeta.
     });
 };
 

@@ -45,4 +45,16 @@ module.exports = class Vista {
             WHERE
                  v.IDVista = ?`, [ IDvista]);
     }
+
+    static fetchVISTA(IDvista){
+        return db.execute(
+            `SELECT
+                IDVista, nombreTarjeta, Logo, Color, Font, NombreSucursal, NumSucursal
+            FROM
+                vista v
+            INNER JOIN sucursal s ON
+                v.IDSucursal = s.IDSucursal
+            WHERE
+                v.IDVista = ?`, [ IDvista]);
+    }
 }
