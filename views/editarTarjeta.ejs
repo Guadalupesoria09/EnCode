@@ -52,56 +52,55 @@
             </div>
         </div>
 
-      <div class="column is-half">
-        <!-- <figure class="image">
-          <img src="/Tarjeta-Lealtad.png" alt="Loyalty Card">
-        </figure> -->
-        <div class="column is-narrow">
+         <!-- Aquí inicia la segunda columna donde se mostrará la tarjeta y los sellos -->
+        <div class="column is-half">
           <div class="container">
-              <div class="cardDB">
-                  <div class="card-innerDB">
-                      <div class="frontDB">
-                          <img src="/Dupper-brands-logo.png" class="db-img" width="600px">
-                          <div class="rowDB">
-                              <a class="image is-24x24" href="#">
-                                  <img src="/settings_tarjeta.png">
-                              </a>
-                              <p class="text has-text-right has-text-white">DUPER REWARDS</p>
-                          </div>
-                          <div class="rowDB sellos">
-                              <div id="circle"></div>
-                              <div id="circle"></div>
-                              <div id="circle"></div>
-                              <div id="circle"></div>
-                              <div id="circle"></div>
-                          </div>
-                          <div class="rowDB sellos">
-                              <div id="circle"></div>
-                              <div id="circle"></div>
-                              <div id="circle"></div>
-                              <div id="circle"></div>
-                              <div id="circle"></div>
-                          </div>
-                          <div class="rowFDB">
-                              <div class="left has-text-left">
-                              <p class="text has-text-left has-text-white">@usuario</p>
-                              <p class="text has-text-left has-text-white">@teléfono</p>
-                              </div>
-                              <div class="right has-text-right">
-                                  <p class="text has-text-right has-text-white">@sucursal</p>
-                                  <p class="text has-text-right has-text-white">@teléfono sucursal</p>
-                              </div>
-                          </div>
-                      
-                      </div>
+            <div class="cardDB">
+              <div class="card-innerDB">
+                <div class="frontDB">
+                  <img src="/Dupper-brands-logo.png" class="db-img" width="600px">
+                  <div class="rowDB">
+                    <a class="image is-24x24" href="#">
+                      <img src="/settings_tarjeta.png">
+                    </a>
+                    <p class="text has-text-right has-text-white">DUPER REWARDS</p>
                   </div>
+
+                  <!-- Aquí se generan dinámicamente los círculos de sellos -->
+                  <div class="rowDB sellos">
+                    <% for (let i = 0; i < tarjeta.Limite; i++) { %>
+                      <% if (i % 5 === 0 && i !== 0) { %> <!-- Inicia una nueva fila cada 5 sellos -->
+                        </div><div class="rowDB sellos">
+                      <% } %>
+                      <div id="circle" class="filled-circle"></div> <!-- Círculo lleno -->
+                    <% } %>
+                  </div>
+
+                </div>
+
+                <div class="rowFDB">
+                  <div class="left has-text-left">
+                    <p class="text has-text-left has-text-white">@usuario</p>
+                    <p class="text has-text-left has-text-white">@teléfono</p>
+                  </div>
+                  <div class="right has-text-right">
+                    <p class="text has-text-right has-text-white">@sucursal</p>
+                    <p class="text has-text-right has-text-white">@teléfono sucursal</p>
+                  </div>
+                </div>
+
               </div>
-          </div> 
-          <br>
-      </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</form>
+
+<br>
+<div class="control has-text-centered">
+  <a href="<%= process.env.PATH_ENV %>promo/promociones" class="button is-link">EDITAR PROMOCIONES</a>
+</div>
 
 <%- include('includes/foot.ejs') %>
