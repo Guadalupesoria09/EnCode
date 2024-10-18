@@ -52,57 +52,68 @@ exports.get_editarPromo = (request, response, next) => {
 exports.post_editarPromo = async (request, response, next) => {
     const idPromo = request.body.id; // ID de la promoción a editar
     const nuevasRecompensas = request.body.recompensa; // Array de nuevas IDRecompensa
+    const idUsuario = request.session.IDUsuario;
 
     console.log('ID Promocion:', idPromo);
     console.log('Nuevas Recompensas:', nuevasRecompensas);
 
-    // Validar que idPromo y nuevasRecompensas estén definidos
-    if (!idPromo || !Array.isArray(nuevasRecompensas)) {
-        request.session.mensaje = 'Datos inválidos';
-        return response.redirect(`${process.env.PATH_ENV}promo/promociones`); // O redirigir donde necesites
-    }
+    UserSucur.fetchSucursalporUsuario(idUsuario).then(async ([sucursal, fieldData]) => {
+        const idSucursal = sucursal[0].IDSucursal;
 
-    try {
-        await Promociones.edit(idPromo, request.body.nombrePromo, 
+        await Promociones.edit(idPromo, 
+            request.body.nombrePromo, 
             request.body.fechaInicio,
             request.body.fechaFin, 
             request.body.compra, 
-            request.body.precio,);
-        // Paso 1: Obtener las relaciones existentes para la promoción
-        const [relacionesExistentes] = await PromoSucurRecomp.fetchIDPR(idPromo);
-        console.log('Relaciones Existentes:', relacionesExistentes);
-        
-        // Extraer IDs de las recompensas existentes y sus relaciones
-        const recompensasExistentes = relacionesExistentes.map(rel => rel.IDRecompensa);
-        const idPromocionSucurRecompensas = relacionesExistentes.map(rel => rel.IDPromocionSucurRecompensa); // Asegúrate de tener los IDs de las relaciones
-
-        // Paso 2: Actualizar relaciones existentes
-        for (let i = 0; i < recompensasExistentes.length; i++) {
-            if (nuevasRecompensas[i] !== undefined) {
-                // Solo actualizar si el ID de recompensa ha cambiado
-                if (recompensasExistentes[i] !== nuevasRecompensas[i]) {
-                    const idRelacion = idPromocionSucurRecompensas[i]; // Obtener el ID de la relación
-                    await PromoSucurRecomp.editSingleRelation(idRelacion, nuevasRecompensas[i]); // Actualiza usando el ID de la relación
+            request.body.precio,).then(async () => {
+    
+                // Validar que idPromo y nuevasRecompensas estén definidos
+                if (!idPromo || !Array.isArray(nuevasRecompensas)) {
+                    request.session.mensaje = 'Datos inválidos';
+                    return response.redirect(`${process.env.PATH_ENV}promo/promociones`); // O redirigir donde necesites
                 }
-            }
-        }
-
-        // Paso 3: Crear nuevas relaciones si hay recompensas adicionales
-        for (let i = recompensasExistentes.length; i < nuevasRecompensas.length; i++) {
-            // Verificamos que la nueva recompensa no exista ya en las recompensas existentes
-            if (!recompensasExistentes.includes(nuevasRecompensas[i])) {
-                const nuevaRelacion = new PromoSucurRecomp(idPromo, nuevasRecompensas[i]);
-                await nuevaRelacion.save(); // Guardamos la nueva relación
-            }
-        }
-
-        request.session.mensaje = 'Promoción actualizada con éxito';
-        response.redirect(`${process.env.PATH_ENV}promo/promociones`);
-    } catch (error) {
-        console.error(error);
-        request.session.mensaje = 'Error al actualizar la promoción';
-        response.redirect(`${process.env.PATH_ENV}promo/promociones`);
-    }
+    
+                try {
+            
+                    // Paso 1: Obtener las relaciones existentes para la promoción
+                    const [relacionesExistentes] = await PromoSucurRecomp.fetchIDPR(idPromo);
+                    console.log('Relaciones Existentes:', relacionesExistentes);
+                    
+                    // Extraer IDs de las recompensas existentes y sus relaciones
+                    const recompensasExistentes = relacionesExistentes.map(rel => rel.IDRecompensa);
+                    const idPromocionSucurRecompensas = relacionesExistentes.map(rel => rel.IDPromocionSucurRecompensa); // Asegúrate de tener los IDs de las relaciones
+            
+                    // Paso 2: Actualizar relaciones existentes
+                    for (let i = 0; i < recompensasExistentes.length; i++) {
+                        if (nuevasRecompensas[i] !== undefined) {
+                            // Solo actualizar si el ID de recompensa ha cambiado
+                            if (recompensasExistentes[i] !== nuevasRecompensas[i]) {
+                                const idRelacion = idPromocionSucurRecompensas[i]; // Obtener el ID de la relación
+                                await PromoSucurRecomp.editSingleRelation(idRelacion, nuevasRecompensas[i]); // Actualiza usando el ID de la relación
+                            }
+                        }
+                    }
+            
+                    // Paso 3: Crear nuevas relaciones si hay recompensas adicionales
+                    for (let i = recompensasExistentes.length; i < nuevasRecompensas.length; i++) {
+                        // Verificamos que la nueva recompensa no exista ya en las recompensas existentes
+                        if (!recompensasExistentes.includes(nuevasRecompensas[i])) {
+                            const nuevaRelacion = new PromoSucurRecomp(idPromo, nuevasRecompensas[i], idSucursal);
+                            await nuevaRelacion.save(); // Guardamos la nueva relación
+                        }
+                    }
+            
+                    request.session.mensaje = 'Promoción actualizada con éxito';
+                    response.redirect(`${process.env.PATH_ENV}promo/promociones`);
+                } catch (error) {
+                    console.error(error);
+                    request.session.mensaje = 'Error al actualizar la promoción';
+                    response.redirect(`${process.env.PATH_ENV}promo/promociones`);
+                }
+    
+        })
+    })
+    
 };
     
 exports.get_registrar = (request, response, next) => {
