@@ -24,7 +24,7 @@ exports.get_register = (request, response, next) => {
         })
         .catch((err) => {
             console.error('Error al cargar las sucursales o roles:', err);
-            response.redirect(`${process.env.PATH_ENVsucur}sucursales`);
+            response.redirect(`${process.env.PATH_ENV}sucursales`);
         });
 };
 
@@ -85,7 +85,7 @@ exports.get_editarUsuario = (request, response, next) => {
         })
         .catch((err) => {
             console.error('Error al cargar los datos del usuario o las sucursales:', err);
-            response.redirect(`${process.env.PATH_ENVsucur}sucur/sucursales`);
+            response.redirect(`${process.env.PATH_ENV}sucur/sucursales`);
         });
 };
 
@@ -106,7 +106,7 @@ exports.post_editarUsuario = (request, response, next) => {
         })
         .catch((err) => {
             console.error('Error al modificar los datos del usuario o la sucursal:', err);
-            response.redirect(`${process.env.PATH_ENVsucur}editarUsuario/${IDUsuario}`);
+            response.redirect(`${process.env.PATH_ENV}editarUsuario/${IDUsuario}`);
         });
 };
 
@@ -171,7 +171,7 @@ exports.post_login = (request, response, next) => {
                                     request.session.save((err) => {
                                         if (err) {
                                             console.error('Error al guardar la sesión:', err);
-                                            return response.redirect(`${process.env.PATH_ENVsucur}login`);
+                                            return response.redirect(`${process.env.PATH_ENV}login`);
                                         }
                                         response.redirect(`${process.env.PATH_ENV}home`);
                                     });

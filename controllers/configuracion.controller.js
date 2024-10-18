@@ -20,7 +20,7 @@ exports.get_crearRol = (request, response, next) => {
         })
         .catch(error => {
             console.error('Error recuperando los privilegios', error);
-            response.redirect('/error');
+            response.redirect(`${process.env.PATH_ENV}error`);
         });
 };
 
@@ -33,12 +33,12 @@ exports.post_crearRol = (request, response, next) => {
     rol.save(actividades)
         .then(() => {
             request.session.mensaje = 'Rol creado exitosamente';
-            response.redirect('/config/roles');
+            response.redirect(`${process.env.PATH_ENV}config/roles`);
         })
         .catch(error => {
             console.error('Error creating role:', error);
             request.session.mensaje = 'Error creando el rol';
-            response.redirect('/config/crearRol');
+            response.redirect(`${process.env.PATH_ENV}config/crearRol`);
         });
 };
 
@@ -65,7 +65,7 @@ exports.get_editarRol = (request, response, next) => {
         });
     }).catch(error => {
         console.error('Error recuperando los privilegios', error);
-        response.redirect('/config/roles');
+        response.redirect(`${process.env.PATH_ENV}config/roles`);
     });
 };
 
@@ -81,18 +81,18 @@ exports.post_editarRol = (request, response, next) => {
 
     if (!IDRol || IDRol.trim() === '') {
         console.error('No se recibió un IDRol válido');
-        response.redirect('/config/roles'); // Redirigir si falta IDRol
+        response.redirect(`${process.env.PATH_ENV}config/roles`); // Redirigir si falta IDRol
     }
 
     Rol.editarRol(IDRol, nombreRol, actividades)
         .then(() => {
             request.session.mensaje = 'Rol y privilegios editados exitosamente';
-            response.redirect('/config/roles');
+            response.redirect(`${process.env.PATH_ENV}config/roles`);
         })
         .catch(error => {
             console.error('Error actualizando los roles', error);
             request.session.mensaje = 'Error actualizando rol';
-            response.redirect('/config/roles');
+            response.redirect(`${process.env.PATH_ENV}config/roles`);
         });
 };
 
@@ -123,7 +123,7 @@ exports.get_roles = (request, response, next) => {
         })
         .catch((error) => {
             console.error('Error al obtener la lista de roles:', error);
-            response.redirect('/error');
+            response.redirect(`${process.env.PATH_ENV}error`);
         });
 };
 

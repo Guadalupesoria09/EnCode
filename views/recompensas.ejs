@@ -138,7 +138,7 @@
                     link.addEventListener('click', (e) => {
                         e.preventDefault();
                         const newPage = parseInt(e.target.getAttribute('data-page'));
-                        fetch(`/recomp/buscar/${valorBusqueda}?page=${newPage}`, {
+                        fetch(`${process.env.PATH_ENV}recomp/buscar/${valorBusqueda}?page=${newPage}`, {
                             method: 'GET',
                             headers: { 'Content-Type': 'application/json' },
                         })
